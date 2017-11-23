@@ -5,7 +5,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.api.ApiModule;
-import com.vascome.fogtail.appmodule.ApplicationModule;
+import com.vascome.fogtail.appmodules.ApplicationModule;
+import com.vascome.fogtail.developer_settings.DeveloperSettingsModel;
 import com.vascome.fogtail.models.AnalyticsModel;
 
 import timber.log.Timber;
@@ -36,8 +37,8 @@ public class FogtailApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
 
-            //DeveloperSettingsModel developerSettingModel = applicationComponent.developerSettingModel();
-            //developerSettingModel.apply();
+            DeveloperSettingsModel developerSettingModel = applicationComponent.developerSettingModel();
+            developerSettingModel.apply();
         }
     }
 
@@ -45,8 +46,7 @@ public class FogtailApplication extends Application {
     protected DaggerApplicationComponent.Builder prepareApplicationComponent() {
         return DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
-                // This url may be changed dynamically for tests! See ChangeableBaseUrl.
-                .apiModule(new ApiModule("https://raw.githubusercontent.com/vascome/fogtail"));
+                .apiModule(new ApiModule("https://raw.githubusercontent.com/vascome/fogtail/"));
     }
 
     @NonNull

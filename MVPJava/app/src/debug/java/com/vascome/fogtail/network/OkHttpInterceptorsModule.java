@@ -12,6 +12,7 @@ import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 import timber.log.Timber;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 /**
@@ -30,14 +31,19 @@ public class OkHttpInterceptorsModule {
         return new HttpLoggingInterceptor(message -> Timber.d(message));
     }
 
-    @Provides @OkHttpInterceptors @Singleton @NonNull
+    @Provides
+    @OkHttpInterceptors
+    @Singleton
+    @NonNull
     public List<Interceptor> provideOkHttpInterceptors(@NonNull HttpLoggingInterceptor httpLoggingInterceptor) {
         return singletonList(httpLoggingInterceptor);
     }
-/*
-    @Provides @OkHttpNetworkInterceptors @Singleton @NonNull
+    @Provides
+    @OkHttpNetworkInterceptors
+    @Singleton
+    @NonNull
     public List<Interceptor> provideOkHttpNetworkInterceptors() {
-        return singletonList(new StethoInterceptor());
+        return emptyList();
+        //return singletonList(new StethoInterceptor());
     }
-    */
 }

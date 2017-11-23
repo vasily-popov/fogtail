@@ -5,12 +5,16 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.vascome.fogtail.api.ApiModule;
 import com.vascome.fogtail.api.FogtailRestApi;
-import com.vascome.fogtail.appmodule.ApplicationModule;
+import com.vascome.fogtail.appmodules.ApplicationModule;
+import com.vascome.fogtail.developer_settings.DeveloperSettingsComponent;
+import com.vascome.fogtail.developer_settings.DeveloperSettingsModel;
+import com.vascome.fogtail.developer_settings.DeveloperSettingsModule;
+import com.vascome.fogtail.developer_settings.LeakCanaryProxy;
 import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.ModelsModule;
 import com.vascome.fogtail.network.NetworkModule;
 import com.vascome.fogtail.network.OkHttpInterceptorsModule;
-import com.vascome.fogtail.ui.MainActivity;
+import com.vascome.fogtail.ui.main.MainActivity;
 
 import javax.inject.Singleton;
 
@@ -29,7 +33,7 @@ import dagger.Component;
         ApiModule.class,
         //AsyncJobsModule.class,
         ModelsModule.class,
-        //DeveloperSettingsModule.class,
+        DeveloperSettingsModule.class,
 })
 public interface ApplicationComponent {
 
@@ -45,21 +49,21 @@ public interface ApplicationComponent {
     // Provide AsyncJobObserver from the real app to the tests without need in injection to the test.
     @NonNull
     AsyncJobsObserver asyncJobsObserver();
-
+*/
     // Provide LeakCanary without injection to leave.
     @NonNull
     LeakCanaryProxy leakCanaryProxy();
-
+/*
     @NonNull
     ItemsFragment.ItemsFragmentComponent plus(@NonNull ItemsFragment.ItemsFragmentModule itemsFragmentModule);
-
+*/
     @NonNull
     DeveloperSettingsComponent plusDeveloperSettingsComponent();
-*/
+
     @NonNull
     AnalyticsModel analyticsModel();
-/*
+
     DeveloperSettingsModel developerSettingModel();
-*/
+
     void inject(@NonNull MainActivity mainActivity);
 }

@@ -62,5 +62,36 @@ public class ModelsModule {
         }
 
     }
+/*
+    static class FlurryAppAnalytics implements AnalyticsModel {
+
+        @NonNull
+        private final Application app;
+
+        FlurryAppAnalytics(@NonNull Application app) {
+            this.app = app;
+        }
+
+        @Override
+        public void init() {
+            new FlurryAgent.Builder()
+                    .withLogEnabled(true)
+                    .withCaptureUncaughtExceptions(true)
+                    .withContinueSessionMillis(10)
+                    .build(this.app, "RGGP7ZQ2QYTTNDQWPBPP");
+        }
+
+        @Override
+        public void sendEvent(@NonNull String eventName) {
+
+            FlurryAgent.logEvent(eventName);
+        }
+
+        @Override
+        public void sendError(@NonNull String message, @NonNull Throwable error) {
+            FlurryAgent.onError("error", message, error);
+        }
+    }
+    */
 
 }

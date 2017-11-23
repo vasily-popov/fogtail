@@ -23,7 +23,7 @@ android {
         versionCode versions.code
         versionName versions.name
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.vascome.fogtail.functional_tests.FogtailFunctionalTestRunner"
         // Make generated apks contain version name and code.
         archivesBaseName = "app-${versions.name}-${versions.code}"
     }
@@ -31,10 +31,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    dataBinding {
-        enabled = true
     }
 
     signingConfigs {
@@ -49,7 +45,6 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.fogtail
-            applicationIdSuffix '.debug'
 
             // Enables code coverage with Jacoco only for instrumentation tests.
             // Coverage for JVM tests done by code_quality_tools/jacoco.gradle.
@@ -70,19 +65,19 @@ android {
 
     sourceSets {
         // Unit tests live in src/unitTest.
-        //test.java.srcDir 'src/unitTests/java'
+        test.java.srcDir 'src/unitTests/java'
 
         // Integration tests live in src/integrationTest.
-        //test.java.srcDir 'src/integrationTests/java'
+        test.java.srcDir 'src/integrationTests/java'
 
         // Unit tests for debug build type specific code live in src/debugUnitTest.
-        //testDebug.java.srcDir 'src/debugUnitTests/java'
+        testDebug.java.srcDir 'src/debugUnitTests/java'
 
         // Unit tests for release build type specific code live in src/releaseUnitTest.
-        //testRelease.java.srcDir 'src/releaseUnitTests/java'
+        testRelease.java.srcDir 'src/releaseUnitTests/java'
 
         // Functional tests live in src/functionalTests.
-        //androidTest.java.srcDir 'src/functionalTests/java'
+        androidTest.java.srcDir 'src/functionalTests/java'
     }
 
     lintOptions {
@@ -101,11 +96,16 @@ android {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 
-    // This allows us see tests execution progress in the output on the CI.
-    testOptions.unitTests.all {
-        testLogging {
-            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
-            exceptionFormat 'full'
+    testOptions {
+        unitTests {
+            all {
+                // This allows us see tests execution progress in the output on the CI.
+                testLogging {
+                    events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+                    exceptionFormat 'full'
+                }
+            }
+            includeAndroidResources = true
         }
     }
 }
@@ -137,21 +137,32 @@ dependencies {
     implementation libraries.supportAppCompat
     implementation libraries.firebaseCore
 
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation libraries.butterKnife
+    annotationProcessor libraries.butterKnifeAnnotations
+
+    //test
     testImplementation libraries.junit
+    testImplementation libraries.robolectric
+    testImplementation libraries.assertJ
+    testImplementation libraries.mockitoCore
+    testImplementation libraries.okHttpMockWebServer
+
     androidTestImplementation libraries.supportTestRunner
     androidTestImplementation libraries.espressoCore
+    androidTestImplementation libraries.supportTestRules
+    androidTestImplementation libraries.okHttpMockWebServer
+    //androidTestImplementation(libraries.espressoContrib
+
+    //implementation 'com.flurry.android:analytics:8.1.0'
 
     // Developer tools (Developer Settings)
     debugImplementation libraries.okHttpLoggingInterceptor
-    /*debugImplementation libraries.stetho
+    debugImplementation libraries.paperwork
+    debugImplementation libraries.stetho
     debugImplementation libraries.stethoOkHttp
     debugImplementation libraries.leakCanary
     debugImplementation libraries.tinyDancer
-    debugImplementation libraries.paperwork
     debugImplementation libraries.lynx
-    debugImplementation libraries.processPhoenix
-    */
 }
 
 
@@ -161,6 +172,7 @@ configurations.all {
         force libraries.supportAnnotations
     }
 }
+
 
 apply plugin: 'com.google.gms.google-services'
 
