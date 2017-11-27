@@ -66,64 +66,94 @@ ext.gradlePlugins = [
 
 ext.libraries = [
 
-        dagger                  : "com.google.dagger:dagger:$versions.dagger",
-        daggerCompiler          : "com.google.dagger:dagger-compiler:$versions.dagger",
+        dagger: [
+                runtime: "com.google.dagger:dagger:$versions.dagger",
+                compiler: "com.google.dagger:dagger-compiler:$versions.dagger",
+        ],
 
-        picasso                 : "com.squareup.picasso:picasso:$versions.picasso",
-        picassoOkHttpDownloader : "com.jakewharton.picasso:picasso2-okhttp3-downloader:$versions.picassoOkHttpDownloader",
+        picasso: [
+                core: "com.squareup.picasso:picasso:$versions.picasso",
+                downloader: "com.jakewharton.picasso:picasso2-okhttp3-downloader:$versions.picassoOkHttpDownloader",
+        ],
 
-        okHttp                  : "com.squareup.okhttp3:okhttp:$versions.okHttp",
-        okHttpLoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$versions.okHttp",
+        okhttp: [
+                core: "com.squareup.okhttp3:okhttp:$versions.okHttp",
+                logger: "com.squareup.okhttp3:logging-interceptor:$versions.okHttp",
+                mock : "com.squareup.okhttp3:mockwebserver:$versions.okHttp",
+        ],
 
-        retrofit                : "com.squareup.retrofit2:retrofit:$versions.retrofit",
-        retrofitGsonConverter   : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
-/*
+        retrofit: [
+                core: "com.squareup.retrofit2:retrofit:$versions.retrofit",
+                gson: "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+                //'mock': "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}",
+                //'rxjava': "com.squareup.retrofit2:adapter-rxjava:${versions.retrofit}",
+        ],
+
+        /*
+        'rx': [
+                'core': 'io.reactivex:rxjava:1.3.0',
+                'android': 'io.reactivex:rxandroid:1.2.1',
+                'preferences': 'com.f2prateek.rx.preferences:rx-preferences:1.0.2',
+                //'rxbinding': 'com.jakewharton.rxbinding:rxbinding:1.0.1',
+        ],
         rxJava                  : "io.reactivex:rxjava:$versions.rxJava",
         rxJavaProguardRules     : "com.artemzin.rxjava:proguard-rules:$versions.rxJavaProguardRules",
         rxLint                  : "nl.littlerobots.rxlint:rxlint:$versions.rxLint",
         retrofitRxJavaAdapter   : "com.squareup.retrofit2:adapter-rxjava:$versions.retrofit",
 */
         gson                    : "com.google.code.gson:gson:$versions.gson",
-
-        autoValue               : "com.google.auto.value:auto-value:$versions.autoValue",
-        autoValueGson           : "com.ryanharter.auto.value:auto-value-gson:$versions.autoValueGson",
-
-
-        supportAnnotations      : "com.android.support:support-annotations:$versions.supportLibs",
-        supportAppCompat        : "com.android.support:appcompat-v7:$versions.supportLibs",
-
+        autoValue : [
+                core : "com.google.auto.value:auto-value:$versions.autoValue",
+                gson : "com.ryanharter.auto.value:auto-value-gson:$versions.autoValueGson",
+        ],
+        support: [
+                annotations: "com.android.support:support-annotations:$versions.supportLibs",
+                appCompat: "com.android.support:appcompat-v7:$versions.supportLibs",
+                //'design': "com.android.support:design:${versions.supportLibs}",
+                //'recyclerView': "com.android.support:recyclerview-v7:${versions.supportLibs}",
+                //'cardView': "com.android.support:cardview-v7:${versions.supportLibs}",
+        ],
+        //logs
         timber                  : "com.jakewharton.timber:timber:$versions.timber",
 
         firebaseCore            : "com.google.firebase:firebase-core:$versions.googlePlayServices",
         googleAnalytics         : "com.google.android.gms:play-services-analytics:$versions.googlePlayServices",
-        /*
-        supportDesign           : "com.android.support:design:$versions.supportLibs",
-        supportRecyclerView     : "com.android.support:recyclerview-v7:$versions.supportLibs",
-        supportCardView         : "com.android.support:cardview-v7:$versions.supportLibs",
-*/
 
-        butterKnife             : "com.jakewharton:butterknife:$versions.butterKnife",
-        butterKnifeAnnotations  : "com.jakewharton:butterknife-compiler:$versions.butterKnife",
+        butterKnife: [
+                runtime: "com.jakewharton:butterknife:$versions.butterKnife",
+                compiler: "com.jakewharton:butterknife-compiler:$versions.butterKnife",
+        ],
 
         // Developer Tools
-        stetho                  : "com.facebook.stetho:stetho:$versions.stetho",
-        stethoOkHttp            : "com.facebook.stetho:stetho-okhttp3:$versions.stetho",
-        leakCanary              : "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary",
+        stetho : [
+                core: "com.facebook.stetho:stetho:$versions.stetho",
+                okhttp: "com.facebook.stetho:stetho-okhttp3:$versions.stetho",
+        ],
+        leakCanary: [
+                real: "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary",
+                noOp: "com.squareup.leakcanary:leakcanary-android-no-op:$versions.leakCanary",
+        ],
         tinyDancer              : "com.github.brianPlummer:tinydancer:$versions.tinyDancer",
         paperwork               : "hu.supercluster:paperwork:$versions.paperworkGradlePlugin",
         lynx                    : "com.github.pedrovgs:lynx:$versions.lynx",
+        //'madge': 'com.jakewharton.madge:madge:1.1.4',
 
         // Test dependencies
         junit                   : "junit:junit:$versions.junit",
         robolectric             : "org.robolectric:robolectric:$versions.robolectric",
         assertJ                 : "org.assertj:assertj-core:$versions.assertJ",
         mockitoCore             : "org.mockito:mockito-core:$versions.mockito",
-        okHttpMockWebServer     : "com.squareup.okhttp3:mockwebserver:$versions.okHttp",
+
         /*
         equalsVerifier          : "nl.jqno.equalsverifier:equalsverifier:$versions.equalsVerifier",
         */
-        supportTestRunner       : "com.android.support.test:runner:$versions.supportTestRunner",
-        supportTestRules        : "com.android.support.test:rules:$versions.supportTestRunner",
-        espressoCore            : "com.android.support.test.espresso:espresso-core:$versions.espresso",
-        //espressoContrib         : "com.android.support.test.espresso:espresso-contrib:$versions.espresso",
+
+        espresso: [
+                core: "com.android.support.test.espresso:espresso-core:$versions.espresso",
+                contrib: "com.android.support.test.espresso:espresso-contrib:$versions.espresso",
+        ],
+        testRunners: [
+                runner: "com.android.support.test:runner:$versions.supportTestRunner",
+                rules: "com.android.support.test:rules:$versions.supportTestRunner",
+        ],
 ]

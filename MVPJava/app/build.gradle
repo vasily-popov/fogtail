@@ -81,6 +81,9 @@ android {
     }
 
     lintOptions {
+        textReport true
+        textOutput 'stdout'
+        lintConfig rootProject.file('lint.xml')
         warningsAsErrors true
         abortOnError true // Fail early.
 
@@ -113,54 +116,54 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation libraries.dagger
-    annotationProcessor libraries.daggerCompiler
+    implementation libraries.dagger.runtime
+    annotationProcessor libraries.dagger.compiler
 
-    implementation libraries.picasso
-    implementation libraries.picassoOkHttpDownloader
+    implementation libraries.picasso.core
+    implementation libraries.picasso.downloader
 
-    implementation libraries.okHttp
+    implementation libraries.okhttp.core
 
-    implementation libraries.retrofit
-    implementation libraries.retrofitGsonConverter
+    implementation libraries.retrofit.core
+    implementation libraries.retrofit.gson
     implementation libraries.gson
 
     implementation libraries.timber
 
-    annotationProcessor libraries.autoValue
-    annotationProcessor libraries.autoValueGson
+    annotationProcessor libraries.autoValue.core
+    annotationProcessor libraries.autoValue.gson
 
     // Make AutoValue annotation visible to the compiler.
-    compileOnly libraries.autoValue
-    compileOnly libraries.autoValueGson
+    compileOnly libraries.autoValue.core
+    compileOnly libraries.autoValue.gson
 
-    implementation libraries.supportAppCompat
+    implementation libraries.support.appCompat
     implementation libraries.firebaseCore
+    //implementation 'com.flurry.android:analytics:8.1.0'
 
-    implementation libraries.butterKnife
-    annotationProcessor libraries.butterKnifeAnnotations
+    implementation libraries.butterKnife.runtime
+    annotationProcessor libraries.butterKnife.compiler
+
 
     //test
     testImplementation libraries.junit
     testImplementation libraries.robolectric
     testImplementation libraries.assertJ
     testImplementation libraries.mockitoCore
-    testImplementation libraries.okHttpMockWebServer
+    testImplementation libraries.okhttp.mock
 
-    androidTestImplementation libraries.supportTestRunner
-    androidTestImplementation libraries.espressoCore
-    androidTestImplementation libraries.supportTestRules
-    androidTestImplementation libraries.okHttpMockWebServer
-    //androidTestImplementation(libraries.espressoContrib
-
-    //implementation 'com.flurry.android:analytics:8.1.0'
+    androidTestImplementation libraries.testRunners.runner
+    androidTestImplementation libraries.testRunners.rules
+    androidTestImplementation libraries.espresso.core
+    androidTestImplementation libraries.okhttp.mock
+    //androidTestImplementation(libraries.espresso.contrib
 
     // Developer tools (Developer Settings)
-    debugImplementation libraries.okHttpLoggingInterceptor
+    debugImplementation libraries.okhttp.logger
     debugImplementation libraries.paperwork
-    debugImplementation libraries.stetho
-    debugImplementation libraries.stethoOkHttp
-    debugImplementation libraries.leakCanary
+    debugImplementation libraries.stetho.core
+    debugImplementation libraries.stetho.okhttp
+    debugImplementation libraries.leakCanary.real
     debugImplementation libraries.tinyDancer
     debugImplementation libraries.lynx
 }
@@ -169,7 +172,7 @@ dependencies {
 configurations.all {
     resolutionStrategy {
         // Force our version of support-annotations, we have a conflict between app and androidTest dependency resolution.
-        force libraries.supportAnnotations
+        force libraries.support.annotations
     }
 }
 

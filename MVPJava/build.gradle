@@ -1,21 +1,23 @@
 import com.android.build.gradle.internal.tasks.AndroidTestTask
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-
 apply from: 'dependencies.gradle'
 
 buildscript {
 
     // Gradle will not find vars defined in an external file when referring to them
-    // in the buildscript block, unless you link it from the buildscript block, too.
+    // in the build script block, unless you link it from the buildscript block, too.
     apply from: 'dependencies.gradle'
 
     repositories {
-        jcenter()
         google()
-        maven { url 'https://plugins.gradle.org/m2/' }
+        mavenCentral()
+        jcenter()
+        maven {
+            url 'https://plugins.gradle.org/m2'
+        }
     }
+
     dependencies {
         // See dependencies.gradle for declaration of plugins.
 
@@ -41,14 +43,6 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        //maven { url "https://jitpack.io"}
-    }
-}
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
@@ -62,6 +56,12 @@ project.ext {
 }
 
 subprojects {
+
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
 
     println('PREDEX ' + (rootProject.ext.preDexLibs ? 'ENABLED' : 'DISABLED')) // goes to build log or console output
     project.plugins.whenPluginAdded { plugin ->
