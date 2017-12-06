@@ -30,8 +30,8 @@ public class RecAreaItemTest {
                 RecAreaItem.class);
 
         assertThat(item.id()).isEqualTo("test_id");
-        assertThat(item.imagePreviewUrl()).isEqualTo("some_url");
-        assertThat(item.title()).isEqualTo("Test title");
+        assertThat(item.imageUrl()).isEqualTo("some_url");
+        assertThat(item.name()).isEqualTo("Test title");
         assertThat(item.shortDescription()).isEqualTo("Test short description");
     }
 }

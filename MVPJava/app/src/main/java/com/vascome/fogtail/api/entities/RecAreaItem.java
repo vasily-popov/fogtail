@@ -1,5 +1,6 @@
 package com.vascome.fogtail.api.entities;
 
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.auto.value.AutoValue;
@@ -16,7 +17,7 @@ import com.google.gson.annotations.SerializedName;
 // This class is immutable, it has correctly implemented hashCode and equals.
 // Thanks to AutoValue https://github.com/google/auto/tree/master/value.
 @AutoValue
-public abstract class RecAreaItem {
+public abstract class RecAreaItem implements Parcelable {
     private static final String JSON_PROPERTY_ID = "RecAreaID";
     private static final String JSON_PROPERTY_NAME = "RecAreaName";
     private static final String JSON_PROPERTY_PHONE = "RecAreaPhone";

@@ -1,6 +1,7 @@
 package com.vascome.fogtail.ui.stack;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +18,10 @@ import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
+import com.vascome.fogtail.ui.collectionbase.CollectionAreaItemListener;
 import com.vascome.fogtail.ui.collectionbase.CollectionPresenter;
 import com.vascome.fogtail.ui.collectionbase.ICollectionView;
+import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
 import com.vascome.fogtail.ui.stack.adapter.SwipeStackAdapter;
 
 import java.util.List;
@@ -37,7 +40,7 @@ import static android.view.View.VISIBLE;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-public class StackAppFragment extends BaseFragment implements ICollectionView {
+public class StackAppFragment extends BaseFragment implements ICollectionView, CollectionAreaItemListener {
 
     Context appContext;
     SwipeStackAdapter swipeStackAdapter;
@@ -108,7 +111,7 @@ public class StackAppFragment extends BaseFragment implements ICollectionView {
 
     private void initRecyclerView() {
 
-        swipeStackAdapter = new SwipeStackAdapter(getActivity().getLayoutInflater(), networkBitmapClient);
+        swipeStackAdapter = new SwipeStackAdapter(getActivity().getLayoutInflater(), networkBitmapClient, this);
         binding.swipeStack.setAdapter(swipeStackAdapter);
 
         presenter.bindView(this);
@@ -119,6 +122,13 @@ public class StackAppFragment extends BaseFragment implements ICollectionView {
         presenter.unbindView(this);
         binding.unbind();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onItemClick(RecAreaItem clickedItem) {
+        Intent intent = new Intent(appContext, RecAreaItemDetailActivity.class);
+        intent.putExtra("item", clickedItem);
+        startActivity(intent);
     }
 
     @Subcomponent(modules = StackFragmentModule.class)

@@ -1,6 +1,7 @@
 package com.vascome.fogtail.ui.table;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,10 +19,12 @@ import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
+import com.vascome.fogtail.ui.collectionbase.CollectionAreaItemListener;
 import com.vascome.fogtail.ui.collectionbase.CollectionPresenter;
 import com.vascome.fogtail.ui.collectionbase.ICollectionView;
+import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
 import com.vascome.fogtail.ui.list.adapter.ListAreaAdapter;
-import com.vascome.fogtail.ui.table.adapter.BoxSpaceItemDecoration;
+import com.vascome.fogtail.ui.table.decorator.BoxSpaceItemDecoration;
 
 import java.util.List;
 
@@ -36,7 +39,7 @@ import dagger.Subcomponent;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-public class GridAppFragment extends BaseFragment implements ICollectionView {
+public class GridAppFragment extends BaseFragment implements ICollectionView, CollectionAreaItemListener {
 
     Context appContext;
     ListAreaAdapter listAreaAdapter;
@@ -112,7 +115,7 @@ public class GridAppFragment extends BaseFragment implements ICollectionView {
         binding.recyclerView.addItemDecoration(new BoxSpaceItemDecoration((int) getResources().getDimension(R.dimen.list_item_vertical_space_between_items)));
         GridLayoutManager glm = new GridLayoutManager(appContext, 2);
         binding.recyclerView.setLayoutManager(glm);
-        listAreaAdapter = new ListAreaAdapter(getActivity().getLayoutInflater(), networkBitmapClient);
+        listAreaAdapter = new ListAreaAdapter(getActivity().getLayoutInflater(), networkBitmapClient, this);
         binding.recyclerView.setAdapter(listAreaAdapter);
         binding.recyclerViewSwipeRefresh.setOnRefreshListener(()->presenter.reloadData());
 
@@ -124,6 +127,13 @@ public class GridAppFragment extends BaseFragment implements ICollectionView {
         presenter.unbindView(this);
         binding.unbind();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onItemClick(RecAreaItem clickedItem) {
+        Intent intent = new Intent(appContext, RecAreaItemDetailActivity.class);
+        intent.putExtra("item", clickedItem);
+        startActivity(intent);
     }
 
     @Subcomponent(modules = GridFragmentModule.class)

@@ -1,6 +1,7 @@
 package com.vascome.fogtail.ui.carousel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,10 +19,12 @@ import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
+import com.vascome.fogtail.ui.collectionbase.CollectionAreaItemListener;
 import com.vascome.fogtail.ui.collectionbase.CollectionPresenter;
 import com.vascome.fogtail.ui.collectionbase.ICollectionView;
+import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
 import com.vascome.fogtail.ui.gallery.adapter.GalleryAreaAdapter;
-import com.vascome.fogtail.ui.table.adapter.BoxSpaceItemDecoration;
+import com.vascome.fogtail.ui.table.decorator.BoxSpaceItemDecoration;
 
 import java.util.List;
 
@@ -37,7 +40,7 @@ import dagger.Subcomponent;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-public class CarouselAppFragment extends BaseFragment implements ICollectionView {
+public class CarouselAppFragment extends BaseFragment implements ICollectionView, CollectionAreaItemListener {
 
     Context appContext;
     GalleryAreaAdapter galleryAreaAdapter;
@@ -114,7 +117,7 @@ public class CarouselAppFragment extends BaseFragment implements ICollectionView
         binding.recyclerView.addItemDecoration(new BoxSpaceItemDecoration((int) getResources().getDimension(R.dimen.list_item_vertical_space_between_items)));
         CarouselLayoutManager llm = new CarouselLayoutManager(appContext, LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerView.setLayoutManager(llm);
-        galleryAreaAdapter = new GalleryAreaAdapter(getActivity().getLayoutInflater(), networkBitmapClient);
+        galleryAreaAdapter = new GalleryAreaAdapter(getActivity().getLayoutInflater(), networkBitmapClient, this);
         binding.recyclerView.setAdapter(galleryAreaAdapter);
         binding.recyclerViewSwipeRefresh.setOnRefreshListener(()->presenter.reloadData());
 
@@ -126,6 +129,13 @@ public class CarouselAppFragment extends BaseFragment implements ICollectionView
         presenter.unbindView(this);
         binding.unbind();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onItemClick(RecAreaItem clickedItem) {
+        Intent intent = new Intent(appContext, RecAreaItemDetailActivity.class);
+        intent.putExtra("item", clickedItem);
+        startActivity(intent);
     }
 
     @Subcomponent(modules = CarouselFragmentModule.class)

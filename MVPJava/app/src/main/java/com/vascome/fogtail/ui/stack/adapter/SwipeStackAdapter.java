@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.models.AppImageLoader;
+import com.vascome.fogtail.ui.collectionbase.CollectionAreaItemListener;
 
 import java.util.List;
 
@@ -30,12 +31,17 @@ public class SwipeStackAdapter extends BaseAdapter {
     @NonNull
     private final AppImageLoader imageLoader;
 
+    private final CollectionAreaItemListener collectionAreaItemListener;
+
     @NonNull
     private List<RecAreaItem> items = emptyList();
 
-    public SwipeStackAdapter(@NonNull LayoutInflater layoutInflater, @NonNull AppImageLoader imageLoader) {
+    public SwipeStackAdapter(@NonNull LayoutInflater layoutInflater,
+                             @NonNull AppImageLoader imageLoader,
+                             CollectionAreaItemListener collectionAreaItemListener) {
         this.layoutInflater = layoutInflater;
         this.imageLoader = imageLoader;
+        this.collectionAreaItemListener = collectionAreaItemListener;
     }
 
     public void setData(@NonNull List<RecAreaItem> items) {
@@ -72,6 +78,7 @@ public class SwipeStackAdapter extends BaseAdapter {
         imageLoader.downloadInto(item.imageUrl(), imageView);
         titleTextView.setText(item.name());
         shortDescriptionTextView.setText(item.shortDescription());
+        holder.setOnClickListener(view -> collectionAreaItemListener.onItemClick(item));
         return holder;
     }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.models.AppImageLoader;
-import com.vascome.fogtail.ui.list.adapter.ListAreaAdapter;
+import com.vascome.fogtail.ui.collectionbase.CollectionAreaItemListener;
 
 import java.util.List;
 
@@ -30,12 +30,17 @@ public class GalleryAreaAdapter extends RecyclerView.Adapter<GalleryAreaAdapter.
     @NonNull
     private final AppImageLoader imageLoader;
 
+    private final CollectionAreaItemListener collectionAreaItemListener;
+
     @NonNull
     private List<RecAreaItem> items = emptyList();
 
-    public GalleryAreaAdapter(@NonNull LayoutInflater layoutInflater, @NonNull AppImageLoader imageLoader) {
+    public GalleryAreaAdapter(@NonNull LayoutInflater layoutInflater,
+                              @NonNull AppImageLoader imageLoader,
+                              CollectionAreaItemListener collectionAreaItemListener) {
         this.layoutInflater = layoutInflater;
         this.imageLoader = imageLoader;
+        this.collectionAreaItemListener = collectionAreaItemListener;
     }
 
     public void setData(@NonNull List<RecAreaItem> items) {
@@ -52,6 +57,7 @@ public class GalleryAreaAdapter extends RecyclerView.Adapter<GalleryAreaAdapter.
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.bind(items.get(position));
+        viewHolder.itemView.setOnClickListener(view -> collectionAreaItemListener.onItemClick(items.get(position)));
     }
 
     @Override
@@ -59,7 +65,7 @@ public class GalleryAreaAdapter extends RecyclerView.Adapter<GalleryAreaAdapter.
         return items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         @NonNull
         private final AppImageLoader imageLoader;
@@ -78,7 +84,7 @@ public class GalleryAreaAdapter extends RecyclerView.Adapter<GalleryAreaAdapter.
             shortDescriptionTextView = itemView.findViewById(R.id.list_item_description);
         }
 
-        public void bind(@NonNull RecAreaItem item) {
+        void bind(@NonNull RecAreaItem item) {
             imageLoader.downloadInto(item.imageUrl(), imageView);
             titleTextView.setText(item.name());
             shortDescriptionTextView.setText(item.shortDescription());

@@ -98,8 +98,9 @@ ext.libraries = [
 */
         gson                    : "com.google.code.gson:gson:$versions.gson",
         autoValue : [
-                core : "com.google.auto.value:auto-value:$versions.autoValue",
-                gson : "com.ryanharter.auto.value:auto-value-gson:$versions.autoValueGson",
+                core   : "com.google.auto.value:auto-value:$versions.autoValue",
+                gson   : "com.ryanharter.auto.value:auto-value-gson:$versions.autoValueGson",
+                parsel : "com.ryanharter.auto.value:auto-value-parcel:0.2.5"
         ],
         support: [
                 annotations: "com.android.support:support-annotations:$versions.supportLibs",
@@ -114,6 +115,7 @@ ext.libraries = [
 
         firebaseCore            : "com.google.firebase:firebase-core:$versions.googlePlayServices",
         googleAnalytics         : "com.google.android.gms:play-services-analytics:$versions.googlePlayServices",
+        googlePlayMaps          :"com.google.android.gms:play-services-maps:$versions.googlePlayServices",
 
         cardStackView           : "com.daprlabs.aaron:swipedeck:2.0.6",
 

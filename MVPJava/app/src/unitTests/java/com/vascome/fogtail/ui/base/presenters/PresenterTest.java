@@ -10,13 +10,13 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 public class PresenterTest {
-    private Presenter<Object> presenter;
+    private BasePresenter<Object> presenter;
     private Object view;
 
     @Before
     public void beforeEachTest() {
         view = new Object();
-        presenter = new Presenter<>();
+        presenter = new BasePresenter<>();
     }
 
     @Test

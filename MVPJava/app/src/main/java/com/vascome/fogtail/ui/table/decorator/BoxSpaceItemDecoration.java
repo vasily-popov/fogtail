@@ -1,4 +1,4 @@
-package com.vascome.fogtail.ui.table.adapter;
+package com.vascome.fogtail.ui.table.decorator;
 
 import android.graphics.Rect;
 import android.support.annotation.NonNull;

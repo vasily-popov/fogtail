@@ -15,6 +15,7 @@ import com.vascome.fogtail.models.ModelsModule;
 import com.vascome.fogtail.network.NetworkModule;
 import com.vascome.fogtail.network.OkHttpInterceptorsModule;
 import com.vascome.fogtail.ui.carousel.CarouselAppFragment;
+import com.vascome.fogtail.ui.detail.RecAreaDetailFragment;
 import com.vascome.fogtail.ui.gallery.GalleryAppFragment;
 import com.vascome.fogtail.ui.list.ListAppFragment;
 import com.vascome.fogtail.ui.main.MainActivity;
@@ -36,7 +37,6 @@ import dagger.Component;
         NetworkModule.class,
         OkHttpInterceptorsModule.class,
         ApiModule.class,
-        //AsyncJobsModule.class,
         ModelsModule.class,
         DeveloperSettingsModule.class,
 })
@@ -50,11 +50,7 @@ public interface ApplicationComponent {
     // Provide FogtailRestApi from the real app to the tests without need in injection to the test.
     @NonNull
     FogtailRestApi provideRestApi();
-/*
-    // Provide AsyncJobObserver from the real app to the tests without need in injection to the test.
-    @NonNull
-    AsyncJobsObserver asyncJobsObserver();
-*/
+
     // Provide LeakCanary without injection to leave.
     @NonNull
     LeakCanaryProxy leakCanaryProxy();
@@ -80,4 +76,6 @@ public interface ApplicationComponent {
     CarouselAppFragment.CarouselFragmentComponent plus(@NonNull CarouselAppFragment.CarouselFragmentModule carouselFragmentModule);
     @NonNull
     StackAppFragment.StackFragmentComponent plus(@NonNull StackAppFragment.StackFragmentModule stackFragmentModule);
+    @NonNull
+    RecAreaDetailFragment.RecAreaDetailComponent plus(@NonNull RecAreaDetailFragment.DetailFragmentModule detailFragmentModule);
 }

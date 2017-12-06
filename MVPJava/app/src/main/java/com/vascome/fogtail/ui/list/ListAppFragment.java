@@ -1,6 +1,7 @@
 package com.vascome.fogtail.ui.list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,8 +19,10 @@ import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
+import com.vascome.fogtail.ui.collectionbase.CollectionAreaItemListener;
 import com.vascome.fogtail.ui.collectionbase.CollectionPresenter;
 import com.vascome.fogtail.ui.collectionbase.ICollectionView;
+import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
 import com.vascome.fogtail.ui.list.adapter.ListAreaAdapter;
 import com.vascome.fogtail.ui.list.adapter.VerticalSpaceItemDecoration;
 
@@ -36,7 +39,7 @@ import dagger.Subcomponent;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-public class ListAppFragment extends BaseFragment implements ICollectionView {
+public class ListAppFragment extends BaseFragment implements ICollectionView, CollectionAreaItemListener {
 
     Context appContext;
     ListAreaAdapter listAreaAdapter;
@@ -112,7 +115,7 @@ public class ListAppFragment extends BaseFragment implements ICollectionView {
         binding.recyclerView.addItemDecoration(new VerticalSpaceItemDecoration((int) getResources().getDimension(R.dimen.list_item_vertical_space_between_items)));
         LinearLayoutManager llm = new LinearLayoutManager(appContext, LinearLayoutManager.VERTICAL, false);
         binding.recyclerView.setLayoutManager(llm);
-        listAreaAdapter = new ListAreaAdapter(getActivity().getLayoutInflater(), networkBitmapClient);
+        listAreaAdapter = new ListAreaAdapter(getActivity().getLayoutInflater(), networkBitmapClient, this);
         binding.recyclerView.setAdapter(listAreaAdapter);
         binding.recyclerViewSwipeRefresh.setOnRefreshListener(()->presenter.reloadData());
 
@@ -124,6 +127,13 @@ public class ListAppFragment extends BaseFragment implements ICollectionView {
         presenter.unbindView(this);
         binding.unbind();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onItemClick(RecAreaItem clickedItem) {
+        Intent intent = new Intent(appContext, RecAreaItemDetailActivity.class);
+        intent.putExtra("item", clickedItem);
+        startActivity(intent);
     }
 
     @Subcomponent(modules = ListFragmentModule.class)
