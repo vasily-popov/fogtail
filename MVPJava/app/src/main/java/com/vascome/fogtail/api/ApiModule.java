@@ -21,22 +21,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class ApiModule {
 
-    @NonNull
-    private String baseUrl;
-
-    public ApiModule(@NonNull  String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-
     @Provides @NonNull @Singleton
-    public FogtailRestApi provideRestApi(@NonNull OkHttpClient okHttpClient, @NonNull Gson gson) {
+    public FogtailRestApi provideRestApi(@NonNull OkHttpClient okHttpClient,
+                                         @NonNull Gson gson,
+                                         @NonNull ApiConfiguration config) {
         return new Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl(config.getBaseApiUrl())
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 //.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .validateEagerly(BuildConfig.DEBUG)  // Fail early: check Retrofit configuration at creation time in Debug build.
                 .build()
                 .create(FogtailRestApi.class);
+    }
+
+    @Provides @NonNull
+    public ApiConfiguration provideConfiguration() {
+        return () -> "https://raw.githubusercontent.com/vascome/emplesSwift/master/emplesMVC/emplesMVC/Resources/fakeJsons/";
+        //return () -> "https://raw.githubusercontent.com/vascome/fogtail/MVPJava/app/src/main/assets/";
     }
 }

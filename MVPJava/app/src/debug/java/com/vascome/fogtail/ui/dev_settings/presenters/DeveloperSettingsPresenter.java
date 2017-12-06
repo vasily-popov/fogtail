@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.developer_settings.DeveloperSettingsModelImpl;
 import com.vascome.fogtail.models.AnalyticsModel;
-import com.vascome.fogtail.ui.base.presenters.Presenter;
+import com.vascome.fogtail.ui.base.presenters.BasePresenter;
 import com.vascome.fogtail.ui.dev_settings.views.DeveloperSettingsView;
 
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -14,7 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-public class DeveloperSettingsPresenter extends Presenter<DeveloperSettingsView> {
+public class DeveloperSettingsPresenter extends BasePresenter<DeveloperSettingsView> {
 
     @NonNull
     private final DeveloperSettingsModelImpl developerSettingsModel;

@@ -8,6 +8,7 @@ import com.vascome.fogtail.api.entities.RecAreaItem;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 
 
 /**
@@ -27,8 +28,8 @@ public class RecAreaItemsModel {
     }
 
     @NonNull
-    public Call<List<RecAreaItem>> getItems() {
-        return restApi.items();
+    public void getItems(Callback<List<RecAreaItem>> callback) {
+        restApi.items().enqueue(callback);
     }
 
 }

@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.api.ApiModule;
 import com.vascome.fogtail.appmodules.ApplicationModule;
 import com.vascome.fogtail.developer_settings.DeveloperSettingsModel;
 import com.vascome.fogtail.models.AnalyticsModel;
@@ -45,8 +44,7 @@ public class FogtailApplication extends Application {
     @NonNull
     protected DaggerApplicationComponent.Builder prepareApplicationComponent() {
         return DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(this))
-                .apiModule(new ApiModule("https://raw.githubusercontent.com/vascome/fogtail/"));
+                .applicationModule(new ApplicationModule(this));
     }
 
     @NonNull

@@ -17,10 +17,15 @@ import com.google.gson.annotations.SerializedName;
 // Thanks to AutoValue https://github.com/google/auto/tree/master/value.
 @AutoValue
 public abstract class RecAreaItem {
-    private static final String JSON_PROPERTY_ID = "id";
-    private static final String JSON_PROPERTY_IMAGE_PREVIEW_URL = "image_preview_url";
-    private static final String JSON_PROPERTY_TITLE = "title";
-    private static final String JSON_PROPERTY_SHORT_DESCRIPTION = "short_description";
+    private static final String JSON_PROPERTY_ID = "RecAreaID";
+    private static final String JSON_PROPERTY_NAME = "RecAreaName";
+    private static final String JSON_PROPERTY_PHONE = "RecAreaPhone";
+    private static final String JSON_PROPERTY_IMAGE_URL = "imageURL";
+    private static final String JSON_PROPERTY_DESCRIPTION = "RecAreaDescription";
+    private static final String JSON_PROPERTY_DIRECTIONS = "RecAreaDirections";
+    private static final String JSON_PROPERTY_AREA_LONGITUDE = "RecAreaLongitude";
+    private static final String JSON_PROPERTY_AREA_LATITUDE = "RecAreaLatitude";
+
 
     @NonNull
     public static Builder builder() {
@@ -36,17 +41,26 @@ public abstract class RecAreaItem {
     @SerializedName(JSON_PROPERTY_ID)
     public abstract String id();
 
-    @NonNull
-    @SerializedName(JSON_PROPERTY_IMAGE_PREVIEW_URL)
-    public abstract String imagePreviewUrl();
+    @SerializedName(JSON_PROPERTY_IMAGE_URL)
+    public abstract String imageUrl();
 
-    @NonNull
-    @SerializedName(JSON_PROPERTY_TITLE)
-    public abstract String title();
+    @SerializedName(JSON_PROPERTY_NAME)
+    public abstract String name();
 
-    @NonNull
-    @SerializedName(JSON_PROPERTY_SHORT_DESCRIPTION)
+    @SerializedName(JSON_PROPERTY_PHONE)
+    public abstract String phone();
+
+    @SerializedName(JSON_PROPERTY_DESCRIPTION)
     public abstract String shortDescription();
+
+    @SerializedName(JSON_PROPERTY_DIRECTIONS)
+    public abstract String directions();
+
+    @SerializedName(JSON_PROPERTY_AREA_LONGITUDE)
+    public abstract Double longitude();
+
+    @SerializedName(JSON_PROPERTY_AREA_LATITUDE)
+    public abstract Double latitude();
 
     @AutoValue.Builder
     public static abstract class Builder {
@@ -55,13 +69,25 @@ public abstract class RecAreaItem {
         public abstract Builder id(@NonNull String id);
 
         @NonNull
-        public abstract Builder imagePreviewUrl(@NonNull String imagePreviewUrl);
+        public abstract Builder imageUrl(@NonNull String imageUrl);
 
         @NonNull
-        public abstract Builder title(@NonNull String title);
+        public abstract Builder name(@NonNull String name);
 
         @NonNull
         public abstract Builder shortDescription(@NonNull String shortDescription);
+
+        @NonNull
+        public abstract Builder phone(@NonNull String phone);
+
+        @NonNull
+        public abstract Builder directions(@NonNull String directions);
+
+        @NonNull
+        public abstract Builder longitude(@NonNull Double longitude);
+
+        @NonNull
+        public abstract Builder latitude(@NonNull Double latitude);
 
         @NonNull
         public abstract RecAreaItem build();

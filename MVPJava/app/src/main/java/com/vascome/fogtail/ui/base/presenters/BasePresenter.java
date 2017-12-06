@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
  *
  * @param <V> view.
  */
-public class Presenter<V> {
+public class BasePresenter<V> {
 
     //@NonNull
     //private final CompositeSubscription subscriptionsToUnsubscribeOnUnbindView = new CompositeSubscription();

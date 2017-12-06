@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Fogtail</string>
+    <string name="items_loading_error_text">Could not load items :(</string>
+    <string name="common_try_again_button">Try again</string>
+    <string name="list">List</string>
+    <string name="table">Table</string>
+    <string name="gallery">Gallery</string>
+    <string name="stack">Stack</string>
+    <string name="carousel">Carousel</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

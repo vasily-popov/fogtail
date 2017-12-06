@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.DaggerApplicationComponent;
 import com.vascome.fogtail.FogtailApplication;
+import com.vascome.fogtail.api.ApiConfiguration;
 import com.vascome.fogtail.api.ApiModule;
 import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.ModelsModule;
@@ -17,7 +18,13 @@ public class FogtailFunctionalTestApp extends FogtailApplication {
     @Override
     protected DaggerApplicationComponent.Builder prepareApplicationComponent() {
         return super.prepareApplicationComponent()
-                .apiModule(new ApiModule("/"))
+                .apiModule(new ApiModule() {
+                    @NonNull
+                    @Override
+                    public ApiConfiguration provideConfiguration() {
+                        return () -> "/";
+                    }
+                })
                 .modelsModule(new ModelsModule() {
                     @NonNull
                     @Override

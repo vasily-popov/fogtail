@@ -14,7 +14,12 @@ import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.ModelsModule;
 import com.vascome.fogtail.network.NetworkModule;
 import com.vascome.fogtail.network.OkHttpInterceptorsModule;
+import com.vascome.fogtail.ui.carousel.CarouselAppFragment;
+import com.vascome.fogtail.ui.gallery.GalleryAppFragment;
+import com.vascome.fogtail.ui.list.ListAppFragment;
 import com.vascome.fogtail.ui.main.MainActivity;
+import com.vascome.fogtail.ui.stack.StackAppFragment;
+import com.vascome.fogtail.ui.table.GridAppFragment;
 
 import javax.inject.Singleton;
 
@@ -53,10 +58,10 @@ public interface ApplicationComponent {
     // Provide LeakCanary without injection to leave.
     @NonNull
     LeakCanaryProxy leakCanaryProxy();
-/*
+
     @NonNull
-    ItemsFragment.ItemsFragmentComponent plus(@NonNull ItemsFragment.ItemsFragmentModule itemsFragmentModule);
-*/
+    ListAppFragment.ListFragmentComponent plus(@NonNull ListAppFragment.ListFragmentModule listFragmentModule);
+
     @NonNull
     DeveloperSettingsComponent plusDeveloperSettingsComponent();
 
@@ -66,4 +71,13 @@ public interface ApplicationComponent {
     DeveloperSettingsModel developerSettingModel();
 
     void inject(@NonNull MainActivity mainActivity);
+
+    @NonNull
+    GridAppFragment.GridFragmentComponent plus(@NonNull GridAppFragment.GridFragmentModule gridFragmentModule);
+    @NonNull
+    GalleryAppFragment.GalleryFragmentComponent plus(@NonNull GalleryAppFragment.GalleryFragmentModule galleryFragmentModule);
+    @NonNull
+    CarouselAppFragment.CarouselFragmentComponent plus(@NonNull CarouselAppFragment.CarouselFragmentModule carouselFragmentModule);
+    @NonNull
+    StackAppFragment.StackFragmentComponent plus(@NonNull StackAppFragment.StackFragmentModule stackFragmentModule);
 }

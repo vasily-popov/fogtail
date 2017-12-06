@@ -16,6 +16,6 @@ import retrofit2.http.GET;
 
 public interface FogtailRestApi {
 
-    @GET("items") @NonNull
+    @GET("RecArea.json") @NonNull
     Call<List<RecAreaItem>> items();
 }

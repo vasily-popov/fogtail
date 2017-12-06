@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_list"
+            android:title="@string/list"
+            />
+        <item
+            android:id="@+id/nav_grid"
+            android:title="@string/table"
+            />
+        <item
+            android:id="@+id/nav_gallery"
+            android:title="@string/gallery"
+            />
+        <item
+            android:id="@+id/nav_stack"
+            android:title="@string/stack"
+            />
+        <item
+            android:id="@+id/nav_carousel"
+            android:title="@string/carousel"
+            />
+    </group>
+</menu>

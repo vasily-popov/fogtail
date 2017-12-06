@@ -30,7 +30,7 @@ buildscript {
         classpath gradlePlugins.jacoco
 
         // Catches common Java mistakes as compile-time errors.
-        classpath gradlePlugins.errorProne
+        //classpath gradlePlugins.errorProne
 
         // Check latest version of dependencies, task: dependencyUpdates
         classpath gradlePlugins.versions
@@ -72,7 +72,7 @@ subprojects {
         }
     }
 
-    project.plugins.apply('net.ltgt.errorprone')
+    //project.plugins.apply('net.ltgt.errorprone')
 
     afterEvaluate {
         println('Check tasks')
@@ -99,7 +99,7 @@ subprojects {
 }
 
 apply plugin: 'com.gradle.build-scan'
-apply plugin: 'net.ltgt.errorprone'
+//apply plugin: 'net.ltgt.errorprone'
 buildScan {
     licenseAgreementUrl = 'https://gradle.com/terms-of-service'
     licenseAgree = 'yes'
