@@ -56,9 +56,6 @@ public interface ApplicationComponent {
     LeakCanaryProxy leakCanaryProxy();
 
     @NonNull
-    ListAppFragment.ListFragmentComponent plus(@NonNull ListAppFragment.ListFragmentModule listFragmentModule);
-
-    @NonNull
     DeveloperSettingsComponent plusDeveloperSettingsComponent();
 
     @NonNull
@@ -68,6 +65,9 @@ public interface ApplicationComponent {
 
     void inject(@NonNull MainActivity mainActivity);
 
+
+    @NonNull
+    ListAppFragment.ListFragmentComponent plus(@NonNull ListAppFragment.ListFragmentModule listFragmentModule);
     @NonNull
     GridAppFragment.GridFragmentComponent plus(@NonNull GridAppFragment.GridFragmentModule gridFragmentModule);
     @NonNull

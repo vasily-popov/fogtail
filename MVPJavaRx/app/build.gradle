@@ -48,7 +48,8 @@ android {
 
             // Enables code coverage with Jacoco only for instrumentation tests.
             // Coverage for JVM tests done by code_quality_tools/jacoco.gradle.
-            testCoverageEnabled true
+            //testCoverageEnabled true //bug in android studio variable are not visibles
+            testCoverageEnabled false
         }
 
         release {
@@ -59,6 +60,7 @@ android {
 
             // Enables code coverage with Jacoco only for instrumentation tests.
             // Coverage for JVM tests done by code_quality_tools/jacoco.gradle.
+
             testCoverageEnabled true
         }
     }
@@ -130,6 +132,7 @@ dependencies {
 
     implementation libraries.retrofit.core
     implementation libraries.retrofit.gson
+    implementation libraries.retrofit.rx
     implementation libraries.gson
 
     implementation libraries.timber
@@ -141,6 +144,9 @@ dependencies {
     // Make AutoValue annotation visible to the compiler.
     compileOnly libraries.autoValue.core
     compileOnly libraries.autoValue.gson
+
+    implementation libraries.rx.core
+    implementation libraries.rx.android
 
     implementation libraries.support.appCompat
     implementation libraries.support.recyclerView

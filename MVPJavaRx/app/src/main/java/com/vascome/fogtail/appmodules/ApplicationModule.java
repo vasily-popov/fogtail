@@ -12,6 +12,8 @@ import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.models.PicassoImageLoader;
+import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
+import com.vascome.fogtail.utils.schedulers.SchedulerProviderImpl;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -19,6 +21,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import timber.log.Timber;
 
 /**
  * Created by vasilypopov on 11/22/17
@@ -63,12 +66,20 @@ public class ApplicationModule {
     public Picasso providePicasso(@NonNull Application application, @NonNull OkHttpClient okHttpClient) {
         return new Picasso.Builder(application)
                 .downloader(new OkHttp3Downloader(okHttpClient))
+                .listener((picasso, uri, e) -> Timber.e(e, "Failed to load image: %s", uri))
                 .build();
     }
 
     @Provides @NonNull @Singleton
     public AppImageLoader provideImageLoader(@NonNull Picasso picasso) {
         return new PicassoImageLoader(picasso);
+    }
+
+    @Provides
+    @NonNull
+    @Singleton
+    public SchedulerProvider provideScheduler() {
+        return new SchedulerProviderImpl();
     }
 
 }

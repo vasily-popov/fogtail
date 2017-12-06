@@ -25,6 +25,7 @@ import com.vascome.fogtail.ui.collectionbase.ICollectionView;
 import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
 import com.vascome.fogtail.ui.gallery.adapter.GalleryAreaAdapter;
 import com.vascome.fogtail.ui.table.decorator.BoxSpaceItemDecoration;
+import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
 
 import java.util.List;
 
@@ -148,8 +149,9 @@ public class GalleryAppFragment extends BaseFragment implements ICollectionView,
         @Provides
         @NonNull
         public CollectionPresenter provideItemsPresenter(@NonNull RecAreaItemsModel itemsModel,
-                                                         @NonNull AnalyticsModel analyticsModel) {
-            return new CollectionPresenter(itemsModel, analyticsModel);
+                                                         @NonNull AnalyticsModel analyticsModel,
+                                                         @NonNull SchedulerProvider schedulerProvider) {
+            return new CollectionPresenter(itemsModel, analyticsModel,schedulerProvider);
         }
     }
 

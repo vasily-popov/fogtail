@@ -2,16 +2,14 @@ package com.vascome.fogtail.ui.collectionbase;
 
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.presenters.BasePresenter;
+import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by vasilypopov on 12/6/17
@@ -22,11 +20,14 @@ public class CollectionPresenter extends BasePresenter<ICollectionView> {
 
     private final RecAreaItemsModel itemsModel;
     private final AnalyticsModel analyticsModel;
+    private final SchedulerProvider schedulerProvider;
 
     public CollectionPresenter(@NonNull RecAreaItemsModel itemsModel,
-                              @NonNull AnalyticsModel analyticsModel) {
+                              @NonNull AnalyticsModel analyticsModel,
+                               @NonNull SchedulerProvider schedulerProvider) {
         this.itemsModel = itemsModel;
         this.analyticsModel = analyticsModel;
+        this.schedulerProvider = schedulerProvider;
     }
 
     public void reloadData() {
@@ -40,39 +41,31 @@ public class CollectionPresenter extends BasePresenter<ICollectionView> {
             }
         }
 
-        itemsModel.getItems(new Callback<List<RecAreaItem>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<RecAreaItem>> call, @NonNull Response<List<RecAreaItem>> response) {
-
-                List<RecAreaItem> responseBody = response.body();
-
-                // Tip: in Kotlin you can use ? to operate with nullable values.
-                final ICollectionView view = view();
-                if (responseBody != null)
-                {
-                    if (view != null) {
-                        view.showItems(responseBody);
-                    }
-                }
-                else {
-                    if (view != null) {
-                        view.showError();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<RecAreaItem>> call, @NonNull Throwable t) {
-                analyticsModel.sendError("CollectionPresenter.reloadData failed", t);
-                {
-                    // Tip: in Kotlin you can use ? to operate with nullable values.
-                    final ICollectionView view = view();
-
-                    if (view != null) {
-                        view.showError();
-                    }
-                }
-            }
-        });
+        Disposable disposable = itemsModel.getItems()
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(
+                        // onNext
+                        items -> {
+                            final ICollectionView view = view();
+                            if (view != null) {
+                                if (items != null) {
+                                    view.showItems(items);
+                                }
+                                else {
+                                    view.showError();
+                                }
+                            }
+                        },
+                        // onError
+                        throwable -> {
+                            analyticsModel.sendError("ItemsPresenter.reloadData failed", throwable);
+                            // Tip: in Kotlin you can use ? to operate with nullable values.
+                            final ICollectionView view = view();
+                            if (view != null) {
+                                view.showError();
+                            }
+                        });
+        compositeDisposable.add(disposable);
     }
 }

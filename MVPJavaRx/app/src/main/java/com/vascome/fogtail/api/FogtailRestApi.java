@@ -6,6 +6,7 @@ import com.vascome.fogtail.api.entities.RecAreaItem;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
@@ -17,5 +18,5 @@ import retrofit2.http.GET;
 public interface FogtailRestApi {
 
     @GET("RecArea.json") @NonNull
-    Call<List<RecAreaItem>> items();
+    Single<List<RecAreaItem>> items();
 }
