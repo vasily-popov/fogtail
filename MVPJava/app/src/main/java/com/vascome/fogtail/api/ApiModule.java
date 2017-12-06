@@ -37,7 +37,6 @@ public class ApiModule {
 
     @Provides @NonNull
     public ApiConfiguration provideConfiguration() {
-        return () -> "https://raw.githubusercontent.com/vascome/emplesSwift/master/emplesMVC/emplesMVC/Resources/fakeJsons/";
-        //return () -> "https://raw.githubusercontent.com/vascome/fogtail/MVPJava/app/src/main/assets/";
+        return () -> "https://raw.githubusercontent.com/vascome/fogtail/master/MVPJava/app/src/main/assets/";
     }
 }
