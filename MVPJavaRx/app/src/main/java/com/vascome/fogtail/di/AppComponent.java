@@ -5,18 +5,18 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
-import com.vascome.fogtail.api.ApiModule;
+import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.api.FogtailRestApi;
-import com.vascome.fogtail.appmodules.ApplicationModule;
+import com.vascome.fogtail.di.appmodules.ApplicationModule;
 import com.vascome.fogtail.developer_settings.DeveloperSettingsComponent;
 import com.vascome.fogtail.developer_settings.DeveloperSettingsModel;
-import com.vascome.fogtail.developer_settings.DeveloperSettingsModule;
+import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
 import com.vascome.fogtail.developer_settings.LeakCanaryProxy;
 import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.AppImageLoader;
-import com.vascome.fogtail.models.ModelsModule;
-import com.vascome.fogtail.network.NetworkModule;
-import com.vascome.fogtail.network.OkHttpInterceptorsModule;
+import com.vascome.fogtail.di.appmodules.ModelsModule;
+import com.vascome.fogtail.di.appmodules.NetworkModule;
+import com.vascome.fogtail.di.appmodules.OkHttpInterceptorsModule;
 import com.vascome.fogtail.ui.base.other.ViewModifier;
 import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
 
@@ -25,8 +25,8 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-import static com.vascome.fogtail.appmodules.ApplicationModule.MAIN_THREAD_HANDLER;
-import static com.vascome.fogtail.developer_settings.DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER;
+import static com.vascome.fogtail.di.appmodules.ApplicationModule.MAIN_THREAD_HANDLER;
+import static com.vascome.fogtail.di.appmodules.DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER;
 
 /**
  * Created by vasilypopov on 11/22/17

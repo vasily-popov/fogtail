@@ -12,10 +12,11 @@ import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.DetailItemFragmentBinding;
+import com.vascome.fogtail.di.ui.detail.CollectionDetailComponent;
+import com.vascome.fogtail.di.ui.detail.DaggerCollectionDetailComponent;
+import com.vascome.fogtail.di.ui.detail.DaggerDetailFragmentComponent;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
-import com.vascome.fogtail.ui.detail.di.DaggerCollectionDetailComponent;
-import com.vascome.fogtail.ui.di.CollectionComponent;
 
 import javax.inject.Inject;
 
@@ -35,23 +36,20 @@ public class RecAreaDetailFragment extends BaseFragment {
     AppImageLoader imageLoader;
 
 
-    public static RecAreaDetailFragment newInstance(RecAreaItem item) {
-        RecAreaDetailFragment fragment = new RecAreaDetailFragment();
+    public void sendAreaItem(RecAreaItem item) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("item", item);
-        fragment.setArguments(bundle);
-        return fragment;
+        this.setArguments(bundle);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CollectionComponent collectionComponent = FogtailApplication
-                .get(getActivity().getApplicationContext())
-                .collectionComponent();
-        DaggerCollectionDetailComponent.builder()
-                .collectionComponent(collectionComponent).build()
+        CollectionDetailComponent component = prepareComponent().build();
+        DaggerDetailFragmentComponent.builder()
+                .collectionDetailComponent(component).build()
                 .inject(this);
+
     }
 
     @Nullable
@@ -86,4 +84,11 @@ public class RecAreaDetailFragment extends BaseFragment {
         binding.unbind();
         super.onDestroyView();
     }
+
+    @NonNull
+    protected DaggerCollectionDetailComponent.Builder prepareComponent() {
+        return DaggerCollectionDetailComponent.builder()
+                .appComponent(FogtailApplication.get(getActivity().getApplicationContext()).appComponent());
+    }
+
 }

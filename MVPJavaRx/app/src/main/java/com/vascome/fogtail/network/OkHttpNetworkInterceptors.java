@@ -15,5 +15,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 @Qualifier
 @Retention(RUNTIME)
-@interface OkHttpNetworkInterceptors {
+public @interface OkHttpNetworkInterceptors {
 }

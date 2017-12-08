@@ -3,6 +3,7 @@ package com.vascome.fogtail.ui.detail;
 import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -11,9 +12,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.ActivityDetailBinding;
+import com.vascome.fogtail.di.ui.detail.CollectionDetailComponent;
+import com.vascome.fogtail.di.ui.detail.DaggerCollectionDetailComponent;
 import com.vascome.fogtail.ui.base.utils.ActivityUtils;
 import com.vascome.fogtail.ui.base.views.BaseActivity;
 
@@ -31,6 +35,9 @@ public class RecAreaItemDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CollectionDetailComponent component = prepareDetailComponent().build();
+        component.inject(this);
 
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
@@ -78,8 +85,10 @@ public class RecAreaItemDetailActivity extends BaseActivity {
                 .findFragmentById(R.id.card_frame_layout));
         if (detailFragment == null) {
 
+            detailFragment = new RecAreaDetailFragment();
+            detailFragment.sendAreaItem(item);
             ActivityUtils.replaceFragmentToActivity(
-                    getSupportFragmentManager(), RecAreaDetailFragment.newInstance(item), R.id.card_frame_layout);
+                    getSupportFragmentManager(), detailFragment, R.id.card_frame_layout);
         }
 
     }
@@ -88,6 +97,12 @@ public class RecAreaItemDetailActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
+    }
+
+    @NonNull
+    protected DaggerCollectionDetailComponent.Builder prepareDetailComponent() {
+        return DaggerCollectionDetailComponent.builder()
+                .appComponent(FogtailApplication.get(this).appComponent());
     }
 
 }

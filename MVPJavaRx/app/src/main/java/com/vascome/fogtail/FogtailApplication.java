@@ -4,13 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.appmodules.ApplicationModule;
+import com.vascome.fogtail.di.appmodules.ApplicationModule;
 import com.vascome.fogtail.developer_settings.DeveloperSettingsModel;
 import com.vascome.fogtail.di.AppComponent;
 import com.vascome.fogtail.di.DaggerAppComponent;
+import com.vascome.fogtail.di.ui.main.DaggerCollectionComponent;
 import com.vascome.fogtail.models.AnalyticsModel;
-import com.vascome.fogtail.ui.di.CollectionComponent;
-import com.vascome.fogtail.ui.di.DaggerCollectionComponent;
+import com.vascome.fogtail.di.ui.main.CollectionComponent;
 
 import timber.log.Timber;
 

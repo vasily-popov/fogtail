@@ -15,16 +15,16 @@ import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 import com.vascome.fogtail.ui.base.other.ViewModifier;
 import com.vascome.fogtail.ui.base.utils.ActivityUtils;
 import com.vascome.fogtail.ui.base.views.BaseActivity;
-import com.vascome.fogtail.ui.carousel.CarouselAppFragment;
-import com.vascome.fogtail.ui.gallery.GalleryAppFragment;
-import com.vascome.fogtail.ui.list.ListAppFragment;
-import com.vascome.fogtail.ui.stack.StackAppFragment;
-import com.vascome.fogtail.ui.table.GridAppFragment;
+import com.vascome.fogtail.ui.main.carousel.CarouselAppFragment;
+import com.vascome.fogtail.ui.main.gallery.GalleryAppFragment;
+import com.vascome.fogtail.ui.main.list.ListAppFragment;
+import com.vascome.fogtail.ui.main.stack.StackAppFragment;
+import com.vascome.fogtail.ui.main.table.GridAppFragment;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import static com.vascome.fogtail.developer_settings.DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER;
+import static com.vascome.fogtail.di.appmodules.DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
