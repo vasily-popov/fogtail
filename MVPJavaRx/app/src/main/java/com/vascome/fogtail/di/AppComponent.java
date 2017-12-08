@@ -63,32 +63,17 @@ public interface AppComponent {
     @NonNull
     AnalyticsModel analyticsModel();
 
-    @NonNull
-    Context context();
-
-    @NonNull
-    AppImageLoader imageLoader();
-
-    @Named(MAIN_ACTIVITY_VIEW_MODIFIER)
-    ViewModifier viewModifier();
-
-    @Named(MAIN_THREAD_HANDLER)
-    Handler mainThreadHandler();
-
-    @NonNull
-    SchedulerProvider schedulerProvider();
-
     DeveloperSettingsModel developerSettingModel();
 
     //submodules
 
     @NonNull
-    DeveloperSettingsComponent developerSettingsComponent();
+    DeveloperSettingsComponent.Builder developerSettingsComponent();
 
     @NonNull
-    CollectionComponent collectionComponent();
+    CollectionComponent.Builder collectionComponent();
 
     @NonNull
-    CollectionDetailComponent collectionDetailComponent();
+    CollectionDetailComponent.Builder collectionDetailComponent();
 
 }

@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        collectionComponent = FogtailApplication.get(this).appComponent().collectionComponent();
+        collectionComponent = FogtailApplication.get(this).appComponent().collectionComponent().build();
         collectionComponent.inject(this);
         
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);

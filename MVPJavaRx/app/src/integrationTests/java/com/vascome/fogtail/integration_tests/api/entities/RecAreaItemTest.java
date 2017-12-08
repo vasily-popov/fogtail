@@ -19,7 +19,7 @@ public class RecAreaItemTest {
     // 2. Be sure that @JsonIgnore and similar annotations do not affect expected behavior (cc @karlicos).
     @Test
     public void fromJson() throws IOException {
-        Gson gson = FogtailIntegrationRobolectricTestRunner.fogtailApplication().applicationComponent().gson();
+        Gson gson = FogtailIntegrationRobolectricTestRunner.fogtailApplication().appComponent().gson();
 
         RecAreaItem item = gson.fromJson("{ " +
                         "\"id\": \"test_id\", " +

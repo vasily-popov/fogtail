@@ -36,6 +36,14 @@ public interface CollectionComponent {
     @NonNull
     CarouselFragmentComponent carouselComponent();
 
+
+    @Subcomponent.Builder
+    interface Builder {
+        CollectionComponent.Builder collectionModule(CollectionModule firstModule);
+        CollectionComponent build();
+    }
+
+
     void inject(@NonNull MainActivity mainActivity);
 }
 

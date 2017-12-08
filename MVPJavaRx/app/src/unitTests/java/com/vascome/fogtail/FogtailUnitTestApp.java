@@ -3,6 +3,7 @@ package com.vascome.fogtail;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.vascome.fogtail.di.DaggerAppComponent;
 import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
 import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.di.appmodules.ModelsModule;
@@ -13,7 +14,7 @@ public class FogtailUnitTestApp extends FogtailApplication {
 
     @NonNull
     @Override
-    protected DaggerApplicationComponent.Builder prepareApplicationComponent() {
+    protected DaggerAppComponent.Builder prepareApplicationComponent() {
         return super.prepareApplicationComponent()
                 .modelsModule(new ModelsModule() {
                     @NonNull

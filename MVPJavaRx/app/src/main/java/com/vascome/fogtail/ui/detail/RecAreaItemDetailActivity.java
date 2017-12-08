@@ -34,7 +34,7 @@ public class RecAreaItemDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        component = FogtailApplication.get(this).appComponent().collectionDetailComponent();
+        component = FogtailApplication.get(this).appComponent().collectionDetailComponent().build();
         component.inject(this);
 
         Bundle extra = getIntent().getExtras();

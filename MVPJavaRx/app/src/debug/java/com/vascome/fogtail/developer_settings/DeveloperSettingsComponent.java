@@ -13,5 +13,11 @@ import dagger.Subcomponent;
 
 @Subcomponent
 public interface DeveloperSettingsComponent {
+
+    @Subcomponent.Builder
+    interface Builder {
+        DeveloperSettingsComponent build();
+    }
+
     void inject(@NonNull DeveloperSettingsFragment developerSettingsFragment);
 }

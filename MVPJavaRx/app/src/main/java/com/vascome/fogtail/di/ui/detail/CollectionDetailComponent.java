@@ -20,5 +20,10 @@ public interface CollectionDetailComponent {
     @NonNull
     DetailFragmentComponent detailComponent();
 
+    @Subcomponent.Builder
+    interface Builder {
+        CollectionDetailComponent build();
+    }
+
     void inject(@NonNull RecAreaItemDetailActivity activity);
 }
