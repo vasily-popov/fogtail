@@ -3,8 +3,8 @@ package com.vascome.fogtail.utils.schedulers;
 import android.support.annotation.NonNull;
 
 import io.reactivex.Scheduler;
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by vasilypopov on 12/6/17

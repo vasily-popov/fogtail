@@ -123,7 +123,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation libraries.dagger.runtime
+    implementation libraries.dagger.android
+    implementation libraries.dagger.support
     annotationProcessor libraries.dagger.compiler
+    annotationProcessor libraries.dagger.processor
 
     implementation libraries.picasso.core
     implementation libraries.picasso.downloader

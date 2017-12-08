@@ -15,25 +15,20 @@ import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.RecyclerRefreshableViewFragmentBinding;
-import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.AppImageLoader;
-import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 import com.vascome.fogtail.ui.collectionbase.CollectionAreaItemListener;
 import com.vascome.fogtail.ui.collectionbase.CollectionPresenter;
 import com.vascome.fogtail.ui.collectionbase.ICollectionView;
 import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
+import com.vascome.fogtail.ui.di.CollectionComponent;
 import com.vascome.fogtail.ui.gallery.adapter.GalleryAreaAdapter;
 import com.vascome.fogtail.ui.table.decorator.BoxSpaceItemDecoration;
-import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.Module;
-import dagger.Provides;
-import dagger.Subcomponent;
 
 
 /**
@@ -43,22 +38,28 @@ import dagger.Subcomponent;
 
 public class CarouselAppFragment extends BaseFragment implements ICollectionView, CollectionAreaItemListener {
 
-    Context appContext;
+    RecyclerRefreshableViewFragmentBinding binding;
     GalleryAreaAdapter galleryAreaAdapter;
+
+    @Inject
+    Context context;
 
     @Inject
     CollectionPresenter presenter;
 
     @Inject
-    AppImageLoader networkBitmapClient;
-
-    RecyclerRefreshableViewFragmentBinding binding;
+    AppImageLoader imageLoader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appContext = getActivity().getApplicationContext();
-        FogtailApplication.get(appContext).applicationComponent().plus(new CarouselFragmentModule()).inject(this);
+
+        CollectionComponent collectionComponent = FogtailApplication
+                .get(getActivity().getApplicationContext())
+                .collectionComponent();
+        DaggerCarouselFragmentComponent.builder()
+                .collectionComponent(collectionComponent).build()
+                .inject(this);
     }
 
     @Nullable
@@ -116,9 +117,9 @@ public class CarouselAppFragment extends BaseFragment implements ICollectionView
     private void initRecyclerView() {
 
         binding.recyclerView.addItemDecoration(new BoxSpaceItemDecoration((int) getResources().getDimension(R.dimen.list_item_vertical_space_between_items)));
-        CarouselLayoutManager llm = new CarouselLayoutManager(appContext, LinearLayoutManager.HORIZONTAL, false);
+        CarouselLayoutManager llm = new CarouselLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerView.setLayoutManager(llm);
-        galleryAreaAdapter = new GalleryAreaAdapter(getActivity().getLayoutInflater(), networkBitmapClient, this);
+        galleryAreaAdapter = new GalleryAreaAdapter(getActivity().getLayoutInflater(), imageLoader, this);
         binding.recyclerView.setAdapter(galleryAreaAdapter);
         binding.recyclerViewSwipeRefresh.setOnRefreshListener(()->presenter.reloadData());
 
@@ -134,26 +135,8 @@ public class CarouselAppFragment extends BaseFragment implements ICollectionView
 
     @Override
     public void onItemClick(RecAreaItem clickedItem) {
-        Intent intent = new Intent(appContext, RecAreaItemDetailActivity.class);
+        Intent intent = new Intent(context, RecAreaItemDetailActivity.class);
         intent.putExtra("item", clickedItem);
         startActivity(intent);
     }
-
-    @Subcomponent(modules = CarouselFragmentModule.class)
-    public interface CarouselFragmentComponent {
-        void inject(@NonNull CarouselAppFragment itemsFragment);
-    }
-
-    @Module
-    public class CarouselFragmentModule {
-
-        @Provides
-        @NonNull
-        public CollectionPresenter provideItemsPresenter(@NonNull RecAreaItemsModel itemsModel,
-                                                         @NonNull AnalyticsModel analyticsModel,
-                                                         @NonNull SchedulerProvider schedulerProvider) {
-            return new CollectionPresenter(itemsModel, analyticsModel,schedulerProvider);
-        }
-    }
-
 }

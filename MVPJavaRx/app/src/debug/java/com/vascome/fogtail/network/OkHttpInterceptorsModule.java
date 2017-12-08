@@ -2,6 +2,8 @@ package com.vascome.fogtail.network;
 
 import android.support.annotation.NonNull;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -43,7 +45,6 @@ public class OkHttpInterceptorsModule {
     @Singleton
     @NonNull
     public List<Interceptor> provideOkHttpNetworkInterceptors() {
-        return emptyList();
-        //return singletonList(new StethoInterceptor());
+        return singletonList(new StethoInterceptor());
     }
 }

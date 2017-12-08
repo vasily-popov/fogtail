@@ -1,0 +1,53 @@
+package com.vascome.fogtail.ui.di;
+
+import android.content.Context;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+
+import com.vascome.fogtail.di.ActivityScope;
+import com.vascome.fogtail.di.AppComponent;
+import com.vascome.fogtail.models.AnalyticsModel;
+import com.vascome.fogtail.models.AppImageLoader;
+import com.vascome.fogtail.models.RecAreaItemsModel;
+import com.vascome.fogtail.ui.collectionbase.CollectionPresenter;
+import com.vascome.fogtail.ui.main.MainActivity;
+import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import dagger.Component;
+
+import static com.vascome.fogtail.appmodules.ApplicationModule.MAIN_THREAD_HANDLER;
+
+/**
+ * Created by vasilypopov on 12/8/17
+ * Copyright (c) 2017 MVPJavaRx. All rights reserved.
+ */
+
+@Component(dependencies = AppComponent.class,
+        modules = {
+                CollectionModule.class,
+})
+@ActivityScope
+public interface CollectionComponent {
+
+    @NonNull
+    Context context();
+    @NonNull
+    AnalyticsModel analyticsModel();
+    @NonNull
+    SchedulerProvider schedulerProvider();
+    @Named(MAIN_THREAD_HANDLER)
+    Handler mainThreadHandler();
+
+    @NonNull
+    AppImageLoader imageLoader();
+
+    @NonNull
+    RecAreaItemsModel itemModel();
+
+
+    void inject(@NonNull MainActivity mainActivity);
+}
+

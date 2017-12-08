@@ -26,11 +26,6 @@ public class ModelsModule {
         return new GoogleFirebaseAppAnalytics(app);
     }
 
-    @Provides @NonNull
-    public RecAreaItemsModel provideItemsModel(@NonNull FogtailRestApi fogtailRestApi) {
-        return new RecAreaItemsModel(fogtailRestApi);
-    }
-
     static class GoogleFirebaseAppAnalytics implements AnalyticsModel {
 
         @NonNull

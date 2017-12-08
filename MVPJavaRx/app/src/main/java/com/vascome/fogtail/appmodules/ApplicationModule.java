@@ -1,6 +1,7 @@
 package com.vascome.fogtail.appmodules;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.android.AndroidInjectionModule;
 import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
@@ -27,8 +29,9 @@ import timber.log.Timber;
  * Created by vasilypopov on 11/22/17
  * Copyright (c) 2017 fogtail. All rights reserved.
  */
-@Module
+@Module(includes = {AndroidInjectionModule.class})
 public class ApplicationModule {
+
     public static final String MAIN_THREAD_HANDLER = "main_thread_handler";
 
     @NonNull
@@ -39,30 +42,40 @@ public class ApplicationModule {
     }
 
     @Provides
-    @NonNull @Singleton
+    @NonNull
+    @Singleton
     public Application provideFogtailApp() {
         return application;
     }
 
 
-    @Provides @NonNull @Singleton
+    @Provides
+    @NonNull
+    @Singleton
     public TypeAdapterFactory provideTypeAdapterFactory() {
         return EntityTypeAdapterFactory.create();
     }
 
-    @Provides @NonNull @Singleton
+    @Provides
+    @NonNull
+    @Singleton
     public Gson provideGson(TypeAdapterFactory typeAdapterFactory) {
         return new GsonBuilder()
                 .registerTypeAdapterFactory(typeAdapterFactory)
                 .create();
     }
 
-    @Provides @NonNull @Named(MAIN_THREAD_HANDLER) @Singleton
+    @Provides
+    @NonNull
+    @Named(MAIN_THREAD_HANDLER)
+    @Singleton
     public Handler provideMainThreadHandler() {
         return new Handler(Looper.getMainLooper());
     }
 
-    @Provides @NonNull @Singleton
+    @Provides
+    @NonNull
+    @Singleton
     public Picasso providePicasso(@NonNull Application application, @NonNull OkHttpClient okHttpClient) {
         return new Picasso.Builder(application)
                 .downloader(new OkHttp3Downloader(okHttpClient))
@@ -70,7 +83,9 @@ public class ApplicationModule {
                 .build();
     }
 
-    @Provides @NonNull @Singleton
+    @Provides
+    @NonNull
+    @Singleton
     public AppImageLoader provideImageLoader(@NonNull Picasso picasso) {
         return new PicassoImageLoader(picasso);
     }
@@ -80,6 +95,14 @@ public class ApplicationModule {
     @Singleton
     public SchedulerProvider provideScheduler() {
         return new SchedulerProviderImpl();
+    }
+
+
+    @Provides
+    @NonNull
+    @Singleton
+    public Context provideContext() {
+        return application.getApplicationContext();
     }
 
 }

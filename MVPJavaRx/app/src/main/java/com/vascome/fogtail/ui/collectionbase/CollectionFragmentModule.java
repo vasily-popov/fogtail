@@ -1,0 +1,30 @@
+package com.vascome.fogtail.ui.collectionbase;
+
+import android.support.annotation.NonNull;
+
+import com.vascome.fogtail.di.FragmentScope;
+import com.vascome.fogtail.models.AnalyticsModel;
+import com.vascome.fogtail.models.RecAreaItemsModel;
+import com.vascome.fogtail.ui.collectionbase.CollectionPresenter;
+import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
+
+import dagger.Module;
+import dagger.Provides;
+
+/**
+ * Created by vasilypopov on 12/8/17
+ * Copyright (c) 2017 MVPJavaRx. All rights reserved.
+ */
+
+@Module
+public class CollectionFragmentModule {
+
+    @Provides
+    @NonNull
+    @FragmentScope
+    public CollectionPresenter provideItemsPresenter(@NonNull RecAreaItemsModel itemsModel,
+                                                     @NonNull AnalyticsModel analyticsModel,
+                                                     @NonNull SchedulerProvider schedulerProvider) {
+        return new CollectionPresenter(itemsModel, analyticsModel,schedulerProvider);
+    }
+}

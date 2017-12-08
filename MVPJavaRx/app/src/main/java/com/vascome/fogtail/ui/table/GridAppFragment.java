@@ -15,25 +15,21 @@ import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.RecyclerRefreshableViewFragmentBinding;
-import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.AppImageLoader;
-import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 import com.vascome.fogtail.ui.collectionbase.CollectionAreaItemListener;
 import com.vascome.fogtail.ui.collectionbase.CollectionPresenter;
 import com.vascome.fogtail.ui.collectionbase.ICollectionView;
 import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
+import com.vascome.fogtail.ui.di.CollectionComponent;
+import com.vascome.fogtail.ui.list.DaggerListFragmentComponent;
 import com.vascome.fogtail.ui.list.adapter.ListAreaAdapter;
 import com.vascome.fogtail.ui.table.decorator.BoxSpaceItemDecoration;
-import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.Module;
-import dagger.Provides;
-import dagger.Subcomponent;
 
 /**
  * Created by vasilypopov on 12/6/17
@@ -42,22 +38,29 @@ import dagger.Subcomponent;
 
 public class GridAppFragment extends BaseFragment implements ICollectionView, CollectionAreaItemListener {
 
-    Context appContext;
+    RecyclerRefreshableViewFragmentBinding binding;
     ListAreaAdapter listAreaAdapter;
 
+    @Inject
+    Context context;
     @Inject
     CollectionPresenter presenter;
 
     @Inject
-    AppImageLoader networkBitmapClient;
+    AppImageLoader imageLoader;
 
-    RecyclerRefreshableViewFragmentBinding binding;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appContext = getActivity().getApplicationContext();
-        FogtailApplication.get(appContext).applicationComponent().plus(new GridFragmentModule()).inject(this);
+
+        CollectionComponent collectionComponent = FogtailApplication
+                .get(getActivity().getApplicationContext())
+                .collectionComponent();
+        DaggerGridFragmentComponent.builder()
+                .collectionComponent(collectionComponent).build()
+                .inject(this);
     }
 
     @Nullable
@@ -114,9 +117,9 @@ public class GridAppFragment extends BaseFragment implements ICollectionView, Co
     private void initRecyclerView() {
 
         binding.recyclerView.addItemDecoration(new BoxSpaceItemDecoration((int) getResources().getDimension(R.dimen.list_item_vertical_space_between_items)));
-        GridLayoutManager glm = new GridLayoutManager(appContext, 2);
+        GridLayoutManager glm = new GridLayoutManager(context, 2);
         binding.recyclerView.setLayoutManager(glm);
-        listAreaAdapter = new ListAreaAdapter(getActivity().getLayoutInflater(), networkBitmapClient, this);
+        listAreaAdapter = new ListAreaAdapter(getActivity().getLayoutInflater(), imageLoader, this);
         binding.recyclerView.setAdapter(listAreaAdapter);
         binding.recyclerViewSwipeRefresh.setOnRefreshListener(()->presenter.reloadData());
 
@@ -132,25 +135,8 @@ public class GridAppFragment extends BaseFragment implements ICollectionView, Co
 
     @Override
     public void onItemClick(RecAreaItem clickedItem) {
-        Intent intent = new Intent(appContext, RecAreaItemDetailActivity.class);
+        Intent intent = new Intent(context, RecAreaItemDetailActivity.class);
         intent.putExtra("item", clickedItem);
         startActivity(intent);
-    }
-
-    @Subcomponent(modules = GridFragmentModule.class)
-    public interface GridFragmentComponent {
-        void inject(@NonNull GridAppFragment itemsFragment);
-    }
-
-    @Module
-    public class GridFragmentModule {
-
-        @Provides
-        @NonNull
-        public CollectionPresenter provideItemsPresenter(@NonNull RecAreaItemsModel itemsModel,
-                                                         @NonNull AnalyticsModel analyticsModel,
-                                                         @NonNull SchedulerProvider schedulerProvider) {
-            return new CollectionPresenter(itemsModel, analyticsModel,schedulerProvider);
-        }
     }
 }

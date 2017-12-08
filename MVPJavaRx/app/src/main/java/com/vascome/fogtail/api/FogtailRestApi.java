@@ -7,7 +7,6 @@ import com.vascome.fogtail.api.entities.RecAreaItem;
 import java.util.List;
 
 import io.reactivex.Single;
-import retrofit2.Call;
 import retrofit2.http.GET;
 
 /**

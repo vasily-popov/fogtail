@@ -7,9 +7,7 @@ import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.presenters.BasePresenter;
 import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by vasilypopov on 12/6/17

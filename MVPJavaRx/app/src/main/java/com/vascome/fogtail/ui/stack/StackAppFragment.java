@@ -14,24 +14,18 @@ import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.StackViewFragmentBinding;
-import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.models.AppImageLoader;
-import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 import com.vascome.fogtail.ui.collectionbase.CollectionAreaItemListener;
 import com.vascome.fogtail.ui.collectionbase.CollectionPresenter;
 import com.vascome.fogtail.ui.collectionbase.ICollectionView;
 import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
+import com.vascome.fogtail.ui.di.CollectionComponent;
 import com.vascome.fogtail.ui.stack.adapter.SwipeStackAdapter;
-import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
 
 import java.util.List;
 
 import javax.inject.Inject;
-
-import dagger.Module;
-import dagger.Provides;
-import dagger.Subcomponent;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -43,22 +37,31 @@ import static android.view.View.VISIBLE;
 
 public class StackAppFragment extends BaseFragment implements ICollectionView, CollectionAreaItemListener {
 
-    Context appContext;
     SwipeStackAdapter swipeStackAdapter;
+    StackViewFragmentBinding binding;
+
+    @Inject
+    Context context;
 
     @Inject
     CollectionPresenter presenter;
 
     @Inject
-    AppImageLoader networkBitmapClient;
+    AppImageLoader imageLoader;
 
-    StackViewFragmentBinding binding;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appContext = getActivity().getApplicationContext();
-        FogtailApplication.get(appContext).applicationComponent().plus(new StackFragmentModule()).inject(this);
+
+        CollectionComponent collectionComponent = FogtailApplication
+                .get(getActivity().getApplicationContext())
+                .collectionComponent();
+        DaggerStackFragmentComponent.builder()
+                .collectionComponent(collectionComponent).build()
+                .inject(this);
+
     }
 
     @Nullable
@@ -112,7 +115,7 @@ public class StackAppFragment extends BaseFragment implements ICollectionView, C
 
     private void initRecyclerView() {
 
-        swipeStackAdapter = new SwipeStackAdapter(getActivity().getLayoutInflater(), networkBitmapClient, this);
+        swipeStackAdapter = new SwipeStackAdapter(getActivity().getLayoutInflater(), imageLoader, this);
         binding.swipeStack.setAdapter(swipeStackAdapter);
 
         presenter.bindView(this);
@@ -127,26 +130,8 @@ public class StackAppFragment extends BaseFragment implements ICollectionView, C
 
     @Override
     public void onItemClick(RecAreaItem clickedItem) {
-        Intent intent = new Intent(appContext, RecAreaItemDetailActivity.class);
+        Intent intent = new Intent(context, RecAreaItemDetailActivity.class);
         intent.putExtra("item", clickedItem);
         startActivity(intent);
     }
-
-    @Subcomponent(modules = StackFragmentModule.class)
-    public interface StackFragmentComponent {
-        void inject(@NonNull StackAppFragment itemsFragment);
-    }
-
-    @Module
-    public class StackFragmentModule {
-
-        @Provides
-        @NonNull
-        public CollectionPresenter provideItemsPresenter(@NonNull RecAreaItemsModel itemsModel,
-                                                         @NonNull AnalyticsModel analyticsModel,
-                                                         @NonNull SchedulerProvider schedulerProvider) {
-            return new CollectionPresenter(itemsModel, analyticsModel,schedulerProvider);
-        }
-    }
-
 }

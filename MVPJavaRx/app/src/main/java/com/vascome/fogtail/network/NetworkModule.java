@@ -3,9 +3,6 @@ package com.vascome.fogtail.network;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
-
 import java.io.File;
 import java.util.List;
 
@@ -16,7 +13,6 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import timber.log.Timber;
 
 /**
  * Created by vasilypopov on 11/22/17
