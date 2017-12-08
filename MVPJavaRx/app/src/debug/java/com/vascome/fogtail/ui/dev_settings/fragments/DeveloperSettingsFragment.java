@@ -47,7 +47,7 @@ public class DeveloperSettingsFragment extends BaseFragment implements Developer
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FogtailApplication.get(getContext()).appComponent().plusDeveloperSettingsComponent().inject(this);
+        FogtailApplication.get(getContext()).appComponent().developerSettingsComponent().inject(this);
     }
 
     @NonNull

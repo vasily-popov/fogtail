@@ -4,13 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.di.appmodules.ApplicationModule;
 import com.vascome.fogtail.developer_settings.DeveloperSettingsModel;
 import com.vascome.fogtail.di.AppComponent;
 import com.vascome.fogtail.di.DaggerAppComponent;
-import com.vascome.fogtail.di.ui.main.DaggerCollectionComponent;
+import com.vascome.fogtail.di.appmodules.ApplicationModule;
 import com.vascome.fogtail.models.AnalyticsModel;
-import com.vascome.fogtail.di.ui.main.CollectionComponent;
 
 import timber.log.Timber;
 
@@ -21,7 +19,6 @@ import timber.log.Timber;
 
 public class FogtailApplication extends Application {
     private AppComponent appComponent;
-    private CollectionComponent collectionComponent;
 
     // Prevent need in a singleton (global) reference to the application object.
     @NonNull
@@ -33,7 +30,6 @@ public class FogtailApplication extends Application {
     public void onCreate() {
         super.onCreate();
         appComponent = prepareApplicationComponent().build();
-        collectionComponent = prepareCollectionComponent().build();
 
         AnalyticsModel analyticsModel = appComponent.analyticsModel();
 
@@ -54,14 +50,7 @@ public class FogtailApplication extends Application {
     }
 
     @NonNull
-    protected DaggerCollectionComponent.Builder prepareCollectionComponent() {
-        return DaggerCollectionComponent.builder()
-                .appComponent(appComponent);
-    }
-
-    @NonNull
     public AppComponent appComponent() {
         return appComponent;
     }
-    public CollectionComponent collectionComponent() {return collectionComponent;}
 }

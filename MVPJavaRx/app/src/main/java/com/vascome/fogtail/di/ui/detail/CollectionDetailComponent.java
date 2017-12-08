@@ -1,19 +1,11 @@
 package com.vascome.fogtail.di.ui.detail;
 
-import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.di.ActivityScope;
-import com.vascome.fogtail.di.AppComponent;
-import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
 
-import javax.inject.Named;
-
-import dagger.Component;
-
-import static com.vascome.fogtail.di.appmodules.ApplicationModule.MAIN_THREAD_HANDLER;
+import dagger.Subcomponent;
 
 /**
  * Created by vasilypopov on 12/8/17
@@ -21,19 +13,12 @@ import static com.vascome.fogtail.di.appmodules.ApplicationModule.MAIN_THREAD_HA
  */
 
 
-@Component(dependencies = AppComponent.class)
+@Subcomponent
 @ActivityScope
 public interface CollectionDetailComponent {
 
     @NonNull
-    Context context();
-
-    @Named(MAIN_THREAD_HANDLER)
-    Handler mainThreadHandler();
-
-    @NonNull
-    AppImageLoader imageLoader();
-
+    DetailFragmentComponent detailComponent();
 
     void inject(@NonNull RecAreaItemDetailActivity activity);
 }

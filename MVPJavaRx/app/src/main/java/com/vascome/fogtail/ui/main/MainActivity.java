@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.databinding.ActivityMainBinding;
+import com.vascome.fogtail.di.ui.main.CollectionComponent;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 import com.vascome.fogtail.ui.base.other.ViewModifier;
 import com.vascome.fogtail.ui.base.utils.ActivityUtils;
@@ -33,12 +34,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     ViewModifier viewModifier;
 
     private ActivityMainBinding binding;
+    private CollectionComponent collectionComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        FogtailApplication.get(this).collectionComponent().inject(this);
+        collectionComponent = FogtailApplication.get(this).appComponent().collectionComponent();
+        collectionComponent.inject(this);
         
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setContentView(viewModifier.modify(binding.getRoot()));
@@ -112,6 +114,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @NonNull
+    public CollectionComponent collectionComponent() {
+        return collectionComponent;
     }
 
 }

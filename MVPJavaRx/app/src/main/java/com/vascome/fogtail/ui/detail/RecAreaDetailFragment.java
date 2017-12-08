@@ -8,13 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.DetailItemFragmentBinding;
-import com.vascome.fogtail.di.ui.detail.CollectionDetailComponent;
-import com.vascome.fogtail.di.ui.detail.DaggerCollectionDetailComponent;
-import com.vascome.fogtail.di.ui.detail.DaggerDetailFragmentComponent;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 
@@ -45,11 +41,9 @@ public class RecAreaDetailFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CollectionDetailComponent component = prepareComponent().build();
-        DaggerDetailFragmentComponent.builder()
-                .collectionDetailComponent(component).build()
-                .inject(this);
-
+        setRetainInstance(true);
+        RecAreaItemDetailActivity activity = (RecAreaItemDetailActivity) getActivity();
+        activity.collectionDetailComponent().detailComponent().inject(this);
     }
 
     @Nullable
@@ -84,11 +78,4 @@ public class RecAreaDetailFragment extends BaseFragment {
         binding.unbind();
         super.onDestroyView();
     }
-
-    @NonNull
-    protected DaggerCollectionDetailComponent.Builder prepareComponent() {
-        return DaggerCollectionDetailComponent.builder()
-                .appComponent(FogtailApplication.get(getActivity().getApplicationContext()).appComponent());
-    }
-
 }

@@ -14,7 +14,7 @@ import dagger.Provides;
  * Copyright (c) 2017 MVPJavaRx. All rights reserved.
  */
 @Module
-class CollectionModule {
+public class CollectionModule {
 
     @Provides
     @NonNull

@@ -1,50 +1,40 @@
 package com.vascome.fogtail.di.ui.main;
 
-import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.di.ActivityScope;
-import com.vascome.fogtail.di.AppComponent;
-import com.vascome.fogtail.models.AnalyticsModel;
-import com.vascome.fogtail.models.AppImageLoader;
-import com.vascome.fogtail.models.RecAreaItemsModel;
+import com.vascome.fogtail.di.ui.main.carousel.CarouselFragmentComponent;
+import com.vascome.fogtail.di.ui.main.gallery.GalleryFragmentComponent;
+import com.vascome.fogtail.di.ui.main.list.ListFragmentComponent;
+import com.vascome.fogtail.di.ui.main.stack.StackFragmentComponent;
+import com.vascome.fogtail.di.ui.main.table.GridFragmentComponent;
 import com.vascome.fogtail.ui.main.MainActivity;
-import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
 
-import javax.inject.Named;
-
-import dagger.Component;
-
-import static com.vascome.fogtail.di.appmodules.ApplicationModule.MAIN_THREAD_HANDLER;
+import dagger.Subcomponent;
 
 /**
  * Created by vasilypopov on 12/8/17
  * Copyright (c) 2017 MVPJavaRx. All rights reserved.
  */
 
-@Component(dependencies = AppComponent.class,
-        modules = {
-                CollectionModule.class,
-})
+@Subcomponent(modules = { CollectionModule.class})
 @ActivityScope
 public interface CollectionComponent {
 
     @NonNull
-    Context context();
-    @NonNull
-    AnalyticsModel analyticsModel();
-    @NonNull
-    SchedulerProvider schedulerProvider();
-    @Named(MAIN_THREAD_HANDLER)
-    Handler mainThreadHandler();
+    ListFragmentComponent listComponent();
 
     @NonNull
-    AppImageLoader imageLoader();
+    GridFragmentComponent gridComponent();
 
     @NonNull
-    RecAreaItemsModel itemModel();
+    StackFragmentComponent stackComponent();
 
+    @NonNull
+    GalleryFragmentComponent galleryComponent();
+
+    @NonNull
+    CarouselFragmentComponent carouselComponent();
 
     void inject(@NonNull MainActivity mainActivity);
 }

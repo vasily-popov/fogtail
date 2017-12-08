@@ -5,14 +5,14 @@ import android.support.annotation.NonNull;
 import com.vascome.fogtail.di.FragmentScope;
 import com.vascome.fogtail.ui.detail.RecAreaDetailFragment;
 
-import dagger.Component;
+import dagger.Subcomponent;
 
 /**
  * Created by vasilypopov on 12/8/17
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-@Component(dependencies = CollectionDetailComponent.class)
+@Subcomponent
 @FragmentScope
 public interface DetailFragmentComponent {
 

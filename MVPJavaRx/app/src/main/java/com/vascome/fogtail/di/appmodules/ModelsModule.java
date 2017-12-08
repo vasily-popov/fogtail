@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.vascome.fogtail.api.FogtailRestApi;
 import com.vascome.fogtail.models.AnalyticsModel;
 
 import javax.inject.Singleton;

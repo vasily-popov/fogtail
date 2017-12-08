@@ -11,18 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.RecyclerRefreshableViewFragmentBinding;
-import com.vascome.fogtail.di.ui.main.carousel.DaggerCarouselFragmentComponent;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
+import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
+import com.vascome.fogtail.ui.main.MainActivity;
 import com.vascome.fogtail.ui.main.collectionbase.CollectionAreaItemListener;
 import com.vascome.fogtail.ui.main.collectionbase.CollectionPresenter;
 import com.vascome.fogtail.ui.main.collectionbase.ICollectionView;
-import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
-import com.vascome.fogtail.di.ui.main.CollectionComponent;
 import com.vascome.fogtail.ui.main.gallery.adapter.GalleryAreaAdapter;
 import com.vascome.fogtail.ui.main.table.decorator.BoxSpaceItemDecoration;
 
@@ -54,13 +52,10 @@ public class CarouselAppFragment extends BaseFragment implements ICollectionView
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
-        CollectionComponent collectionComponent = FogtailApplication
-                .get(getActivity().getApplicationContext())
-                .collectionComponent();
-        DaggerCarouselFragmentComponent.builder()
-                .collectionComponent(collectionComponent).build()
-                .inject(this);
+        MainActivity activity = (MainActivity) getActivity();
+        activity.collectionComponent().carouselComponent().inject(this);
     }
 
     @Nullable

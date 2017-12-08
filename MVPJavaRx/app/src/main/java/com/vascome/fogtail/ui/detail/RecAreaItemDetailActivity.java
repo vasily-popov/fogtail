@@ -3,7 +3,6 @@ package com.vascome.fogtail.ui.detail;
 import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -17,7 +16,6 @@ import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.ActivityDetailBinding;
 import com.vascome.fogtail.di.ui.detail.CollectionDetailComponent;
-import com.vascome.fogtail.di.ui.detail.DaggerCollectionDetailComponent;
 import com.vascome.fogtail.ui.base.utils.ActivityUtils;
 import com.vascome.fogtail.ui.base.views.BaseActivity;
 
@@ -30,13 +28,13 @@ public class RecAreaItemDetailActivity extends BaseActivity {
 
     private ActivityDetailBinding binding;
     private RecAreaItem item;
+    private CollectionDetailComponent component;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        CollectionDetailComponent component = prepareDetailComponent().build();
+        component = FogtailApplication.get(this).appComponent().collectionDetailComponent();
         component.inject(this);
 
         Bundle extra = getIntent().getExtras();
@@ -99,10 +97,7 @@ public class RecAreaItemDetailActivity extends BaseActivity {
 
     }
 
-    @NonNull
-    protected DaggerCollectionDetailComponent.Builder prepareDetailComponent() {
-        return DaggerCollectionDetailComponent.builder()
-                .appComponent(FogtailApplication.get(this).appComponent());
+    public CollectionDetailComponent collectionDetailComponent() {
+        return component;
     }
-
 }

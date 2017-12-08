@@ -5,18 +5,20 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
-import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.api.FogtailRestApi;
-import com.vascome.fogtail.di.appmodules.ApplicationModule;
 import com.vascome.fogtail.developer_settings.DeveloperSettingsComponent;
 import com.vascome.fogtail.developer_settings.DeveloperSettingsModel;
-import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
 import com.vascome.fogtail.developer_settings.LeakCanaryProxy;
-import com.vascome.fogtail.models.AnalyticsModel;
-import com.vascome.fogtail.models.AppImageLoader;
+import com.vascome.fogtail.di.appmodules.ApiModule;
+import com.vascome.fogtail.di.appmodules.ApplicationModule;
+import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
 import com.vascome.fogtail.di.appmodules.ModelsModule;
 import com.vascome.fogtail.di.appmodules.NetworkModule;
 import com.vascome.fogtail.di.appmodules.OkHttpInterceptorsModule;
+import com.vascome.fogtail.di.ui.detail.CollectionDetailComponent;
+import com.vascome.fogtail.di.ui.main.CollectionComponent;
+import com.vascome.fogtail.models.AnalyticsModel;
+import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.ui.base.other.ViewModifier;
 import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
 
@@ -59,9 +61,6 @@ public interface AppComponent {
     LeakCanaryProxy leakCanaryProxy();
 
     @NonNull
-    DeveloperSettingsComponent plusDeveloperSettingsComponent();
-
-    @NonNull
     AnalyticsModel analyticsModel();
 
     @NonNull
@@ -80,5 +79,16 @@ public interface AppComponent {
     SchedulerProvider schedulerProvider();
 
     DeveloperSettingsModel developerSettingModel();
+
+    //submodules
+
+    @NonNull
+    DeveloperSettingsComponent developerSettingsComponent();
+
+    @NonNull
+    CollectionComponent collectionComponent();
+
+    @NonNull
+    CollectionDetailComponent collectionDetailComponent();
 
 }
