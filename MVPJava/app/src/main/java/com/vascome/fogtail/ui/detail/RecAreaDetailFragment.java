@@ -13,13 +13,14 @@ import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.DetailItemFragmentBinding;
+import com.vascome.fogtail.di.ui.detail.CollectionDetailComponent;
+import com.vascome.fogtail.di.ui.detail.DaggerCollectionDetailComponent;
+import com.vascome.fogtail.di.ui.detail.DaggerDetailFragmentComponent;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 
 import javax.inject.Inject;
 
-import dagger.Module;
-import dagger.Subcomponent;
 
 /**
  * Created by vasilypopov on 12/6/17
@@ -28,28 +29,27 @@ import dagger.Subcomponent;
 
 public class RecAreaDetailFragment extends BaseFragment {
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private Context appContext;
+
     private DetailItemFragmentBinding binding;
     private RecAreaItem item;
 
     @Inject
-    AppImageLoader networkBitmapClient;
+    AppImageLoader imageLoader;
 
 
-    public static RecAreaDetailFragment newInstance(RecAreaItem item) {
-        RecAreaDetailFragment fragment = new RecAreaDetailFragment();
+    public void sendAreaItem(RecAreaItem item) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("item", item);
-        fragment.setArguments(bundle);
-        return fragment;
+        this.setArguments(bundle);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appContext = getActivity().getApplicationContext();
-        FogtailApplication.get(appContext).applicationComponent().plus(new DetailFragmentModule()).inject(this);
+        CollectionDetailComponent component = prepareComponent().build();
+        DaggerDetailFragmentComponent.builder()
+                .collectionDetailComponent(component).build()
+                .inject(this);
     }
 
     @Nullable
@@ -76,7 +76,7 @@ public class RecAreaDetailFragment extends BaseFragment {
 
         binding.listItemDescription.setText(item.shortDescription());
         binding.listItemTitle.setText(item.name());
-        networkBitmapClient.downloadInto(item.imageUrl(), binding.listItemImageView);
+        imageLoader.downloadInto(item.imageUrl(), binding.listItemImageView);
     }
 
     @Override
@@ -85,12 +85,9 @@ public class RecAreaDetailFragment extends BaseFragment {
         super.onDestroyView();
     }
 
-    @Subcomponent(modules = DetailFragmentModule.class)
-    public interface RecAreaDetailComponent {
-        void inject(@NonNull RecAreaDetailFragment itemsFragment);
-    }
-
-    @Module
-    public class DetailFragmentModule {
+    @NonNull
+    protected DaggerCollectionDetailComponent.Builder prepareComponent() {
+        return DaggerCollectionDetailComponent.builder()
+                .appComponent(FogtailApplication.get(getActivity().getApplicationContext()).appComponent());
     }
 }

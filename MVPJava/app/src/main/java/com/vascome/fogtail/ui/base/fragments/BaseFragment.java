@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.vascome.fogtail.FogtailApplication;
-import com.vascome.fogtail.appmodules.ApplicationModule;
+import com.vascome.fogtail.di.appmodules.ApplicationModule;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -40,7 +40,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        FogtailApplication.get(getContext()).applicationComponent().leakCanaryProxy().watch(this);
+        FogtailApplication.get(getContext()).appComponent().leakCanaryProxy().watch(this);
         super.onDestroy();
     }
 }

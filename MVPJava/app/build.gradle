@@ -48,7 +48,7 @@ android {
 
             // Enables code coverage with Jacoco only for instrumentation tests.
             // Coverage for JVM tests done by code_quality_tools/jacoco.gradle.
-            testCoverageEnabled true
+            testCoverageEnabled false //bug in android studio. When it's true local variables are not visible in debug
         }
 
         release {
@@ -121,7 +121,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation libraries.dagger.runtime
+    //implementation libraries.dagger.android
+    //implementation libraries.dagger.support
     annotationProcessor libraries.dagger.compiler
+    //annotationProcessor libraries.dagger.processor
+
 
     implementation libraries.picasso.core
     implementation libraries.picasso.downloader

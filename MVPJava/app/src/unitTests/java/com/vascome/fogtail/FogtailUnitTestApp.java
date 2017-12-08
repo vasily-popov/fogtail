@@ -3,9 +3,9 @@ package com.vascome.fogtail;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.developer_settings.DeveloperSettingsModule;
+import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
 import com.vascome.fogtail.models.AnalyticsModel;
-import com.vascome.fogtail.models.ModelsModule;
+import com.vascome.fogtail.di.appmodules.ModelsModule;
 
 import static org.mockito.Mockito.mock;
 
