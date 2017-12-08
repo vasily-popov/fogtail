@@ -7,8 +7,10 @@ import android.support.annotation.NonNull;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vascome.fogtail.models.AnalyticsModel;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,14 +19,12 @@ import dagger.Provides;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 @Module
-public class ModelsModule {
+public abstract class ModelsModule {
 
-    @Provides
+    @Binds
     @NonNull
     @Singleton
-    public AnalyticsModel provideAnalyticsModel(@NonNull Application app) {
-        return new GoogleFirebaseAppAnalytics(app);
-    }
+    public abstract AnalyticsModel provideAnalyticsModel(GoogleFirebaseAppAnalytics analytics);
 
     static class GoogleFirebaseAppAnalytics implements AnalyticsModel {
 
@@ -32,6 +32,7 @@ public class ModelsModule {
         private final Application app;
         private FirebaseAnalytics mFirebaseAnalytics;
 
+        @Inject
         GoogleFirebaseAppAnalytics(@NonNull Application app) {
             this.app = app;
         }

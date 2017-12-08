@@ -24,7 +24,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class ApiModule {
 
-    @Provides @NonNull @Singleton
+    @Provides
+    @NonNull
+    @Singleton
     public FogtailRestApi provideRestApi(@NonNull OkHttpClient okHttpClient,
                                          @NonNull Gson gson,
                                          @NonNull ApiConfiguration config) {
@@ -38,7 +40,8 @@ public class ApiModule {
                 .create(FogtailRestApi.class);
     }
 
-    @Provides @NonNull
+    @Provides
+    @NonNull
     public ApiConfiguration provideConfiguration() {
         return () -> "https://raw.githubusercontent.com/vascome/fogtail/master/MVPJava/app/src/main/assets/";
     }

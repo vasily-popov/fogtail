@@ -22,7 +22,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import dagger.android.AndroidInjectionModule;
 import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
@@ -30,7 +29,7 @@ import timber.log.Timber;
  * Created by vasilypopov on 11/22/17
  * Copyright (c) 2017 fogtail. All rights reserved.
  */
-@Module(includes = {AndroidInjectionModule.class})
+@Module
 public class ApplicationModule {
 
     public static final String MAIN_THREAD_HANDLER = "main_thread_handler";
