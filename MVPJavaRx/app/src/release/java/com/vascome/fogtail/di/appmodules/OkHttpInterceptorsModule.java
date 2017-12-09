@@ -1,6 +1,9 @@
-package com.vascome.fogtail.network;
+package com.vascome.fogtail.di.appmodules;
 
 import android.support.annotation.NonNull;
+
+import com.vascome.fogtail.network.OkHttpInterceptors;
+import com.vascome.fogtail.network.OkHttpNetworkInterceptors;
 
 import java.util.List;
 
@@ -20,12 +23,14 @@ import static java.util.Collections.emptyList;
 @Module
 public class OkHttpInterceptorsModule {
 
-    @Provides @OkHttpInterceptors @Singleton @NonNull
+    @Provides @OkHttpInterceptors
+    @Singleton @NonNull
     public List<Interceptor> provideOkHttpInterceptors() {
         return emptyList();
     }
 
-    @Provides @OkHttpNetworkInterceptors @Singleton @NonNull
+    @Provides @OkHttpNetworkInterceptors
+    @Singleton @NonNull
     public List<Interceptor> provideOkHttpNetworkInterceptors() {
         return emptyList();
     }

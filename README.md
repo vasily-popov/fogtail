@@ -5,7 +5,7 @@ It's based on some known projects like [qualitymatters](https://github.com/artem
 
 ##### Structure
 * `MVPJava` - mvp demo project which showcases usage of Dagger2 among other open source libraries. (no RX here)
-* `MVPJavaRX` - mvp demo project which showcases usage of Dagger2, RxJava 2, etc - planning
+* `MVPJavaRX  - mvp demo project which showcases usage of Dagger2, RxJava 2, etc
 * `MVPJavaClean` - clean architeure demo project based on MVP. - planning
 * `MVVMJava` - mvvm demo project which showcases usage of Dagger2, RxJava 2, RxBinding, RxAndroid, etc - planning
 * `MVPKotlin` - planning

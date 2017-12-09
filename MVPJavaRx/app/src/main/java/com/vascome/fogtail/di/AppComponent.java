@@ -27,9 +27,6 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 
-import static com.vascome.fogtail.di.appmodules.ApplicationModule.MAIN_THREAD_HANDLER;
-import static com.vascome.fogtail.di.appmodules.DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER;
-
 /**
  * Created by vasilypopov on 11/22/17
  * Copyright (c) 2017 fogtail. All rights reserved.
