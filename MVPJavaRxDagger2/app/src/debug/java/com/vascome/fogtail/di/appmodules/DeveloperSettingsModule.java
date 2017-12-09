@@ -10,8 +10,11 @@ import com.vascome.fogtail.developer_settings.DeveloperSettingsModelImpl;
 import com.vascome.fogtail.developer_settings.LeakCanaryProxy;
 import com.vascome.fogtail.developer_settings.LeakCanaryProxyImpl;
 import com.vascome.fogtail.developer_settings.MainActivityViewModifier;
+import com.vascome.fogtail.di.FragmentScope;
+import com.vascome.fogtail.di.ui.dev_settings.DevMenuModule;
 import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.ui.base.other.ViewModifier;
+import com.vascome.fogtail.ui.dev_settings.fragments.DeveloperSettingsFragment;
 import com.vascome.fogtail.ui.dev_settings.presenters.DeveloperSettingsPresenter;
 
 import javax.inject.Named;
@@ -19,6 +22,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.android.ContributesAndroidInjector;
 import hu.supercluster.paperwork.Paperwork;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -29,7 +33,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-@Module
+@Module(includes = DevMenuModule.class)
 public class DeveloperSettingsModule {
 
     @NonNull
@@ -79,13 +83,6 @@ public class DeveloperSettingsModule {
                                                                         @NonNull LeakCanaryProxy leakCanaryProxy,
                                                                         @NonNull Paperwork paperwork) {
         return new DeveloperSettingsModelImpl(application, developerSettings, httpLoggingInterceptor, leakCanaryProxy, paperwork);
-    }
-
-    @Provides
-    @NonNull
-    public DeveloperSettingsPresenter provideDeveloperSettingsPresenter(@NonNull DeveloperSettingsModelImpl developerSettingsModelImpl,
-                                                                        @NonNull AnalyticsModel analyticsModel) {
-        return new DeveloperSettingsPresenter(developerSettingsModelImpl, analyticsModel);
     }
 
     @NonNull

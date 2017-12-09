@@ -54,9 +54,6 @@ public class StackAppFragment extends BaseFragment implements ICollectionView, C
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        MainActivity activity = (MainActivity) getActivity();
-        activity.collectionComponent().stackComponent().inject(this);
     }
 
     @Nullable

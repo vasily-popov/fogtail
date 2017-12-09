@@ -3,6 +3,14 @@ package com.vascome.fogtail.di.appmodules;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapterFactory;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
+import com.vascome.fogtail.models.AppImageLoader;
+import com.vascome.fogtail.models.PicassoImageLoader;
+import com.vascome.fogtail.network.EntityTypeAdapterFactory;
 import com.vascome.fogtail.network.OkHttpInterceptors;
 import com.vascome.fogtail.network.OkHttpNetworkInterceptors;
 
@@ -16,6 +24,7 @@ import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import timber.log.Timber;
 
 /**
  * Created by vasilypopov on 11/22/17
@@ -25,7 +34,7 @@ import okhttp3.OkHttpClient;
 @Module
 public class NetworkModule {
 
-    static final long DISK_CACHE_SIZE = 50*1024*1024; //50Mb
+    private static final long DISK_CACHE_SIZE = 50*1024*1024; //50Mb
 
     @Provides
     @NonNull
@@ -49,5 +58,4 @@ public class NetworkModule {
         okHttpBuilder.cache(cache);
         return okHttpBuilder.build();
     }
-
 }

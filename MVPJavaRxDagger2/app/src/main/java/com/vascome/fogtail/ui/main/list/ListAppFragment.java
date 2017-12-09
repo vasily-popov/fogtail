@@ -17,7 +17,6 @@ import com.vascome.fogtail.databinding.RecyclerRefreshableViewFragmentBinding;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
-import com.vascome.fogtail.ui.main.MainActivity;
 import com.vascome.fogtail.ui.main.collectionbase.CollectionAreaItemListener;
 import com.vascome.fogtail.ui.main.collectionbase.CollectionPresenter;
 import com.vascome.fogtail.ui.main.collectionbase.ICollectionView;
@@ -52,9 +51,6 @@ public class ListAppFragment extends BaseFragment implements ICollectionView, Co
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        MainActivity activity = (MainActivity) getActivity();
-        activity.collectionComponent().listComponent().inject(this);
     }
 
     @Nullable

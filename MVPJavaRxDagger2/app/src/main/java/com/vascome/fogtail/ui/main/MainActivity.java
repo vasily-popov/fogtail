@@ -8,10 +8,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
-import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.databinding.ActivityMainBinding;
-import com.vascome.fogtail.di.ui.main.CollectionComponent;
+import com.vascome.fogtail.di.ActivityScope;
+import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 import com.vascome.fogtail.ui.base.other.ViewModifier;
 import com.vascome.fogtail.ui.base.utils.ActivityUtils;
@@ -25,22 +25,17 @@ import com.vascome.fogtail.ui.main.table.GridAppFragment;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import static com.vascome.fogtail.di.appmodules.DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER;
-
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
-    @Named(MAIN_ACTIVITY_VIEW_MODIFIER)
+    @Named(DeveloperSettingsModule.MAIN_ACTIVITY_VIEW_MODIFIER)
     ViewModifier viewModifier;
 
     private ActivityMainBinding binding;
-    private CollectionComponent collectionComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        collectionComponent = FogtailApplication.get(this).appComponent().collectionComponent().build();
-        collectionComponent.inject(this);
         
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setContentView(viewModifier.modify(binding.getRoot()));
@@ -115,11 +110,5 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    @NonNull
-    public CollectionComponent collectionComponent() {
-        return collectionComponent;
-    }
-
 }
 

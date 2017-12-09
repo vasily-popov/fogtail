@@ -54,9 +54,6 @@ public class GalleryAppFragment extends BaseFragment implements ICollectionView,
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        MainActivity activity = (MainActivity) getActivity();
-        activity.collectionComponent().galleryComponent().inject(this);
-
     }
 
     @Nullable

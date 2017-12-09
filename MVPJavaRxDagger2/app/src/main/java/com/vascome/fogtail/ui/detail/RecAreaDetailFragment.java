@@ -42,8 +42,6 @@ public class RecAreaDetailFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        RecAreaItemDetailActivity activity = (RecAreaItemDetailActivity) getActivity();
-        activity.collectionDetailComponent().detailComponent().inject(this);
     }
 
     @Nullable

@@ -1,15 +1,19 @@
 package com.vascome.fogtail.ui.base.fragments;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-import com.vascome.fogtail.FogtailApplication;
-import com.vascome.fogtail.di.appmodules.ApplicationModule;
+import com.vascome.fogtail.developer_settings.LeakCanaryProxy;
+import com.vascome.fogtail.di.appmodules.SchedulerModule;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  * Created by vasilypopov on 11/23/17
@@ -19,8 +23,17 @@ import javax.inject.Named;
 public abstract class BaseFragment extends Fragment {
 
     @Inject
-    @Named(ApplicationModule.MAIN_THREAD_HANDLER)
+    @Named(SchedulerModule.MAIN_THREAD_HANDLER)
     Handler mainThreadHandler;
+
+    @Inject
+    LeakCanaryProxy leakCanaryProxy;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
+        super.onCreate(savedInstanceState);
+    }
 
     protected void runOnUiThreadIfFragmentAlive(@NonNull Runnable runnable) {
         if (Looper.myLooper() == Looper.getMainLooper() && isFragmentAlive()) {
@@ -40,7 +53,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        FogtailApplication.get(getContext()).appComponent().leakCanaryProxy().watch(this);
+        leakCanaryProxy.watch(this);
         super.onDestroy();
     }
 }

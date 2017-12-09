@@ -14,6 +14,7 @@ import static org.mockito.Mockito.mock;
 
 public class FogtailIntegrationTestApp extends FogtailApplication {
 
+    /*
     @NonNull
     @Override
     protected DaggerAppComponent.Builder prepareApplicationComponent() {
@@ -34,4 +35,5 @@ public class FogtailIntegrationTestApp extends FogtailApplication {
                 })
                 .developerSettingsModule(new DeveloperSettingsModule());
     }
+    */
 }

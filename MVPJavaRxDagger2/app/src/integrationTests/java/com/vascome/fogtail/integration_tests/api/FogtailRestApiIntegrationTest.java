@@ -41,7 +41,7 @@ public class FogtailRestApiIntegrationTest {
         // Change base url to the mocked
         //FogtailIntegrationRobolectricTestRunner.fogtailApplication().applicationComponent().changeableBaseUrl().setBaseUrl(mockWebServer.url("").toString());
 
-        fogtailRestApi = FogtailIntegrationRobolectricTestRunner.fogtailApplication().appComponent().provideRestApi();
+        //fogtailRestApi = FogtailIntegrationRobolectricTestRunner.fogtailApplication().appComponent().provideRestApi();
     }
 
     @After

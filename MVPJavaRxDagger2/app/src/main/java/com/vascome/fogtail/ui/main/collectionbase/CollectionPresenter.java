@@ -7,6 +7,8 @@ import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.presenters.BasePresenter;
 import com.vascome.fogtail.utils.schedulers.SchedulerProvider;
 
+import javax.inject.Inject;
+
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -20,6 +22,7 @@ public class CollectionPresenter extends BasePresenter<ICollectionView> {
     private final AnalyticsModel analyticsModel;
     private final SchedulerProvider schedulerProvider;
 
+    @Inject
     public CollectionPresenter(@NonNull RecAreaItemsModel itemsModel,
                               @NonNull AnalyticsModel analyticsModel,
                                @NonNull SchedulerProvider schedulerProvider) {

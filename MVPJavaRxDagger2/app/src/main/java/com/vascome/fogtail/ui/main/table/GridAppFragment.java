@@ -53,9 +53,6 @@ public class GridAppFragment extends BaseFragment implements ICollectionView, Co
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        MainActivity activity = (MainActivity) getActivity();
-        activity.collectionComponent().gridComponent().inject(this);
     }
 
     @Nullable

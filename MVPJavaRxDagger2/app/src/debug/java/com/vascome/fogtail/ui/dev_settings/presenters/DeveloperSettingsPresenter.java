@@ -7,6 +7,8 @@ import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.ui.base.presenters.BasePresenter;
 import com.vascome.fogtail.ui.dev_settings.views.DeveloperSettingsView;
 
+import javax.inject.Inject;
+
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
@@ -22,6 +24,7 @@ public class DeveloperSettingsPresenter extends BasePresenter<DeveloperSettingsV
     @NonNull
     private final AnalyticsModel analyticsModel;
 
+    @Inject
     public DeveloperSettingsPresenter(@NonNull DeveloperSettingsModelImpl developerSettingsModel, @NonNull AnalyticsModel analyticsModel) {
         this.developerSettingsModel = developerSettingsModel;
         this.analyticsModel = analyticsModel;

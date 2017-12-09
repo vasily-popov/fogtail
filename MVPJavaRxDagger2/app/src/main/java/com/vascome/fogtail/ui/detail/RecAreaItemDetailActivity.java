@@ -11,11 +11,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.ActivityDetailBinding;
-import com.vascome.fogtail.di.ui.detail.CollectionDetailComponent;
 import com.vascome.fogtail.ui.base.utils.ActivityUtils;
 import com.vascome.fogtail.ui.base.views.BaseActivity;
 
@@ -28,14 +26,11 @@ public class RecAreaItemDetailActivity extends BaseActivity {
 
     private ActivityDetailBinding binding;
     private RecAreaItem item;
-    private CollectionDetailComponent component;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        component = FogtailApplication.get(this).appComponent().collectionDetailComponent().build();
-        component.inject(this);
 
         Bundle extra = getIntent().getExtras();
         if (extra != null) {
@@ -95,9 +90,5 @@ public class RecAreaItemDetailActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-    }
-
-    public CollectionDetailComponent collectionDetailComponent() {
-        return component;
     }
 }
