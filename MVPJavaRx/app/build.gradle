@@ -86,7 +86,7 @@ android {
         textReport true
         textOutput 'stdout'
         lintConfig rootProject.file('lint.xml')
-        //warningsAsErrors true
+        warningsAsErrors true
         abortOnError true // Fail early.
 
         disable 'GoogleAppIndexingWarning' // App does not have deep linking.
