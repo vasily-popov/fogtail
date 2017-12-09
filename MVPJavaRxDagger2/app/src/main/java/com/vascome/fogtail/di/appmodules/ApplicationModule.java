@@ -16,7 +16,6 @@ import com.vascome.fogtail.network.EntityTypeAdapterFactory;
 
 import javax.inject.Singleton;
 
-import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;

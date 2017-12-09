@@ -10,6 +10,7 @@ import com.vascome.fogtail.models.AnalyticsModel;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import timber.log.Timber;
@@ -19,10 +20,12 @@ import timber.log.Timber;
  * Copyright (c) 2017 fogtail. All rights reserved.
  */
 
-public class FogtailApplication extends Application implements HasActivityInjector {
+public class FogtailApplication extends DaggerApplication {
 
-    @Inject
-    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+    @Override
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        return DaggerAppComponent.builder().context(this).application(this).build();
+    }
 
     @Inject
     AnalyticsModel analyticsModel;
@@ -34,13 +37,6 @@ public class FogtailApplication extends Application implements HasActivityInject
     public void onCreate() {
         super.onCreate();
 
-        DaggerAppComponent
-                .builder()
-                .application(this)
-                .context(this)
-                .build()
-                .inject(this);
-
         analyticsModel.init();
 
         if (BuildConfig.DEBUG) {
@@ -48,10 +44,5 @@ public class FogtailApplication extends Application implements HasActivityInject
             Timber.plant(new Timber.DebugTree());
             developerSettingModel.apply();
         }
-    }
-
-    @Override
-    public AndroidInjector<Activity> activityInjector() {
-        return dispatchingAndroidInjector;
     }
 }

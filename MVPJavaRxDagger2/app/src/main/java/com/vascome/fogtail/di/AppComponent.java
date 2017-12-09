@@ -16,12 +16,14 @@ import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 /**
  * Created by vasilypopov on 11/22/17
  * Copyright (c) 2017 fogtail. All rights reserved.
  */
+
 
 
 @Singleton
@@ -36,16 +38,16 @@ import dagger.android.support.AndroidSupportInjectionModule;
         DeveloperSettingsModule.class,
         AndroidSupportInjectionModule.class
 })
-public interface AppComponent {
+public interface AppComponent extends AndroidInjector<FogtailApplication> {
 
     @Component.Builder
     interface Builder {
         @BindsInstance
         Builder application(Application app);
+
         @BindsInstance
         Builder context(Context context);
+
         AppComponent build();
     }
-
-    void inject(FogtailApplication app);
 }

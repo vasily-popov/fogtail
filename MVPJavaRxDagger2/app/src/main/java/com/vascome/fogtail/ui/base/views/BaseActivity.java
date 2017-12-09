@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.DaggerAppCompatActivity;
 import dagger.android.support.HasSupportFragmentInjector;
 
 /**
@@ -22,15 +23,10 @@ import dagger.android.support.HasSupportFragmentInjector;
  * Copyright (c) 2017 fogtail. All rights reserved.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements HasSupportFragmentInjector {
-
-    @Inject
-    DispatchingAndroidInjector<Fragment> fragmentInjector;
-
+public abstract class BaseActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -64,10 +60,5 @@ public abstract class BaseActivity extends AppCompatActivity implements HasSuppo
     @Nullable
     protected Toolbar toolbar() {
         return toolbar;
-    }
-
-    @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentInjector;
     }
 }

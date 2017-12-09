@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 
 import com.vascome.fogtail.developer_settings.LeakCanaryProxy;
 import com.vascome.fogtail.di.appmodules.SchedulerModule;
@@ -14,14 +13,14 @@ import com.vascome.fogtail.di.appmodules.SchedulerModule;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 
 /**
  * Created by vasilypopov on 11/23/17
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends DaggerFragment {
 
     @Inject
     @Named(SchedulerModule.MAIN_THREAD_HANDLER)
@@ -32,7 +31,6 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
 

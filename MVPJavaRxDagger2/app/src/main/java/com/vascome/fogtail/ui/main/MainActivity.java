@@ -10,7 +10,6 @@ import android.view.MenuItem;
 
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.databinding.ActivityMainBinding;
-import com.vascome.fogtail.di.ActivityScope;
 import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 import com.vascome.fogtail.ui.base.other.ViewModifier;
