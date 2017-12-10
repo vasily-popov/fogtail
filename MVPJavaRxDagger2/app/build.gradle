@@ -48,7 +48,7 @@ android {
 
             // Enables code coverage with Jacoco only for instrumentation tests.
             // Coverage for JVM tests done by code_quality_tools/jacoco.gradle.
-            //testCoverageEnabled true //bug in android studio variable are not visibles
+            //testCoverageEnabled true //bug in android studio variable are not visible
             testCoverageEnabled false
         }
 
@@ -150,6 +150,7 @@ dependencies {
 
     implementation libraries.rx.core
     implementation libraries.rx.android
+    implementation libraries.rx.lint
 
     implementation libraries.support.appCompat
     implementation libraries.support.recyclerView

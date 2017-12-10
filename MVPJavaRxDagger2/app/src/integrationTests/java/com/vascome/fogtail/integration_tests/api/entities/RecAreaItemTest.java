@@ -1,15 +1,11 @@
 package com.vascome.fogtail.integration_tests.api.entities;
 
-import com.google.gson.Gson;
 import com.vascome.fogtail.FogtailIntegrationRobolectricTestRunner;
-import com.vascome.fogtail.api.entities.RecAreaItem;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(FogtailIntegrationRobolectricTestRunner.class)
 public class RecAreaItemTest {

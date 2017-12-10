@@ -2,7 +2,6 @@ package com.vascome.fogtail.integration_tests.api;
 
 import com.vascome.fogtail.FogtailIntegrationRobolectricTestRunner;
 import com.vascome.fogtail.api.FogtailRestApi;
-import com.vascome.fogtail.api.entities.RecAreaItem;
 
 import org.junit.After;
 import org.junit.Before;
@@ -10,14 +9,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import retrofit2.HttpException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Main purpose of Integration tests is to check that all layers of your app work correctly, for example:
