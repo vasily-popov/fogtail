@@ -7,8 +7,8 @@ import com.vascome.fogtail.api.ApiConfiguration;
 import com.vascome.fogtail.di.DaggerAppComponent;
 import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
-import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.di.appmodules.ModelsModule;
+import com.vascome.fogtail.utils.AnalyticsModel;
 
 import static org.mockito.Mockito.mock;
 

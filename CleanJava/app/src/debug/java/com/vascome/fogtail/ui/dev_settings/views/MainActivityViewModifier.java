@@ -1,4 +1,4 @@
-package com.vascome.fogtail.developer_settings;
+package com.vascome.fogtail.ui.dev_settings.views;
 
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;

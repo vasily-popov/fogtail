@@ -3,9 +3,8 @@ package com.vascome.fogtail.ui.main.collectionbase;
 import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.api.entities.RecAreaItem;
-import com.vascome.fogtail.models.AnalyticsModel;
-import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.base.presenters.BasePresenter;
+import com.vascome.fogtail.utils.AnalyticsModel;
 
 import java.util.List;
 
@@ -18,22 +17,26 @@ import retrofit2.Response;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-public class CollectionPresenter extends BasePresenter<ICollectionView> {
+public class CollectionPresenter extends BasePresenter<CollectionContract.View> implements CollectionContract.Presenter {
 
     private final RecAreaItemsModel itemsModel;
     private final AnalyticsModel analyticsModel;
+    private final CollectionContract.Router activityRouter;
 
     public CollectionPresenter(@NonNull RecAreaItemsModel itemsModel,
-                              @NonNull AnalyticsModel analyticsModel) {
+                               @NonNull AnalyticsModel analyticsModel,
+                               @NonNull CollectionContract.Router activityRouter) {
         this.itemsModel = itemsModel;
         this.analyticsModel = analyticsModel;
+        this.activityRouter = activityRouter;
     }
 
-    public void reloadData() {
+    @Override
+    public void reloadItems() {
 
         {
             // Tip: in Kotlin you can use ? to operate with nullable values.
-            final ICollectionView view = view();
+            final CollectionContract.View view = view();
 
             if (view != null) {
                 view.setLoadingIndicator(true);
@@ -47,7 +50,7 @@ public class CollectionPresenter extends BasePresenter<ICollectionView> {
                 List<RecAreaItem> responseBody = response.body();
 
                 // Tip: in Kotlin you can use ? to operate with nullable values.
-                final ICollectionView view = view();
+                final CollectionContract.View view = view();
                 if (responseBody != null)
                 {
                     if (view != null) {
@@ -66,7 +69,7 @@ public class CollectionPresenter extends BasePresenter<ICollectionView> {
                 analyticsModel.sendError("CollectionPresenter.reloadData failed", t);
                 {
                     // Tip: in Kotlin you can use ? to operate with nullable values.
-                    final ICollectionView view = view();
+                    final CollectionContract.View view = view();
 
                     if (view != null) {
                         view.showError();
@@ -74,5 +77,13 @@ public class CollectionPresenter extends BasePresenter<ICollectionView> {
                 }
             }
         });
+    }
+
+    @Override
+    public void openItemDetail(@NonNull RecAreaItem item) {
+        final CollectionContract.View view = view();
+        if (view != null) {
+            view.openItemDetail(item);
+        }
     }
 }

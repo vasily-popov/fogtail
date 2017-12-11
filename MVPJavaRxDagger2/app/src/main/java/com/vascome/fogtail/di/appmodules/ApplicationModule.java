@@ -10,12 +10,14 @@ import com.google.gson.TypeAdapterFactory;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.vascome.fogtail.FogtailApplication;
+import com.vascome.fogtail.di.AppComponent;
 import com.vascome.fogtail.models.AppImageLoader;
 import com.vascome.fogtail.models.PicassoImageLoader;
 import com.vascome.fogtail.network.EntityTypeAdapterFactory;
 
 import javax.inject.Singleton;
 
+import dagger.BindsInstance;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -28,6 +30,12 @@ import timber.log.Timber;
  */
 @Module
 public class ApplicationModule {
+
+    @Provides
+    @Singleton
+    public Context provideContext(Application app) {
+        return app.getApplicationContext();
+    }
 
     @Provides
     @NonNull

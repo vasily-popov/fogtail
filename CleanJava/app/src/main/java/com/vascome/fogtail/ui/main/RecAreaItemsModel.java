@@ -1,4 +1,4 @@
-package com.vascome.fogtail.models;
+package com.vascome.fogtail.ui.main.collectionbase;
 
 import android.support.annotation.NonNull;
 
@@ -6,6 +6,7 @@ import com.vascome.fogtail.api.FogtailRestApi;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 
 import java.util.List;
+
 import retrofit2.Callback;
 
 

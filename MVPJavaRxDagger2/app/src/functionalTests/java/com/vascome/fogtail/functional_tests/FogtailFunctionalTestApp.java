@@ -3,32 +3,33 @@ package com.vascome.fogtail.functional_tests;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.DaggerApplicationComponent;
 import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.api.ApiConfiguration;
+import com.vascome.fogtail.di.DaggerAppComponent;
 import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.models.AnalyticsModel;
 import com.vascome.fogtail.di.appmodules.ModelsModule;
 
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
 import timber.log.Timber;
 
 public class FogtailFunctionalTestApp extends FogtailApplication {
 
-    @NonNull
     @Override
-    protected DaggerApplicationComponent.Builder prepareApplicationComponent() {
-        return super.prepareApplicationComponent()
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        appComponent = DaggerAppComponent.builder()
+                .application(this)
                 .apiModule(new ApiModule() {
                     @NonNull
                     @Override
                     public ApiConfiguration provideConfiguration() {
                         return () -> "/";
                     }
-                })
-                .modelsModule(new ModelsModule() {
+                }).modelsModule(new ModelsModule() {
                     @NonNull
                     @Override
-                    public AnalyticsModel provideAnalyticsModel(@NonNull Application app) {
+                    public AnalyticsModel provideAnalyticsModel(Application application) {
                         // We don't need real analytics in Functional tests, but let's just log it instead!
                         return new AnalyticsModel() {
 
@@ -60,6 +61,8 @@ public class FogtailFunctionalTestApp extends FogtailApplication {
                             }
                         };
                     }
-                });
+                })
+                .build();
+        return appComponent;
     }
 }

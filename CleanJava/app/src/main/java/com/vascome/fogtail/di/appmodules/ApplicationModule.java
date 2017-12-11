@@ -11,9 +11,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapterFactory;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
-import com.vascome.fogtail.models.AppImageLoader;
-import com.vascome.fogtail.models.PicassoImageLoader;
+import com.vascome.fogtail.network.AppImageLoader;
 import com.vascome.fogtail.network.EntityTypeAdapterFactory;
+import com.vascome.fogtail.network.PicassoImageLoader;
 
 import javax.inject.Named;
 import javax.inject.Singleton;

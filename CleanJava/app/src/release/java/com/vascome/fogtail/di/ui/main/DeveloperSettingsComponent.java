@@ -1,8 +1,4 @@
-package com.vascome.fogtail.developer_settings;
-
-import android.support.annotation.NonNull;
-
-import com.vascome.fogtail.ui.dev_settings.fragments.DeveloperSettingsFragment;
+package com.vascome.fogtail.di.ui.main;
 
 import dagger.Subcomponent;
 
@@ -13,11 +9,10 @@ import dagger.Subcomponent;
 
 @Subcomponent
 public interface DeveloperSettingsComponent {
+    // Hides details of developer settings in the release build type.
 
     @Subcomponent.Builder
     interface Builder {
         DeveloperSettingsComponent build();
     }
-
-    void inject(@NonNull DeveloperSettingsFragment developerSettingsFragment);
 }

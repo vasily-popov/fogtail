@@ -2,6 +2,7 @@ package com.vascome.fogtail.models;
 
 import com.vascome.fogtail.api.FogtailRestApi;
 import com.vascome.fogtail.api.entities.RecAreaItem;
+import com.vascome.fogtail.ui.main.collectionbase.RecAreaItemsModel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,10 +10,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class RecAreaItemsModelTest {
     private FogtailRestApi qualityMattersRestApi;

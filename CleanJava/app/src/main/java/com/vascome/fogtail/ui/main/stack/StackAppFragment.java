@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.StackViewFragmentBinding;
-import com.vascome.fogtail.models.AppImageLoader;
+import com.vascome.fogtail.network.AppImageLoader;
 import com.vascome.fogtail.ui.base.fragments.BaseFragment;
 import com.vascome.fogtail.ui.detail.RecAreaItemDetailActivity;
 import com.vascome.fogtail.ui.main.MainActivity;

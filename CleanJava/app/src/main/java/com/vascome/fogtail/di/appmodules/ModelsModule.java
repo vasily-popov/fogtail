@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.vascome.fogtail.models.AnalyticsModel;
+import com.vascome.fogtail.utils.AnalyticsModel;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
 /**
  * Created by vasilypopov on 11/22/17

@@ -3,9 +3,9 @@ package com.vascome.fogtail.di.ui.main.basemodule;
 import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.di.FragmentScope;
-import com.vascome.fogtail.models.AnalyticsModel;
-import com.vascome.fogtail.models.RecAreaItemsModel;
 import com.vascome.fogtail.ui.main.collectionbase.CollectionPresenter;
+import com.vascome.fogtail.ui.main.collectionbase.RecAreaItemsModel;
+import com.vascome.fogtail.utils.AnalyticsModel;
 
 import dagger.Module;
 import dagger.Provides;

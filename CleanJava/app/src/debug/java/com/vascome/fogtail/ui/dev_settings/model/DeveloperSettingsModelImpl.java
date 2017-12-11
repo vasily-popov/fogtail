@@ -1,4 +1,4 @@
-package com.vascome.fogtail.developer_settings;
+package com.vascome.fogtail.ui.dev_settings.model;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
@@ -7,6 +7,8 @@ import android.util.DisplayMetrics;
 import com.codemonkeylabs.fpslibrary.TinyDancer;
 import com.facebook.stetho.Stetho;
 import com.vascome.fogtail.BuildConfig;
+import com.vascome.fogtail.ui.dev_settings.DeveloperSettingsModel;
+import com.vascome.fogtail.utils.LeakCanaryProxy;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

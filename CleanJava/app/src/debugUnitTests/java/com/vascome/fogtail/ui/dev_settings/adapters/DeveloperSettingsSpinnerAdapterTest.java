@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.vascome.fogtail.FogtailRobolectricUnitTestRunner;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.ui.dev_settings.adapters.DeveloperSettingsSpinnerAdapter.SelectionOption;
-import com.vascome.fogtail.FogtailRobolectricUnitTestRunner;
 
 import org.junit.Before;
 import org.junit.Test;

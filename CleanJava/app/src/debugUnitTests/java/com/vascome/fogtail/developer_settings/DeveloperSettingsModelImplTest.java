@@ -1,6 +1,9 @@
 package com.vascome.fogtail.developer_settings;
 
 import com.vascome.fogtail.FogtailApplication;
+import com.vascome.fogtail.ui.dev_settings.model.DeveloperSettings;
+import com.vascome.fogtail.ui.dev_settings.model.DeveloperSettingsModelImpl;
+import com.vascome.fogtail.utils.LeakCanaryProxy;
 
 import org.junit.Before;
 import org.junit.Test;

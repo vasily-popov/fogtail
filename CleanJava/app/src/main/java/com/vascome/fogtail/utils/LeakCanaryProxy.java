@@ -1,4 +1,4 @@
-package com.vascome.fogtail.developer_settings;
+package com.vascome.fogtail.utils;
 
 import android.support.annotation.NonNull;
 

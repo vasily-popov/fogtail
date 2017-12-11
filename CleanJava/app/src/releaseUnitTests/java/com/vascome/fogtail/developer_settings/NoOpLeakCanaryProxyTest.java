@@ -1,5 +1,7 @@
 package com.vascome.fogtail.developer_settings;
 
+import com.vascome.fogtail.utils.NoOpLeakCanaryProxy;
+
 import org.junit.Test;
 
 public class NoOpLeakCanaryProxyTest {

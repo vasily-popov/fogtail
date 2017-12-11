@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.api.entities.RecAreaItem;
-import com.vascome.fogtail.models.AppImageLoader;
+import com.vascome.fogtail.network.AppImageLoader;
 import com.vascome.fogtail.ui.main.collectionbase.CollectionAreaItemListener;
 
 import java.util.List;

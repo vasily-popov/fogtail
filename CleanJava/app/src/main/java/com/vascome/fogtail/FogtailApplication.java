@@ -4,11 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.developer_settings.DeveloperSettingsModel;
 import com.vascome.fogtail.di.AppComponent;
 import com.vascome.fogtail.di.DaggerAppComponent;
 import com.vascome.fogtail.di.appmodules.ApplicationModule;
-import com.vascome.fogtail.models.AnalyticsModel;
+import com.vascome.fogtail.ui.dev_settings.DeveloperSettingsModel;
+import com.vascome.fogtail.utils.AnalyticsModel;
 
 import timber.log.Timber;
 

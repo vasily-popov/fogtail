@@ -1,4 +1,4 @@
-package com.vascome.fogtail.developer_settings;
+package com.vascome.fogtail.ui.dev_settings.model;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;

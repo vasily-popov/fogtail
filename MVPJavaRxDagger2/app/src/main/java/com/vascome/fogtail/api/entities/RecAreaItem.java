@@ -2,6 +2,7 @@ package com.vascome.fogtail.api.entities;
 
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 import com.google.gson.Gson;
@@ -48,49 +49,44 @@ public abstract class RecAreaItem implements Parcelable {
     @SerializedName(JSON_PROPERTY_NAME)
     public abstract String name();
 
+    @Nullable
     @SerializedName(JSON_PROPERTY_PHONE)
     public abstract String phone();
 
     @SerializedName(JSON_PROPERTY_DESCRIPTION)
     public abstract String shortDescription();
 
+    @Nullable
     @SerializedName(JSON_PROPERTY_DIRECTIONS)
     public abstract String directions();
 
+    @Nullable
     @SerializedName(JSON_PROPERTY_AREA_LONGITUDE)
     public abstract Double longitude();
 
+    @Nullable
     @SerializedName(JSON_PROPERTY_AREA_LATITUDE)
     public abstract Double latitude();
 
     @AutoValue.Builder
     public static abstract class Builder {
 
-        @NonNull
-        public abstract Builder id(@NonNull String id);
+        public abstract Builder id(String id);
 
-        @NonNull
-        public abstract Builder imageUrl(@NonNull String imageUrl);
+        public abstract Builder imageUrl(String imageUrl);
 
-        @NonNull
-        public abstract Builder name(@NonNull String name);
+        public abstract Builder name(String name);
 
-        @NonNull
-        public abstract Builder shortDescription(@NonNull String shortDescription);
+        public abstract Builder shortDescription(String shortDescription);
 
-        @NonNull
-        public abstract Builder phone(@NonNull String phone);
+        public abstract Builder phone(String phone);
 
-        @NonNull
-        public abstract Builder directions(@NonNull String directions);
+        public abstract Builder directions(String directions);
 
-        @NonNull
-        public abstract Builder longitude(@NonNull Double longitude);
+        public abstract Builder longitude(Double longitude);
 
-        @NonNull
-        public abstract Builder latitude(@NonNull Double latitude);
+        public abstract Builder latitude(Double latitude);
 
-        @NonNull
         public abstract RecAreaItem build();
     }
 }

@@ -1,4 +1,4 @@
-package com.vascome.fogtail.models;
+package com.vascome.fogtail.network;
 
 import android.support.annotation.NonNull;
 import android.widget.ImageView;

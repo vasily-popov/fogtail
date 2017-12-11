@@ -3,6 +3,7 @@ package com.vascome.fogtail.di;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.di.appmodules.ApplicationModule;
@@ -40,14 +41,16 @@ import dagger.android.support.AndroidSupportInjectionModule;
 })
 public interface AppComponent extends AndroidInjector<FogtailApplication> {
 
+    Gson gson();
+
     @Component.Builder
     interface Builder {
         @BindsInstance
         Builder application(Application app);
 
-        @BindsInstance
-        Builder context(Context context);
-
+        Builder apiModule(ApiModule module); //this allow to specify module in test
+        Builder modelsModule(ModelsModule module); //this allow to specify module in test
+        Builder devSettingsModule(DeveloperSettingsModule module); //this allow to specify module in test
         AppComponent build();
     }
 }

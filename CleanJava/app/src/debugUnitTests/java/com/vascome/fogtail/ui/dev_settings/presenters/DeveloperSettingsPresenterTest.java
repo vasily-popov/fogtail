@@ -1,8 +1,8 @@
 package com.vascome.fogtail.ui.dev_settings.presenters;
 
-import com.vascome.fogtail.developer_settings.DeveloperSettingsModelImpl;
-import com.vascome.fogtail.models.AnalyticsModel;
+import com.vascome.fogtail.ui.dev_settings.model.DeveloperSettingsModelImpl;
 import com.vascome.fogtail.ui.dev_settings.views.DeveloperSettingsView;
+import com.vascome.fogtail.utils.AnalyticsModel;
 
 import org.junit.Before;
 import org.junit.Test;

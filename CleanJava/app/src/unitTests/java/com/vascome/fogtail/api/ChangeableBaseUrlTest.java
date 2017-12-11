@@ -1,11 +1,5 @@
 package com.vascome.fogtail.api;
 
-import org.junit.Test;
-
-import okhttp3.HttpUrl;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class ChangeableBaseUrlTest {
 /*
     @Test

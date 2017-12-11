@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.api.FogtailRestApi;
 import com.vascome.fogtail.di.ActivityScope;
-import com.vascome.fogtail.models.RecAreaItemsModel;
+import com.vascome.fogtail.ui.main.collectionbase.RecAreaItemsModel;
 
 import dagger.Module;
 import dagger.Provides;

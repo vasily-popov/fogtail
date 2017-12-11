@@ -19,12 +19,14 @@ import dagger.Provides;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 @Module
-public abstract class ModelsModule {
+public class ModelsModule {
 
-    @Binds
+    @Provides
     @NonNull
     @Singleton
-    public abstract AnalyticsModel provideAnalyticsModel(GoogleFirebaseAppAnalytics analytics);
+    public AnalyticsModel provideAnalyticsModel(Application application) {
+        return new GoogleFirebaseAppAnalytics(application);
+    }
 
     static class GoogleFirebaseAppAnalytics implements AnalyticsModel {
 

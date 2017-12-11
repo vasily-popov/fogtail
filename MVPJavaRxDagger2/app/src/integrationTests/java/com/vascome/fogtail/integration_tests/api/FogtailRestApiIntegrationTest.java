@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import retrofit2.HttpException;
@@ -28,6 +30,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(FogtailIntegrationRobolectricTestRunner.class)
 public class FogtailRestApiIntegrationTest {
     private MockWebServer mockWebServer;
+
+    @Inject
     private FogtailRestApi fogtailRestApi;
 
     @Before
@@ -38,7 +42,7 @@ public class FogtailRestApiIntegrationTest {
         // Change base url to the mocked
         //FogtailIntegrationRobolectricTestRunner.fogtailApplication().applicationComponent().changeableBaseUrl().setBaseUrl(mockWebServer.url("").toString());
 
-        //fogtailRestApi = FogtailIntegrationRobolectricTestRunner.fogtailApplication().appComponent().provideRestApi();
+        //fogtailRestApi = FogtailIntegrationRobolectricTestRunner.fogtailApplication().appComponent();
     }
 
     @After

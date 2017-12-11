@@ -1,18 +1,15 @@
 package com.vascome.fogtail;
 
-import android.app.Activity;
-import android.app.Application;
-
 import com.vascome.fogtail.developer_settings.DeveloperSettingsModel;
+import com.vascome.fogtail.di.AppComponent;
 import com.vascome.fogtail.di.DaggerAppComponent;
+import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.models.AnalyticsModel;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
 import timber.log.Timber;
 
 /**
@@ -22,9 +19,12 @@ import timber.log.Timber;
 
 public class FogtailApplication extends DaggerApplication {
 
+    public AppComponent appComponent;
+
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
-        return DaggerAppComponent.builder().context(this).application(this).build();
+        appComponent = DaggerAppComponent.builder().application(this).build();
+        return appComponent;
     }
 
     @Inject
@@ -44,5 +44,9 @@ public class FogtailApplication extends DaggerApplication {
             Timber.plant(new Timber.DebugTree());
             developerSettingModel.apply();
         }
+    }
+
+    public AppComponent appComponent() {
+        return appComponent;
     }
 }
