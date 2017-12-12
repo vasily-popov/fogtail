@@ -3,12 +3,9 @@ package com.vascome.fogtail.screens.main;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.screens.base.router.BaseRouter;
 import com.vascome.fogtail.screens.detail.RecAreaItemDetailActivity;
-
-
-import javax.inject.Inject;
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
 
 
 /**
@@ -18,7 +15,6 @@ import javax.inject.Inject;
 
 public class CollectionRouter extends BaseRouter<MainActivity> implements CollectionContract.Router {
 
-    @Inject
     public CollectionRouter(MainActivity activity) {
         super(activity);
     }

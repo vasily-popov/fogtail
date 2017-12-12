@@ -1,4 +1,6 @@
-package com.vascome.fogtail.api.entities;
+package com.vascome.fogtail.data.api.entities;
+
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
 
 import org.junit.Test;
 

@@ -1,7 +1,7 @@
 package com.vascome.fogtail.integration_tests.api;
 
 import com.vascome.fogtail.FogtailIntegrationRobolectricTestRunner;
-import com.vascome.fogtail.api.FogtailRestApi;
+import com.vascome.fogtail.data.api.FogtailRestApi;
 
 import org.junit.After;
 import org.junit.Before;

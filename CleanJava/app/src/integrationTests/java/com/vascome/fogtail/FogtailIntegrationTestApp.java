@@ -3,7 +3,7 @@ package com.vascome.fogtail;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.api.ApiConfiguration;
+import com.vascome.fogtail.data.api.ApiConfiguration;
 import com.vascome.fogtail.di.DaggerAppComponent;
 import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;

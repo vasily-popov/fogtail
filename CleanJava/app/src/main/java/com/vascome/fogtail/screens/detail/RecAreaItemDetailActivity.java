@@ -13,12 +13,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
-import com.vascome.fogtail.api.entities.RecAreaItem;
 import com.vascome.fogtail.databinding.ActivityDetailBinding;
 import com.vascome.fogtail.di.screens.detail.CollectionDetailComponent;
 import com.vascome.fogtail.di.screens.detail.DetailModule;
 import com.vascome.fogtail.screens.base.router.BaseRouter;
 import com.vascome.fogtail.screens.base.views.BaseActivity;
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
 
 import javax.inject.Inject;
 

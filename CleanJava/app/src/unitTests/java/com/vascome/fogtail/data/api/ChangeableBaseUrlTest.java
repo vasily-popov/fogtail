@@ -1,4 +1,4 @@
-package com.vascome.fogtail.api;
+package com.vascome.fogtail.data.api;
 
 public class ChangeableBaseUrlTest {
 /*

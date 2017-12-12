@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.vascome.fogtail.R;
-import com.vascome.fogtail.api.entities.RecAreaItem;
+import com.vascome.fogtail.data.network.AppImageLoader;
 import com.vascome.fogtail.databinding.DetailItemFragmentBinding;
-import com.vascome.fogtail.network.AppImageLoader;
 import com.vascome.fogtail.screens.base.fragments.BaseFragment;
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
 
 import javax.inject.Inject;
 
@@ -22,7 +22,7 @@ import javax.inject.Inject;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-public class RecAreaDetailFragment extends BaseFragment {
+public class RecAreaDetailFragment extends BaseFragment implements DetailContract.View {
 
 
     private DetailItemFragmentBinding binding;

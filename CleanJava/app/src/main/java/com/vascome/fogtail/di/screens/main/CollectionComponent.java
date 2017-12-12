@@ -8,7 +8,6 @@ import com.vascome.fogtail.di.screens.main.gallery.GalleryFragmentComponent;
 import com.vascome.fogtail.di.screens.main.list.ListFragmentComponent;
 import com.vascome.fogtail.di.screens.main.stack.StackFragmentComponent;
 import com.vascome.fogtail.di.screens.main.table.GridFragmentComponent;
-import com.vascome.fogtail.screens.main.CollectionContract;
 import com.vascome.fogtail.screens.main.MainActivity;
 
 import dagger.Subcomponent;
@@ -36,7 +35,6 @@ public interface CollectionComponent {
 
     @NonNull
     CarouselFragmentComponent carouselComponent();
-
 
     @Subcomponent.Builder
     interface Builder {

@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.vascome.fogtail.BuildConfig;
-import com.vascome.fogtail.api.ApiConfiguration;
-import com.vascome.fogtail.api.FogtailRestApi;
+import com.vascome.fogtail.data.api.ApiConfiguration;
+import com.vascome.fogtail.data.api.FogtailRestApi;
 
 import javax.inject.Singleton;
 

@@ -10,20 +10,22 @@ import com.vascome.fogtail.utils.AnalyticsModel;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import dagger.Binds;
 import dagger.Module;
+import dagger.Provides;
 
 /**
  * Created by vasilypopov on 11/22/17
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 @Module
-public abstract class ModelsModule {
+public class ModelsModule {
 
-    @Binds
+    @Provides
     @NonNull
     @Singleton
-    public abstract AnalyticsModel provideAnalyticsModel(GoogleFirebaseAppAnalytics analytics);
+    public AnalyticsModel provideAnalyticsModel(Application app) {
+        return new GoogleFirebaseAppAnalytics(app);
+    }
 
     static class GoogleFirebaseAppAnalytics implements AnalyticsModel {
 

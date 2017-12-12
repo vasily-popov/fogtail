@@ -1,4 +1,4 @@
-package com.vascome.fogtail.network;
+package com.vascome.fogtail.data.network;
 
 import com.google.gson.TypeAdapterFactory;
 import com.ryanharter.auto.value.gson.GsonTypeAdapterFactory;

@@ -3,7 +3,7 @@ package com.vascome.fogtail.screens.main;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
-import com.vascome.fogtail.api.entities.RecAreaItem;
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
 
 import java.util.List;
 

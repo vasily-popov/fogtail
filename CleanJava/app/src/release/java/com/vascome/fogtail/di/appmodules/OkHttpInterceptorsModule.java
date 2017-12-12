@@ -2,8 +2,8 @@ package com.vascome.fogtail.di.appmodules;
 
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.network.OkHttpInterceptors;
-import com.vascome.fogtail.network.OkHttpNetworkInterceptors;
+import com.vascome.fogtail.data.network.OkHttpInterceptors;
+import com.vascome.fogtail.data.network.OkHttpNetworkInterceptors;
 
 import java.util.List;
 

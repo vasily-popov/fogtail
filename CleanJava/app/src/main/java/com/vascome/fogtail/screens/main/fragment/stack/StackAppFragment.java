@@ -10,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.vascome.fogtail.R;
-import com.vascome.fogtail.api.entities.RecAreaItem;
+import com.vascome.fogtail.data.network.AppImageLoader;
 import com.vascome.fogtail.databinding.StackViewFragmentBinding;
-import com.vascome.fogtail.network.AppImageLoader;
 import com.vascome.fogtail.screens.base.fragments.BaseFragment;
 import com.vascome.fogtail.screens.main.CollectionContract;
 import com.vascome.fogtail.screens.main.CollectionPresenter;
 import com.vascome.fogtail.screens.main.MainActivity;
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
 import com.vascome.fogtail.screens.main.fragment.stack.adapter.SwipeStackAdapter;
 import com.vascome.fogtail.screens.main.utils.CollectionAreaItemListener;
 

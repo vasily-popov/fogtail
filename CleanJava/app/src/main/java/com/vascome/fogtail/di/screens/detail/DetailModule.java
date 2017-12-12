@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.di.ActivityScope;
 import com.vascome.fogtail.screens.base.router.BaseRouter;
-import com.vascome.fogtail.screens.detail.DetailContract;
 import com.vascome.fogtail.screens.detail.DetailRouter;
 import com.vascome.fogtail.screens.detail.RecAreaItemDetailActivity;
 

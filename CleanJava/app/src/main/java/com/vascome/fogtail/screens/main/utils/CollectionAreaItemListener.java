@@ -1,6 +1,6 @@
 package com.vascome.fogtail.screens.main.utils;
 
-import com.vascome.fogtail.api.entities.RecAreaItem;
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
 
 /**
  * Created by vasilypopov on 12/12/17

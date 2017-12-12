@@ -1,4 +1,4 @@
-package com.vascome.fogtail.network;
+package com.vascome.fogtail.data.network;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;

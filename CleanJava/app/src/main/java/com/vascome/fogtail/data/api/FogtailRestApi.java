@@ -1,8 +1,8 @@
-package com.vascome.fogtail.api;
+package com.vascome.fogtail.data.api;
 
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.api.entities.RecAreaItem;
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
 
 import java.util.List;
 

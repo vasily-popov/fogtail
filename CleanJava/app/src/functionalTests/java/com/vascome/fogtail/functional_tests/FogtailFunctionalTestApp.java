@@ -3,9 +3,9 @@ package com.vascome.fogtail.functional_tests;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.DaggerApplicationComponent;
+import com.vascome.fogtail.di.DaggerAppComponent;
 import com.vascome.fogtail.FogtailApplication;
-import com.vascome.fogtail.api.ApiConfiguration;
+import com.vascome.fogtail.data.api.ApiConfiguration;
 import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.di.appmodules.ModelsModule;
 import com.vascome.fogtail.utils.AnalyticsModel;
@@ -16,7 +16,7 @@ public class FogtailFunctionalTestApp extends FogtailApplication {
 
     @NonNull
     @Override
-    protected DaggerApplicationComponent.Builder prepareApplicationComponent() {
+    protected DaggerAppComponent.Builder prepareApplicationComponent() {
         return super.prepareApplicationComponent()
                 .apiModule(new ApiModule() {
                     @NonNull

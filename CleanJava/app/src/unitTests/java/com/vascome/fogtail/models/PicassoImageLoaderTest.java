@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 import com.vascome.fogtail.FogtailRobolectricUnitTestRunner;
-import com.vascome.fogtail.network.PicassoImageLoader;
+import com.vascome.fogtail.data.network.PicassoImageLoader;
 
 import org.junit.Before;
 import org.junit.Test;

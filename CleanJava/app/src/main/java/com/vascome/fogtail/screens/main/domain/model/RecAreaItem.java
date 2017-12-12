@@ -1,4 +1,4 @@
-package com.vascome.fogtail.api.entities;
+package com.vascome.fogtail.screens.main.domain.model;
 
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -30,12 +30,12 @@ public abstract class RecAreaItem implements Parcelable {
 
     @NonNull
     public static Builder builder() {
-        return new AutoValue_RecAreaItem.Builder();
+        return new $$AutoValue_RecAreaItem.Builder();
     }
 
     @NonNull
     public static TypeAdapter<RecAreaItem> typeAdapter(Gson gson) {
-        return new AutoValue_RecAreaItem.GsonTypeAdapter(gson);
+        return new $AutoValue_RecAreaItem.GsonTypeAdapter(gson);
     }
 
     @NonNull

@@ -2,15 +2,14 @@ package com.vascome.fogtail.screens.main;
 
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.api.entities.RecAreaItem;
+import com.vascome.fogtail.screens.base.domain.UseCase;
+import com.vascome.fogtail.screens.base.domain.UseCaseHandler;
 import com.vascome.fogtail.screens.base.presenters.BasePresenter;
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
+import com.vascome.fogtail.screens.main.domain.usecase.GetItemsTask;
 import com.vascome.fogtail.utils.AnalyticsModel;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by vasilypopov on 12/6/17
@@ -19,16 +18,19 @@ import retrofit2.Response;
 
 public class CollectionPresenter extends BasePresenter<CollectionContract.View> implements CollectionContract.Presenter {
 
-    private final RecAreaItemsModel itemsModel;
+    private final GetItemsTask usecase;
     private final AnalyticsModel analyticsModel;
     private final CollectionContract.Router activityRouter;
+    private final UseCaseHandler useCaseHandler;
 
-    public CollectionPresenter(@NonNull RecAreaItemsModel itemsModel,
+    public CollectionPresenter(@NonNull GetItemsTask usecase,
                                @NonNull AnalyticsModel analyticsModel,
-                               @NonNull CollectionContract.Router activityRouter) {
-        this.itemsModel = itemsModel;
+                               @NonNull CollectionContract.Router activityRouter,
+                               @NonNull UseCaseHandler useCaseHandler) {
+        this.usecase = usecase;
         this.analyticsModel = analyticsModel;
         this.activityRouter = activityRouter;
+        this.useCaseHandler = useCaseHandler;
     }
 
     @Override
@@ -42,41 +44,35 @@ public class CollectionPresenter extends BasePresenter<CollectionContract.View> 
                 view.setLoadingIndicator(true);
             }
         }
+        GetItemsTask.RequestValues requestValue = new GetItemsTask.RequestValues();
+        useCaseHandler.execute(usecase, requestValue,
+                new UseCase.UseCaseCallback<GetItemsTask.ResponseValue>() {
+                    @Override
+                    public void onSuccess(GetItemsTask.ResponseValue response) {
+                        List<RecAreaItem> items = response.getItems();
+                        // Tip: in Kotlin you can use ? to operate with nullable values.
+                        final CollectionContract.View view = view();
 
-        itemsModel.getItems(new Callback<List<RecAreaItem>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<RecAreaItem>> call, @NonNull Response<List<RecAreaItem>> response) {
-
-                List<RecAreaItem> responseBody = response.body();
-
-                // Tip: in Kotlin you can use ? to operate with nullable values.
-                final CollectionContract.View view = view();
-                if (responseBody != null)
-                {
-                    if (view != null) {
-                        view.showItems(responseBody);
+                        if (view != null) {
+                            if(items != null && items.size() > 0) {
+                                view.showItems(items);
+                            }
+                            else {
+                                view.showError();
+                            }
+                        }
                     }
-                }
-                else {
-                    if (view != null) {
-                        view.showError();
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<List<RecAreaItem>> call, @NonNull Throwable t) {
-                analyticsModel.sendError("CollectionPresenter.reloadData failed", t);
-                {
-                    // Tip: in Kotlin you can use ? to operate with nullable values.
-                    final CollectionContract.View view = view();
-
-                    if (view != null) {
-                        view.showError();
+                    @Override
+                    public void onError(Throwable t) {
+                        analyticsModel.sendError("CollectionPresenter.reloadItems failed", t);
+                        // Tip: in Kotlin you can use ? to operate with nullable values.
+                        final CollectionContract.View view = view();
+                        if (view != null) {
+                            view.showError();
+                        }
                     }
-                }
-            }
-        });
+                });
     }
 
     @Override

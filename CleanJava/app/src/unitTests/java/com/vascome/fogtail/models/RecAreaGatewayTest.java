@@ -1,8 +1,8 @@
 package com.vascome.fogtail.models;
 
-import com.vascome.fogtail.api.FogtailRestApi;
-import com.vascome.fogtail.api.entities.RecAreaItem;
-import com.vascome.fogtail.screens.main.RecAreaItemsModel;
+import com.vascome.fogtail.data.api.FogtailRestApi;
+import com.vascome.fogtail.data.gateway.RecAreaGateway;
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,14 +12,14 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
 
-public class RecAreaItemsModelTest {
+public class RecAreaGatewayTest {
     private FogtailRestApi qualityMattersRestApi;
-    private RecAreaItemsModel itemsModel;
+    private RecAreaGateway gateway;
 
     @Before
     public void beforeEachTest() {
         qualityMattersRestApi = mock(FogtailRestApi.class);
-        itemsModel = new RecAreaItemsModel(qualityMattersRestApi);
+        gateway = new RecAreaGateway(qualityMattersRestApi);
     }
 
     @Test

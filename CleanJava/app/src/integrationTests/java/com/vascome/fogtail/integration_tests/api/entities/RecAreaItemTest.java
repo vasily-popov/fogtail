@@ -2,7 +2,7 @@ package com.vascome.fogtail.integration_tests.api.entities;
 
 import com.google.gson.Gson;
 import com.vascome.fogtail.FogtailIntegrationRobolectricTestRunner;
-import com.vascome.fogtail.api.entities.RecAreaItem;
+import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
