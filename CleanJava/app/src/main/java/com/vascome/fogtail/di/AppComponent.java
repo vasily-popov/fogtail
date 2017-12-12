@@ -10,10 +10,10 @@ import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
 import com.vascome.fogtail.di.appmodules.ModelsModule;
 import com.vascome.fogtail.di.appmodules.NetworkModule;
 import com.vascome.fogtail.di.appmodules.OkHttpInterceptorsModule;
-import com.vascome.fogtail.di.ui.detail.CollectionDetailComponent;
-import com.vascome.fogtail.di.ui.main.CollectionComponent;
-import com.vascome.fogtail.di.ui.main.DeveloperSettingsComponent;
-import com.vascome.fogtail.ui.dev_settings.DeveloperSettingsModel;
+import com.vascome.fogtail.di.screens.detail.CollectionDetailComponent;
+import com.vascome.fogtail.di.screens.main.CollectionComponent;
+import com.vascome.fogtail.di.screens.main.DeveloperSettingsComponent;
+import com.vascome.fogtail.screens.dev_settings.DeveloperSettingsModel;
 import com.vascome.fogtail.utils.AnalyticsModel;
 import com.vascome.fogtail.utils.LeakCanaryProxy;
 

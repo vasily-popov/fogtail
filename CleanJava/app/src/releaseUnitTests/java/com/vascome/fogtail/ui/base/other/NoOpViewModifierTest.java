@@ -1,4 +1,4 @@
-package com.vascome.fogtail.ui.base.other;
+package com.vascome.fogtail.screens.base.other;
 
 import android.view.View;
 

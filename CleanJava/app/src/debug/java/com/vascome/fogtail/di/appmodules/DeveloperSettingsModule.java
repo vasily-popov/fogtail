@@ -4,12 +4,12 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.github.pedrovgs.lynx.LynxConfig;
-import com.vascome.fogtail.ui.base.other.ViewModifier;
-import com.vascome.fogtail.ui.dev_settings.DeveloperSettingsModel;
-import com.vascome.fogtail.ui.dev_settings.model.DeveloperSettings;
-import com.vascome.fogtail.ui.dev_settings.model.DeveloperSettingsModelImpl;
-import com.vascome.fogtail.ui.dev_settings.presenters.DeveloperSettingsPresenter;
-import com.vascome.fogtail.ui.dev_settings.views.MainActivityViewModifier;
+import com.vascome.fogtail.screens.base.other.ViewModifier;
+import com.vascome.fogtail.screens.dev_settings.DeveloperSettingsModel;
+import com.vascome.fogtail.screens.dev_settings.model.DeveloperSettings;
+import com.vascome.fogtail.screens.dev_settings.model.DeveloperSettingsModelImpl;
+import com.vascome.fogtail.screens.dev_settings.presenters.DeveloperSettingsPresenter;
+import com.vascome.fogtail.screens.dev_settings.views.MainActivityViewModifier;
 import com.vascome.fogtail.utils.AnalyticsModel;
 import com.vascome.fogtail.utils.LeakCanaryProxy;
 import com.vascome.fogtail.utils.LeakCanaryProxyImpl;

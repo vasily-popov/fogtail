@@ -4,7 +4,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.vascome.fogtail.ui.main.MainActivity">
+        tools:context="com.vascome.fogtail.screens.main.MainActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"

@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.developer_settings.DeveloperSettingsModel;
 import com.vascome.fogtail.developer_settings.LeakCanaryProxy;
-import com.vascome.fogtail.ui.base.other.NoOpViewModifier;
-import com.vascome.fogtail.ui.base.other.ViewModifier;
+import com.vascome.fogtail.screens.base.other.NoOpViewModifier;
+import com.vascome.fogtail.screens.base.other.ViewModifier;
 import com.vascome.fogtail.utils.NoOpLeakCanaryProxy;
 
 import javax.inject.Named;

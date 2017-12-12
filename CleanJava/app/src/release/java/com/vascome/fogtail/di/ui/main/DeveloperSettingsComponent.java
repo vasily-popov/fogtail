@@ -1,4 +1,4 @@
-package com.vascome.fogtail.di.ui.main;
+package com.vascome.fogtail.di.screens.main;
 
 import dagger.Subcomponent;
 
