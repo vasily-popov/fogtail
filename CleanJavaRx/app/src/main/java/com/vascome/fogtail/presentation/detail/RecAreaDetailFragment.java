@@ -48,8 +48,6 @@ public class RecAreaDetailFragment extends BaseFragment implements DetailContrac
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        RecAreaItemDetailActivity activity = (RecAreaItemDetailActivity) getActivity();
-        activity.collectionDetailComponent().detailComponent().inject(this);
     }
 
     @Nullable
@@ -83,7 +81,9 @@ public class RecAreaDetailFragment extends BaseFragment implements DetailContrac
 
         binding.listItemDescription.setText(item.shortDescription());
         binding.listItemTitle.setText(item.name());
-        imageLoader.downloadInto(item.imageUrl(), binding.listItemImageView);
+        if(item.imageUrl() != null) {
+            imageLoader.downloadInto(item.imageUrl(), binding.listItemImageView);
+        }
         presenter.bindView(this);
     }
 

@@ -123,10 +123,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation libraries.dagger.runtime
-    //implementation libraries.dagger.android
-    //implementation libraries.dagger.support
+    implementation libraries.dagger.android
+    implementation libraries.dagger.support
     annotationProcessor libraries.dagger.compiler
-    //annotationProcessor libraries.dagger.processor
+    annotationProcessor libraries.dagger.processor
 
     implementation libraries.picasso.core
     implementation libraries.picasso.downloader
@@ -145,8 +145,8 @@ dependencies {
     annotationProcessor libraries.autoValue.parsel
 
     // Make AutoValue annotation visible to the compiler.
-    compileOnly libraries.autoValue.core
-    compileOnly libraries.autoValue.gson
+    compileOnly libraries.autoValue.coreAnnotations
+    compileOnly libraries.autoValue.gsonAnnotations
 
     implementation libraries.rx.core
     implementation libraries.rx.android

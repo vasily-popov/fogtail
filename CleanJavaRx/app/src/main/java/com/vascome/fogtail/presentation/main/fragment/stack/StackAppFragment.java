@@ -15,7 +15,6 @@ import com.vascome.fogtail.databinding.StackViewFragmentBinding;
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment;
 import com.vascome.fogtail.presentation.main.CollectionContract;
 import com.vascome.fogtail.presentation.main.CollectionPresenter;
-import com.vascome.fogtail.presentation.main.MainActivity;
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem;
 import com.vascome.fogtail.presentation.main.fragment.stack.adapter.SwipeStackAdapter;
 import com.vascome.fogtail.presentation.main.utils.CollectionAreaItemListener;
@@ -52,9 +51,6 @@ public class StackAppFragment extends BaseFragment implements CollectionContract
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        MainActivity activity = (MainActivity) getActivity();
-        activity.collectionComponent().stackComponent().inject(this);
     }
 
     @Nullable

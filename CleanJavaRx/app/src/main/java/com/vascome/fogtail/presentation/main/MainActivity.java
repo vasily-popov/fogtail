@@ -8,11 +8,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
-import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.databinding.ActivityMainBinding;
-import com.vascome.fogtail.di.presentation.main.CollectionComponent;
-import com.vascome.fogtail.di.presentation.main.CollectionModule;
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment;
 import com.vascome.fogtail.presentation.base.other.ViewModifier;
 import com.vascome.fogtail.presentation.base.views.BaseActivity;
@@ -37,17 +34,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     CollectionContract.Router router;
 
     private ActivityMainBinding binding;
-    private CollectionComponent collectionComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        collectionComponent = FogtailApplication.get(this)
-                .appComponent()
-                .collectionComponent()
-                .collectionModule(new CollectionModule(this))
-                .build();
-        collectionComponent.inject(this);
         
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setContentView(viewModifier.modify(binding.getRoot()));
@@ -110,11 +100,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @NonNull
-    public CollectionComponent collectionComponent() {
-        return collectionComponent;
     }
 
 }

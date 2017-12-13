@@ -1,9 +1,12 @@
 package com.vascome.fogtail.presentation.base.fragments;
 
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 
-import com.vascome.fogtail.FogtailApplication;
+import com.vascome.fogtail.utils.LeakCanaryProxy;
+
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerFragment;
 
 
 /**
@@ -11,7 +14,10 @@ import com.vascome.fogtail.FogtailApplication;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends DaggerFragment {
+
+    @Inject
+    LeakCanaryProxy leakCanaryProxy;
 
     protected void runIfFragmentAlive(@NonNull Runnable runnable) {
         if (isFragmentAlive()) {
@@ -25,7 +31,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        FogtailApplication.get(getContext()).appComponent().leakCanaryProxy().watch(this);
+        leakCanaryProxy.watch(this);
         super.onDestroy();
     }
 }

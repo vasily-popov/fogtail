@@ -14,7 +14,6 @@ public class DetailPresenter extends BasePresenter<DetailContract.View> implemen
 
     @Inject
     public DetailPresenter() {
-
     }
 
     @Override

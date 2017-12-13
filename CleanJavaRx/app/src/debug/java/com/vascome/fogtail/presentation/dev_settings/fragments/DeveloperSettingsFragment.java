@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.github.pedrovgs.lynx.LynxActivity;
 import com.github.pedrovgs.lynx.LynxConfig;
-import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.R;
 import com.vascome.fogtail.databinding.FragmentDeveloperSettingsBinding;
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment;
@@ -47,11 +46,6 @@ public class DeveloperSettingsFragment extends BaseFragment implements Developer
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FogtailApplication.get(getContext())
-                .appComponent()
-                .developerSettingsComponent()
-                .build()
-                .inject(this);
     }
 
     @NonNull

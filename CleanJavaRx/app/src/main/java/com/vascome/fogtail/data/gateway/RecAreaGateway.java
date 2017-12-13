@@ -7,6 +7,8 @@ import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 
 /**
@@ -19,6 +21,7 @@ public class RecAreaGateway implements  ItemsDataSource {
     @NonNull
     private final FogtailRestApi restApi;
 
+    @Inject
     public RecAreaGateway(@NonNull FogtailRestApi restApi) {
         this.restApi = restApi;
     }

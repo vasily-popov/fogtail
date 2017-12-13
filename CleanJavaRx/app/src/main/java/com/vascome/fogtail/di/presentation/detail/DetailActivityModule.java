@@ -3,12 +3,14 @@ package com.vascome.fogtail.di.presentation.detail;
 import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.di.ActivityScope;
+import com.vascome.fogtail.di.FragmentScope;
 import com.vascome.fogtail.presentation.base.router.BaseRouter;
 import com.vascome.fogtail.presentation.detail.DetailRouter;
-import com.vascome.fogtail.presentation.detail.RecAreaItemDetailActivity;
+import com.vascome.fogtail.presentation.detail.RecAreaDetailFragment;
 
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
+import dagger.android.ContributesAndroidInjector;
 
 /**
  * Created by vasilypopov on 12/12/17
@@ -16,20 +18,16 @@ import dagger.Provides;
  */
 
 @Module
-public class DetailModule {
+public abstract class DetailActivityModule {
 
-    private RecAreaItemDetailActivity activity;
+    @FragmentScope
+    @ContributesAndroidInjector
+    abstract RecAreaDetailFragment detailFragment();
 
-    public DetailModule(RecAreaItemDetailActivity activity) {
-        this.activity = activity;
-    }
-
-    @Provides
+    @Binds
     @NonNull
     @ActivityScope
-    public BaseRouter provideRouter() {
-        return new DetailRouter(activity);
-    }
+    abstract BaseRouter provideDetailRouter(DetailRouter router);
 }
 
 

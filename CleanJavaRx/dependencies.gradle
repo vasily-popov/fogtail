@@ -28,6 +28,7 @@ ext.versions = [
         retrofit                     : '2.3.0',
 
         autoValue                    : '1.5.2',
+        autoValueAnnotation          : '1.5',
         autoValueGson                : '0.6.0',
         supportLibs                  : '26.0.2',
 
@@ -101,9 +102,11 @@ ext.libraries = [
 
         gson                    : "com.google.code.gson:gson:$versions.gson",
         autoValue : [
-                core   : "com.google.auto.value:auto-value:$versions.autoValue",
-                gson   : "com.ryanharter.auto.value:auto-value-gson:$versions.autoValueGson",
-                parsel : "com.ryanharter.auto.value:auto-value-parcel:0.2.5"
+                core            : "com.google.auto.value:auto-value:$versions.autoValue",
+                coreAnnotations : "com.jakewharton.auto.value:auto-value-annotations:$versions.autoValueAnnotation",
+                gson            : "com.ryanharter.auto.value:auto-value-gson:$versions.autoValueGson",
+                parsel          : "com.ryanharter.auto.value:auto-value-parcel:0.2.5",
+                gsonAnnotations : "com.ryanharter.auto.value:auto-value-gson-annotations:$versions.autoValueGson",
         ],
         support: [
                 annotations: "com.android.support:support-annotations:$versions.supportLibs",

@@ -16,7 +16,6 @@ import com.vascome.fogtail.databinding.RecyclerRefreshableViewFragmentBinding;
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment;
 import com.vascome.fogtail.presentation.main.CollectionContract;
 import com.vascome.fogtail.presentation.main.CollectionPresenter;
-import com.vascome.fogtail.presentation.main.MainActivity;
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem;
 import com.vascome.fogtail.presentation.main.fragment.list.adapter.ListAreaAdapter;
 import com.vascome.fogtail.presentation.main.fragment.table.decorator.BoxSpaceItemDecoration;
@@ -51,9 +50,6 @@ public class GridAppFragment extends BaseFragment implements CollectionContract.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        MainActivity activity = (MainActivity) getActivity();
-        activity.collectionComponent().gridComponent().inject(this);
     }
 
     @Nullable

@@ -2,8 +2,6 @@ package com.vascome.fogtail.di.appmodules;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -15,7 +13,6 @@ import com.vascome.fogtail.data.network.AppImageLoader;
 import com.vascome.fogtail.data.network.EntityTypeAdapterFactory;
 import com.vascome.fogtail.data.network.PicassoImageLoader;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -29,21 +26,6 @@ import timber.log.Timber;
  */
 @Module
 public class ApplicationModule {
-
-    @NonNull
-    private final Application application;
-
-    public ApplicationModule(@NonNull Application application) {
-        this.application = application;
-    }
-
-    @Provides
-    @NonNull
-    @Singleton
-    public Application provideFogtailApp() {
-        return application;
-    }
-
 
     @Provides
     @NonNull
@@ -81,7 +63,7 @@ public class ApplicationModule {
     @Provides
     @NonNull
     @Singleton
-    public Context provideContext() {
+    public Context provideContext(Application application) {
         return application.getApplicationContext();
     }
 

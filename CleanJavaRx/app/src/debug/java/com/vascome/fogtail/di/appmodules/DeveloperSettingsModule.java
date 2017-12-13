@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.github.pedrovgs.lynx.LynxConfig;
+import com.vascome.fogtail.di.presentation.dev_settings.DevMenuModule;
 import com.vascome.fogtail.presentation.base.other.ViewModifier;
 import com.vascome.fogtail.presentation.dev_settings.DeveloperSettingsModel;
 import com.vascome.fogtail.presentation.dev_settings.model.DeveloperSettings;
@@ -29,7 +30,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-@Module
+@Module(includes = DevMenuModule.class)
 public class DeveloperSettingsModule {
 
     @NonNull

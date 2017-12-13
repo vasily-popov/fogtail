@@ -1,19 +1,20 @@
 package com.vascome.fogtail.presentation.base.views;
 
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.vascome.fogtail.R;
 
+import dagger.android.support.DaggerAppCompatActivity;
+
 /**
  * Created by vasilypopov on 11/22/17
  * Copyright (c) 2017 fogtail. All rights reserved.
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends DaggerAppCompatActivity {
 
     @Nullable
     private Toolbar toolbar;

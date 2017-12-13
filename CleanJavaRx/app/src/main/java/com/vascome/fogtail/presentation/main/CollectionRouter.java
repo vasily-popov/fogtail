@@ -7,6 +7,8 @@ import com.vascome.fogtail.presentation.base.router.BaseRouter;
 import com.vascome.fogtail.presentation.detail.RecAreaItemDetailActivity;
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem;
 
+import javax.inject.Inject;
+
 
 /**
  * Created by vasilypopov on 12/12/17
@@ -15,6 +17,7 @@ import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem;
 
 public class CollectionRouter extends BaseRouter<MainActivity> implements CollectionContract.Router {
 
+    @Inject
     public CollectionRouter(MainActivity activity) {
         super(activity);
     }
