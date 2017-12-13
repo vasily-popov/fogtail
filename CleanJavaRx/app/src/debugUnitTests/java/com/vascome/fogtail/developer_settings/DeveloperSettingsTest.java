@@ -3,7 +3,7 @@ package com.vascome.fogtail.developer_settings;
 import com.vascome.fogtail.BuildConfig;
 import com.vascome.fogtail.FogtailRobolectricUnitTestRunner;
 import com.vascome.fogtail.FogtailUnitTestApp;
-import com.vascome.fogtail.screens.dev_settings.model.DeveloperSettings;
+import com.vascome.fogtail.presentation.dev_settings.model.DeveloperSettings;
 
 import org.junit.Before;
 import org.junit.Test;

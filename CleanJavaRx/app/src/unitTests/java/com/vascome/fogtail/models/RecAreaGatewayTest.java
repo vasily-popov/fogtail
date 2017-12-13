@@ -2,7 +2,7 @@ package com.vascome.fogtail.models;
 
 import com.vascome.fogtail.data.api.FogtailRestApi;
 import com.vascome.fogtail.data.gateway.RecAreaGateway;
-import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
+import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem;
 
 import org.junit.Before;
 import org.junit.Test;

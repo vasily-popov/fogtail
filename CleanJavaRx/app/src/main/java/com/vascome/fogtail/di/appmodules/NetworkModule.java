@@ -25,7 +25,7 @@ import okhttp3.OkHttpClient;
 @Module
 public class NetworkModule {
 
-    static final long DISK_CACHE_SIZE = 50*1024*1024; //50Mb
+    private static final long DISK_CACHE_SIZE = 50*1024*1024; //50Mb
 
     @Provides
     @NonNull

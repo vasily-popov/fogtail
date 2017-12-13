@@ -1,4 +1,4 @@
-package com.vascome.fogtail.screens.base.other;
+package com.vascome.fogtail.presentation.base.other;
 
 import android.support.annotation.NonNull;
 import android.view.View;

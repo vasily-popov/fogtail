@@ -4,8 +4,8 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.vascome.fogtail.di.DaggerAppComponent;
+import com.vascome.fogtail.di.appmodules.AnalyticsModule;
 import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
-import com.vascome.fogtail.di.appmodules.ModelsModule;
 import com.vascome.fogtail.utils.AnalyticsModel;
 
 import static org.mockito.Mockito.mock;
@@ -16,7 +16,7 @@ public class FogtailUnitTestApp extends FogtailApplication {
     @Override
     protected DaggerAppComponent.Builder prepareApplicationComponent() {
         return super.prepareApplicationComponent()
-                .modelsModule(new ModelsModule() {
+                .analyticsModule(new AnalyticsModule() {
                     @NonNull
                     @Override
                     public AnalyticsModel provideAnalyticsModel(@NonNull Application app) {

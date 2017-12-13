@@ -2,11 +2,12 @@ package com.vascome.fogtail.data.api;
 
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.screens.main.domain.model.RecAreaItem;
+import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem;
 
 import java.util.List;
 
-import retrofit2.Call;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.http.GET;
 
 /**
@@ -17,5 +18,5 @@ import retrofit2.http.GET;
 public interface FogtailRestApi {
 
     @GET("RecArea.json") @NonNull
-    Call<List<RecAreaItem>> items();
+    Observable<List<RecAreaItem>> items();
 }

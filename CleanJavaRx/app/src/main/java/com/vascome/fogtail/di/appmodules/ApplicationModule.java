@@ -30,8 +30,6 @@ import timber.log.Timber;
 @Module
 public class ApplicationModule {
 
-    public static final String MAIN_THREAD_HANDLER = "main_thread_handler";
-
     @NonNull
     private final Application application;
 
@@ -61,14 +59,6 @@ public class ApplicationModule {
         return new GsonBuilder()
                 .registerTypeAdapterFactory(typeAdapterFactory)
                 .create();
-    }
-
-    @Provides
-    @NonNull
-    @Named(MAIN_THREAD_HANDLER)
-    @Singleton
-    public Handler provideMainThreadHandler() {
-        return new Handler(Looper.getMainLooper());
     }
 
     @Provides

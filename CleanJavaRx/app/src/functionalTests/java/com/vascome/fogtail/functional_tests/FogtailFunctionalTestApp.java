@@ -7,7 +7,7 @@ import com.vascome.fogtail.di.DaggerAppComponent;
 import com.vascome.fogtail.FogtailApplication;
 import com.vascome.fogtail.data.api.ApiConfiguration;
 import com.vascome.fogtail.di.appmodules.ApiModule;
-import com.vascome.fogtail.di.appmodules.ModelsModule;
+import com.vascome.fogtail.di.appmodules.AnalyticsModule;
 import com.vascome.fogtail.utils.AnalyticsModel;
 
 import timber.log.Timber;
@@ -25,7 +25,7 @@ public class FogtailFunctionalTestApp extends FogtailApplication {
                         return () -> "/";
                     }
                 })
-                .modelsModule(new ModelsModule() {
+                .analyticsModule(new AnalyticsModule() {
                     @NonNull
                     @Override
                     public AnalyticsModel provideAnalyticsModel(@NonNull Application app) {

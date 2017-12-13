@@ -4,12 +4,12 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.github.pedrovgs.lynx.LynxConfig;
-import com.vascome.fogtail.screens.base.other.ViewModifier;
-import com.vascome.fogtail.screens.dev_settings.DeveloperSettingsModel;
-import com.vascome.fogtail.screens.dev_settings.model.DeveloperSettings;
-import com.vascome.fogtail.screens.dev_settings.model.DeveloperSettingsModelImpl;
-import com.vascome.fogtail.screens.dev_settings.presenters.DeveloperSettingsPresenter;
-import com.vascome.fogtail.screens.dev_settings.views.MainActivityViewModifier;
+import com.vascome.fogtail.presentation.base.other.ViewModifier;
+import com.vascome.fogtail.presentation.dev_settings.DeveloperSettingsModel;
+import com.vascome.fogtail.presentation.dev_settings.model.DeveloperSettings;
+import com.vascome.fogtail.presentation.dev_settings.model.DeveloperSettingsModelImpl;
+import com.vascome.fogtail.presentation.dev_settings.presenters.DeveloperSettingsPresenter;
+import com.vascome.fogtail.presentation.dev_settings.views.MainActivityViewModifier;
 import com.vascome.fogtail.utils.AnalyticsModel;
 import com.vascome.fogtail.utils.LeakCanaryProxy;
 import com.vascome.fogtail.utils.LeakCanaryProxyImpl;
@@ -67,25 +67,6 @@ public class DeveloperSettingsModule {
     @Singleton
     public Paperwork providePaperwork(@NonNull Application application) {
         return new Paperwork(application);
-    }
-
-    // We will use this concrete type for debug code, but main code will see only DeveloperSettingsModel interface.
-    @Provides
-    @NonNull
-    @Singleton
-    public DeveloperSettingsModelImpl provideDeveloperSettingsModelImpl(@NonNull Application application,
-                                                                        @NonNull DeveloperSettings developerSettings,
-                                                                        @NonNull HttpLoggingInterceptor httpLoggingInterceptor,
-                                                                        @NonNull LeakCanaryProxy leakCanaryProxy,
-                                                                        @NonNull Paperwork paperwork) {
-        return new DeveloperSettingsModelImpl(application, developerSettings, httpLoggingInterceptor, leakCanaryProxy, paperwork);
-    }
-
-    @Provides
-    @NonNull
-    public DeveloperSettingsPresenter provideDeveloperSettingsPresenter(@NonNull DeveloperSettingsModelImpl developerSettingsModelImpl,
-                                                                        @NonNull AnalyticsModel analyticsModel) {
-        return new DeveloperSettingsPresenter(developerSettingsModelImpl, analyticsModel);
     }
 
     @NonNull

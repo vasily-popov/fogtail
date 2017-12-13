@@ -2,8 +2,10 @@ package com.vascome.fogtail.di.appmodules;
 
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.data.thread.ThreadPoolScheduler;
-import com.vascome.fogtail.data.thread.ThreadScheduler;
+import com.vascome.fogtail.data.thread.DataThread;
+import com.vascome.fogtail.data.thread.JobExecutor;
+import com.vascome.fogtail.presentation.base.domain.executor.ExecutionThread;
+import com.vascome.fogtail.presentation.base.domain.executor.ThreadExecutor;
 
 import javax.inject.Singleton;
 
@@ -22,7 +24,15 @@ public class ThreadModule {
     @Provides
     @NonNull
     @Singleton
-    public ThreadScheduler threadPoolScheduler() {
-        return new ThreadPoolScheduler();
+    ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
+        return jobExecutor;
     }
+
+    @Provides
+    @NonNull
+    @Singleton
+    ExecutionThread providePostExecutionThread(DataThread dataThread) {
+        return dataThread;
+    }
+
 }

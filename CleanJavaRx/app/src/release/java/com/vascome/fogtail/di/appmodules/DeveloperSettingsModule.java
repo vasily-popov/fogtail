@@ -2,9 +2,9 @@ package com.vascome.fogtail.di.appmodules;
 
 import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.screens.base.other.NoOpViewModifier;
-import com.vascome.fogtail.screens.base.other.ViewModifier;
-import com.vascome.fogtail.screens.dev_settings.DeveloperSettingsModel;
+import com.vascome.fogtail.presentation.base.other.NoOpViewModifier;
+import com.vascome.fogtail.presentation.base.other.ViewModifier;
+import com.vascome.fogtail.presentation.dev_settings.DeveloperSettingsModel;
 import com.vascome.fogtail.utils.LeakCanaryProxy;
 import com.vascome.fogtail.utils.NoOpLeakCanaryProxy;
 

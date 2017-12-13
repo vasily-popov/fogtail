@@ -7,14 +7,14 @@ import com.vascome.fogtail.data.api.FogtailRestApi;
 import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.di.appmodules.ApplicationModule;
 import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
-import com.vascome.fogtail.di.appmodules.ModelsModule;
+import com.vascome.fogtail.di.appmodules.AnalyticsModule;
 import com.vascome.fogtail.di.appmodules.NetworkModule;
 import com.vascome.fogtail.di.appmodules.OkHttpInterceptorsModule;
 import com.vascome.fogtail.di.appmodules.ThreadModule;
-import com.vascome.fogtail.di.screens.detail.CollectionDetailComponent;
-import com.vascome.fogtail.di.screens.main.CollectionComponent;
-import com.vascome.fogtail.di.screens.main.DeveloperSettingsComponent;
-import com.vascome.fogtail.screens.dev_settings.DeveloperSettingsModel;
+import com.vascome.fogtail.di.presentation.detail.CollectionDetailComponent;
+import com.vascome.fogtail.di.presentation.main.CollectionComponent;
+import com.vascome.fogtail.di.presentation.main.DeveloperSettingsComponent;
+import com.vascome.fogtail.presentation.dev_settings.DeveloperSettingsModel;
 import com.vascome.fogtail.utils.AnalyticsModel;
 import com.vascome.fogtail.utils.LeakCanaryProxy;
 
@@ -35,7 +35,7 @@ import dagger.Component;
         OkHttpInterceptorsModule.class,
         ApiModule.class,
         ThreadModule.class,
-        ModelsModule.class,
+        AnalyticsModule.class,
         DeveloperSettingsModule.class,
 })
 public interface AppComponent {
