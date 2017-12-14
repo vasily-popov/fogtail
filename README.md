@@ -8,8 +8,7 @@ It's based on some known projects like [qualitymatters](https://github.com/artem
 * `MVPJavaRX`   - mvp demo project which showcases usage of Dagger2, RxJava 2, etc
 * `MVPJavaRXDagger2`   - mvp demo project Dagger2 + DaggerAndroid, RxJava 2, etc
 * `CleanJava` - clean architeure demo project based on MVP with Dagger, without Rx.
-
-* `CleanJavaRX` - clean architeure demo project based on MVP with Dagger, RxJava. - planning
+* `CleanJavaRX` - clean architeure demo project based on MVP with Dagger2+DaggerAndroid, RxJava.
 * `MVVMJava` - mvvm demo project which showcases usage of Dagger2, RxJava 2, RxBinding, RxAndroid, etc - planning
 * `MVPKotlin` - planning
 * `MVVMKotlin` - planning
