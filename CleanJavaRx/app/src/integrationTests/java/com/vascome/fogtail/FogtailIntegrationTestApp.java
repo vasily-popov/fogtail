@@ -10,28 +10,32 @@ import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
 import com.vascome.fogtail.utils.AnalyticsModel;
 
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
+
 import static org.mockito.Mockito.mock;
 
 public class FogtailIntegrationTestApp extends FogtailApplication {
 
-    @NonNull
     @Override
-    protected DaggerAppComponent.Builder prepareApplicationComponent() {
-        return super.prepareApplicationComponent()
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        appComponent = DaggerAppComponent.builder()
+                .application(this)
                 .apiModule(new ApiModule() {
                     @NonNull
                     @Override
                     public ApiConfiguration provideConfiguration() {
-                        return () -> "/";
+                        return () -> "https://test/";
                     }
-                })
-                .analyticsModule(new AnalyticsModule() {
+                }).analyticsModule(new AnalyticsModule() {
                     @NonNull
                     @Override
-                    public AnalyticsModel provideAnalyticsModel(@NonNull Application app) {
-                        return mock(AnalyticsModel.class); // We don't need real analytics in integration tests.
+                    public AnalyticsModel provideAnalyticsModel(Application application) {
+                        return mock(AnalyticsModel.class);
                     }
                 })
-                .developerSettingsModule(new DeveloperSettingsModule());
+                .devSettingsModule(new DeveloperSettingsModule())
+                .build();
+        return appComponent;
     }
 }

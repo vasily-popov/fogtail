@@ -10,22 +10,23 @@ import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.di.appmodules.AnalyticsModule;
 import com.vascome.fogtail.utils.AnalyticsModel;
 
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
 import timber.log.Timber;
 
 public class FogtailFunctionalTestApp extends FogtailApplication {
 
-    @NonNull
     @Override
-    protected DaggerAppComponent.Builder prepareApplicationComponent() {
-        return super.prepareApplicationComponent()
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        appComponent = DaggerAppComponent.builder()
+                .application(this)
                 .apiModule(new ApiModule() {
                     @NonNull
                     @Override
                     public ApiConfiguration provideConfiguration() {
-                        return () -> "/";
+                        return () -> "https://test/";
                     }
-                })
-                .analyticsModule(new AnalyticsModule() {
+                }).analyticsModule(new AnalyticsModule() {
                     @NonNull
                     @Override
                     public AnalyticsModel provideAnalyticsModel(@NonNull Application app) {
@@ -60,6 +61,7 @@ public class FogtailFunctionalTestApp extends FogtailApplication {
                             }
                         };
                     }
-                });
+                }).build();
+        return appComponent;
     }
 }

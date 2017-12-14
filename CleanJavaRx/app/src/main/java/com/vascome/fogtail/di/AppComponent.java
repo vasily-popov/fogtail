@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.vascome.fogtail.FogtailApplication;
+import com.vascome.fogtail.data.api.FogtailRestApi;
 import com.vascome.fogtail.di.appmodules.AnalyticsModule;
 import com.vascome.fogtail.di.appmodules.ApiModule;
 import com.vascome.fogtail.di.appmodules.ApplicationModule;
@@ -43,11 +44,11 @@ public interface AppComponent extends AndroidInjector<FogtailApplication> {
     // Provide Gson from the real app to the tests without need in injection to the test.
     @NonNull
     Gson gson();
-/*
+
     // Provide FogtailRestApi from the real app to the tests without need in injection to the test.
     @NonNull
     FogtailRestApi provideRestApi();
-
+/*
     // Provide LeakCanary without injection to leave.
     @NonNull
     LeakCanaryProxy leakCanaryProxy();
