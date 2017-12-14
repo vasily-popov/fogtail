@@ -15,12 +15,13 @@ import org.robolectric.annotation.Config;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.observers.TestObserver;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import retrofit2.HttpException;
 
-import static junit.framework.Assert.fail;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -35,19 +36,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(FogtailIntegrationRobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 26, application = FogtailIntegrationTestApp.class)
 public class FogtailRestApiIntegrationTest {
-    private MockWebServer mockWebServer;
-    private FogtailRestApi fogtailRestApi;
+
+    @Inject
+    MockWebServer mockWebServer;
+    @Inject
+    FogtailRestApi fogtailRestApi;
 
     @Before
-    public void beforeEachTest() throws IOException {
-        mockWebServer = new MockWebServer();
-        mockWebServer.start();
-        fogtailRestApi = FogtailIntegrationRobolectricTestRunner.fogtailApplication()
-                .appComponent().provideRestApi();
+    public void setUp() {
+
+        FogtailIntegrationTestApp.MockAppComponent component =
+                (FogtailIntegrationTestApp.MockAppComponent)FogtailIntegrationRobolectricTestRunner.fogtailApplication().appComponent;
+        component.inject(this);
     }
 
     @After
-    public void afterEachTest() throws IOException {
+    public void shutdown() throws IOException {
         mockWebServer.shutdown();
     }
 
@@ -93,16 +97,12 @@ public class FogtailRestApiIntegrationTest {
     public void items_shouldThrowExceptionIfWebServerRespondError() {
         for (Integer errorCode : HttpCodes.clientAndServerSideErrorCodes()) {
             mockWebServer.enqueue(new MockResponse().setStatus("HTTP/1.1 " + errorCode + " Not today"));
-            try {
-                /*
-                TestObserver<List<RecAreaItem>> testObserver =
+            TestObserver<List<RecAreaItem>> testObserver =
                         fogtailRestApi.items().test();
-                testObserver.awaitTerminalEvent();
-                testObserver.assertNoErrors();
-*/
-                //fail("HttpException should be thrown for error code: " + errorCode);
-            } catch (RuntimeException expected) {
-                HttpException httpException = (HttpException) expected.getCause();
+            testObserver.awaitTerminalEvent();
+            testObserver.assertError(HttpException.class);
+            for(Throwable expected :testObserver.errors()) {
+                HttpException httpException = (HttpException) expected;
                 assertThat(httpException.code()).isEqualTo(errorCode);
                 assertThat(httpException.message()).isEqualTo("Not today");
             }

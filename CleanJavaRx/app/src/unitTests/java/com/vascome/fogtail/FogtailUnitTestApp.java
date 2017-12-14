@@ -1,42 +1,54 @@
 package com.vascome.fogtail;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.data.api.ApiConfiguration;
 import com.vascome.fogtail.di.AppComponent;
-import com.vascome.fogtail.di.DaggerAppComponent;
-import com.vascome.fogtail.di.appmodules.AnalyticsModule;
-import com.vascome.fogtail.di.appmodules.ApiModule;
+import com.vascome.fogtail.di.IntegrationTestModule;
+import com.vascome.fogtail.di.MockAnalyticsModule;
+import com.vascome.fogtail.di.appmodules.ApplicationModule;
 import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
-import com.vascome.fogtail.utils.AnalyticsModel;
+import com.vascome.fogtail.di.appmodules.OkHttpInterceptorsModule;
 
+import javax.inject.Singleton;
+
+import dagger.BindsInstance;
+import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
-
-import static org.mockito.Mockito.mock;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 public class FogtailUnitTestApp extends FogtailApplication {
 
+    @Singleton
+    @Component( modules = {
+            ApplicationModule.class,
+            IntegrationTestModule.class,
+            MockAnalyticsModule.class,
+            OkHttpInterceptorsModule.class,
+            DeveloperSettingsModule.class,
+            AndroidSupportInjectionModule.class
+    })
+    public interface MockAppComponent extends AppComponent {
+        //void inject(FogtailRestApiIntegrationTest test);
+
+        @Component.Builder
+        interface Builder {
+
+            @BindsInstance
+            MockAppComponent.Builder application(Application app);
+            MockAppComponent.Builder devSettingsModule(DeveloperSettingsModule module);
+
+            MockAppComponent build();
+        }
+    }
+
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
-        appComponent = DaggerAppComponent.builder()
+        appComponent = DaggerFogtailUnitTestApp_MockAppComponent.builder()
                 .application(this)
-                .apiModule(new ApiModule() {
-                    @NonNull
-                    @Override
-                    public ApiConfiguration provideConfiguration() {
-                        return () -> "https://test/";
-                    }
-                })
-                .analyticsModule(new AnalyticsModule() {
-                    @NonNull
-                    @Override
-                    public AnalyticsModel provideAnalyticsModel(@NonNull Application app) {
-                        return mock(AnalyticsModel.class); // We don't need real analytics in Unit tests.
-                    }
-                })
+                .devSettingsModule(new DeveloperSettingsModule())
                 .build();
         return appComponent;
     }
+
 }

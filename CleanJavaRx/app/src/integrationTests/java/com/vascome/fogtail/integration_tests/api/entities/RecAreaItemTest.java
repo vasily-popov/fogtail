@@ -1,26 +1,43 @@
 package com.vascome.fogtail.integration_tests.api.entities;
 
+
 import com.google.gson.Gson;
+import com.vascome.fogtail.BuildConfig;
 import com.vascome.fogtail.FogtailIntegrationRobolectricTestRunner;
+import com.vascome.fogtail.FogtailIntegrationTestApp;
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.annotation.Config;
 
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
 
 @RunWith(FogtailIntegrationRobolectricTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 26, application = FogtailIntegrationTestApp.class)
 public class RecAreaItemTest {
+
+    @Inject
+    Gson gson;
+
+    @Before
+    public void setUp() {
+        FogtailIntegrationTestApp.MockAppComponent component =
+                (FogtailIntegrationTestApp.MockAppComponent)FogtailIntegrationRobolectricTestRunner.fogtailApplication().appComponent;
+        component.inject(this);
+    }
 
     // Why test JSON serialization/deserialization?
     // 1. Update JSON libraries without worrying about breaking changes.
     // 2. Be sure that @JsonIgnore and similar annotations do not affect expected behavior (cc @karlicos).
     @Test
     public void fromJson() throws IOException {
-        Gson gson = FogtailIntegrationRobolectricTestRunner.fogtailApplication().appComponent().gson();
 
         RecAreaItem item = gson.fromJson("{ " +
                         "\"RecAreaID\": \"test_id\", " +

@@ -41,31 +41,10 @@ import dagger.android.support.AndroidSupportInjectionModule;
 })
 public interface AppComponent extends AndroidInjector<FogtailApplication> {
 
-    // Provide Gson from the real app to the tests without need in injection to the test.
-    @NonNull
-    Gson gson();
-
-    // Provide FogtailRestApi from the real app to the tests without need in injection to the test.
-    @NonNull
-    FogtailRestApi provideRestApi();
-/*
-    // Provide LeakCanary without injection to leave.
-    @NonNull
-    LeakCanaryProxy leakCanaryProxy();
-
-    @NonNull
-    AnalyticsModel analyticsModel();
-
-    DeveloperSettingsModel developerSettingModel();
-*/
     @Component.Builder
     interface Builder {
         @BindsInstance
         Builder application(Application app);
-
-        Builder apiModule(ApiModule module); //this allow to specify module in test
-        Builder analyticsModule(AnalyticsModule module); //this allow to specify module in test
-        Builder devSettingsModule(DeveloperSettingsModule module); //this allow to specify module in test
         AppComponent build();
     }
 

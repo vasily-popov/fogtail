@@ -1,67 +1,52 @@
 package com.vascome.fogtail.functional_tests;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 
-import com.vascome.fogtail.di.DaggerAppComponent;
 import com.vascome.fogtail.FogtailApplication;
-import com.vascome.fogtail.data.api.ApiConfiguration;
-import com.vascome.fogtail.di.appmodules.ApiModule;
-import com.vascome.fogtail.di.appmodules.AnalyticsModule;
-import com.vascome.fogtail.utils.AnalyticsModel;
+import com.vascome.fogtail.di.AppComponent;
+import com.vascome.fogtail.di.FunctionalAnalyticsModule;
+import com.vascome.fogtail.di.FunctionalTestModule;
+import com.vascome.fogtail.di.appmodules.ApplicationModule;
+import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule;
+import com.vascome.fogtail.di.appmodules.OkHttpInterceptorsModule;
 
+import javax.inject.Singleton;
+
+import dagger.BindsInstance;
+import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
-import timber.log.Timber;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 public class FogtailFunctionalTestApp extends FogtailApplication {
 
+    @Singleton
+    @Component( modules = {
+            ApplicationModule.class,
+            FunctionalTestModule.class,
+            FunctionalAnalyticsModule.class,
+            OkHttpInterceptorsModule.class,
+            DeveloperSettingsModule.class,
+            AndroidSupportInjectionModule.class
+    })
+    public interface MockAppComponent extends AppComponent {
+        //void inject(FogtailRestApiIntegrationTest test);
+
+        @Component.Builder
+        interface Builder {
+
+            @BindsInstance
+            Builder application(Application app);
+
+            MockAppComponent build();
+        }
+    }
+
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
-        appComponent = DaggerAppComponent.builder()
+        appComponent = DaggerFogtailFunctionalTestApp_MockAppComponent.builder()
                 .application(this)
-                .apiModule(new ApiModule() {
-                    @NonNull
-                    @Override
-                    public ApiConfiguration provideConfiguration() {
-                        return () -> "https://test/";
-                    }
-                }).analyticsModule(new AnalyticsModule() {
-                    @NonNull
-                    @Override
-                    public AnalyticsModel provideAnalyticsModel(@NonNull Application app) {
-                        // We don't need real analytics in Functional tests, but let's just log it instead!
-                        return new AnalyticsModel() {
-
-                            // We'll check that application initializes Analytics before working with it!
-                            private volatile boolean isInitialized;
-
-                            @Override
-                            public void init() {
-                                isInitialized = true;
-                                Timber.d("Analytics: initialized.");
-                            }
-
-                            @Override
-                            public void sendEvent(@NonNull String eventName) {
-                                throwIfNotInitialized();
-                                Timber.d("Analytics: send event %s", eventName);
-                            }
-
-                            @Override
-                            public void sendError(@NonNull String message, @NonNull Throwable error) {
-                                throwIfNotInitialized();
-                                Timber.e(error, message);
-                            }
-
-                            private void throwIfNotInitialized() {
-                                if (!isInitialized) {
-                                    throw new AssertionError("Analytics was not initialized!");
-                                }
-                            }
-                        };
-                    }
-                }).build();
+                .build();
         return appComponent;
     }
 }

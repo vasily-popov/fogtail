@@ -169,11 +169,13 @@ dependencies {
     testImplementation libraries.assertJ
     testImplementation libraries.mockitoCore
     testImplementation libraries.okhttp.mock
+    testAnnotationProcessor libraries.dagger.compiler
 
     androidTestImplementation libraries.testRunners.runner
     androidTestImplementation libraries.testRunners.rules
     androidTestImplementation libraries.espresso.core
     androidTestImplementation libraries.okhttp.mock
+    androidTestAnnotationProcessor libraries.dagger.compiler
     //androidTestImplementation(libraries.espresso.contrib
 
     // Developer tools (Developer Settings)
