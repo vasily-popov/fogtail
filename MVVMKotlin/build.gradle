@@ -1,0 +1,111 @@
+import com.android.build.gradle.internal.tasks.AndroidTestTask
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: 'dependencies.gradle'
+
+buildscript {
+    ext.kotlin_version = '1.2.10'
+
+    // Gradle will not find vars defined in an external file when referring to them
+    // in the build script block, unless you link it from the buildscript block, too.
+    apply from: 'dependencies.gradle'
+
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven {
+            url 'https://plugins.gradle.org/m2'
+        }
+    }
+
+    dependencies {
+        // See dependencies.gradle for declaration of plugins.
+
+        classpath gradlePlugins.android
+
+        // Generates build info without breaking incremental builds.
+        classpath gradlePlugins.paperwork
+
+        // Code coverage.
+        classpath gradlePlugins.jacoco
+
+        // Catches common Java mistakes as compile-time errors.
+        //classpath gradlePlugins.errorProne
+
+        // Check latest version of dependencies, task: dependencyUpdates
+        classpath gradlePlugins.versions
+
+        // Analyse builds to profile
+        classpath gradlePlugins.buildScan
+
+        //firebase
+        classpath gradlePlugins.googleServices
+
+        //Kotlin
+        classpath gradlePlugins.kotlin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+project.ext {
+    if (project.hasProperty('preDexEnable')) {
+        project.ext.preDexLibs = project.properties['preDexEnable'].equals('true')
+    } else {
+        project.ext.preDexLibs = true // pre dexing should be true by default
+    }
+}
+
+subprojects {
+
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+    }
+
+    println('PREDEX ' + (rootProject.ext.preDexLibs ? 'ENABLED' : 'DISABLED')) // goes to build log or console output
+    project.plugins.whenPluginAdded { plugin ->
+        if ("com.android.build.gradle.AppPlugin" == plugin.class.name) {
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+        } else if ("com.android.build.gradle.LibraryPlugin" == plugin.class.name) {
+            project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
+        }
+    }
+
+    //project.plugins.apply('net.ltgt.errorprone')
+
+    afterEvaluate {
+        println('Check tasks')
+        tasks.findByName('pmd').dependsOn('assemble')
+        tasks.findByName('findbugs').dependsOn('assemble')
+
+        def checkTask = tasks.findByName('check')
+
+        checkTask.dependsOn('pmd')
+        checkTask.dependsOn('findbugs')
+        checkTask.dependsOn('checkstyle')
+
+        dependencyUpdates.outputDir = new File("${projectDir}/build/reports/versions")
+        // Log instrumentation tests results.
+        tasks.withType(AndroidTestTask) { task ->
+            task.doFirst {
+                logging.level = LogLevel.INFO
+            }
+            task.doLast {
+                logging.level = LogLevel.LIFECYCLE
+            }
+        }
+    }
+}
+
+apply plugin: 'com.gradle.build-scan'
+//apply plugin: 'net.ltgt.errorprone'
+buildScan {
+    licenseAgreementUrl = 'https://gradle.com/terms-of-service'
+    licenseAgree = 'yes'
+}

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "138265840940",
+    "firebase_url": "https://fogtail-ef019.firebaseio.com",
+    "project_id": "fogtail-ef019",
+    "storage_bucket": "fogtail-ef019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138265840940:android:e4f4a02d62656808",
+        "android_client_info": {
+          "package_name": "com.vascome.fogtail"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138265840940-2tpmpb6ur4qrdq97d5sinkh540sj6vf9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAecDqrvPLTxf04DezvAjHfAtpD4Tj_of0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
