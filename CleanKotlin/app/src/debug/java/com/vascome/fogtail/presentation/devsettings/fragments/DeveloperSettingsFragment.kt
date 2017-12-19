@@ -61,10 +61,8 @@ class DeveloperSettingsFragment : BaseFragment(), DeveloperSettingsView {
         binding.developerSettingsTinyDancerSwitch
                 .setOnCheckedChangeListener { _, checked -> presenter.changeTinyDancerState(checked) }
 
-
-/*
         binding.developerSettingsHttpLoggingLevelSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View, position: Int, l: Long) {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View?, position: Int, l: Long) {
                 presenter.changeHttpLoggingLevel(
                         (binding.developerSettingsHttpLoggingLevelSpinner.getItemAtPosition(position) as HttpLoggingLevel).loggingLevel)
             }
@@ -73,7 +71,6 @@ class DeveloperSettingsFragment : BaseFragment(), DeveloperSettingsView {
 
             }
         }
-*/
         binding.developerSettingsLeakCanarySwitch
                 .setOnCheckedChangeListener { _, checked -> presenter.changeLeakCanaryState(checked) }
 
