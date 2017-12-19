@@ -11,5 +11,5 @@ It's based on some known projects like [qualitymatters](https://github.com/artem
 * `CleanJavaRX` - clean architeure demo project based on MVP with Dagger2+DaggerAndroid, RxJava.
 * `CleanKotlin` - clean architeure demo project based on MVP. with RxJava
 * `MVVMJavaRx` - mvvm demo project which showcases usage of Dagger2, RxJava 2, RxBinding, RxAndroid
-* `MVVMKotlin` - planning
+* `MVVMKotlin` - mvvm demo project which showcases usage of Dagger2, RxJava 2, RxBinding, RxAndroid
 
