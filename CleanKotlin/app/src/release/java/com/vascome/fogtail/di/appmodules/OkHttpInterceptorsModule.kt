@@ -22,14 +22,14 @@ class OkHttpInterceptorsModule {
     @Provides
     @OkHttpInterceptors
     @Singleton
-    fun provideOkHttpInterceptors(): List<Interceptor> {
+    fun provideOkHttpInterceptors(): List<@JvmSuppressWildcards Interceptor> {
         return emptyList()
     }
 
     @Provides
     @OkHttpNetworkInterceptors
     @Singleton
-    fun provideOkHttpNetworkInterceptors(): List<Interceptor> {
+    fun provideOkHttpNetworkInterceptors(): List<@JvmSuppressWildcards Interceptor> {
         return emptyList()
     }
 }

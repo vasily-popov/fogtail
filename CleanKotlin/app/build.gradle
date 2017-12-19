@@ -133,8 +133,6 @@ dependencies {
     implementation libraries.dagger.support
     kapt libraries.dagger.compiler
     kapt libraries.dagger.processor
-    kaptDebug libraries.dagger.compiler
-    kaptDebug libraries.dagger.processor
 
     implementation libraries.picasso.core
     implementation libraries.picasso.downloader
@@ -177,13 +175,13 @@ dependencies {
     testImplementation libraries.assertJ
     testImplementation libraries.mockitoCore
     testImplementation libraries.okhttp.mock
-    kaptAndroidTest libraries.dagger.compiler
+    kaptTest libraries.dagger.compiler
 
     androidTestImplementation libraries.testRunners.runner
     androidTestImplementation libraries.testRunners.rules
     androidTestImplementation libraries.espresso.core
     androidTestImplementation libraries.okhttp.mock
-    androidTestAnnotationProcessor libraries.dagger.compiler
+    kaptAndroidTest libraries.dagger.compiler
     //androidTestImplementation(libraries.espresso.contrib
 
     // Developer tools (Developer Settings)
@@ -195,15 +193,6 @@ dependencies {
     debugImplementation libraries.tinyDancer
     debugImplementation libraries.lynx
 }
-
-
-configurations.all {
-    resolutionStrategy {
-        // Force our version of support-annotations, we have a conflict between app and androidTest dependency resolution.
-        force libraries.support.annotations
-    }
-}
-
 
 apply plugin: 'com.google.gms.google-services'
 repositories {
