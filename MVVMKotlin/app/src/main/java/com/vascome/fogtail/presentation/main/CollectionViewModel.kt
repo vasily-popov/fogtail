@@ -68,7 +68,7 @@ class CollectionViewModel
         // Bind refresh
         disposables.add(refreshCommand
                 /* Discard the old signal if a new one comes in within 500 ms. */
-                .debounce(500, TimeUnit.MILLISECONDS, scheduler.IO())
+                .debounce(100, TimeUnit.MILLISECONDS, scheduler.IO())
                 .doOnNext { _ -> loadingSubject.accept(true) }
                 /* Start the refreshing */
                 .switchMap { _ ->
