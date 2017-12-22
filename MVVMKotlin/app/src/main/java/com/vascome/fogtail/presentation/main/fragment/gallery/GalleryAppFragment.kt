@@ -20,6 +20,7 @@ import com.vascome.fogtail.presentation.main.dto.RecAreaItem
 import com.vascome.fogtail.presentation.main.fragment.gallery.adapter.GalleryAreaAdapter
 import com.vascome.fogtail.presentation.main.fragment.table.decorator.BoxSpaceItemDecoration
 import com.vascome.fogtail.presentation.main.utils.CollectionAreaItemListener
+import io.reactivex.rxkotlin.addTo
 
 import javax.inject.Inject
 
@@ -68,32 +69,34 @@ class GalleryAppFragment : BaseFragment(), CollectionAreaItemListener {
     }
 
     private fun subscribeEvents() {
-        disposables.add(
-                viewModel.showProgress()
-                        .observeOn(scheduler.UI())
-                        .subscribe(RxSwipeRefreshLayout.refreshing(binding.recyclerViewSwipeRefresh)))
-        disposables.add(
-                RxSwipeRefreshLayout.refreshes(binding.recyclerViewSwipeRefresh)
-                        .map { _ -> true }
-                        .subscribe { value -> viewModel.refreshCommand.accept(value) })
 
-        disposables.add(
-                viewModel.items()
-                        .observeOn(scheduler.UI())
-                        .subscribe({ recAreaItems ->
-                            if (recAreaItems.isNotEmpty()) {
-                                binding.itemsLoadingErrorUi.visibility = View.GONE
-                                binding.recyclerViewSwipeRefresh.visibility = View.VISIBLE
-                                galleryAreaAdapter.setData(recAreaItems)
-                            } else {
-                                binding.recyclerViewSwipeRefresh.visibility = View.GONE
-                                binding.itemsLoadingErrorUi.visibility = View.VISIBLE
-                            }
-                        }))
+        viewModel.inProgress
+                .observeOn(scheduler.UI())
+                .subscribe(RxSwipeRefreshLayout.refreshing(binding.recyclerViewSwipeRefresh))
+                .addTo(disposables)
 
-        disposables.add(
-                RxView.clicks(binding.itemsLoadingErrorTryAgainButton)
-                        .subscribe { _ -> viewModel.refreshCommand.accept(true) })
+        RxSwipeRefreshLayout.refreshes(binding.recyclerViewSwipeRefresh)
+                .map { _ -> true }
+                .subscribe { value -> viewModel.refreshCommand.accept(value) }
+                .addTo(disposables)
+
+        viewModel.items
+                .observeOn(scheduler.UI())
+                .subscribe({ recAreaItems ->
+                    if (recAreaItems.isNotEmpty()) {
+                        binding.itemsLoadingErrorUi.visibility = View.GONE
+                        binding.recyclerViewSwipeRefresh.visibility = View.VISIBLE
+                        galleryAreaAdapter.setData(recAreaItems)
+                    } else {
+                        binding.recyclerViewSwipeRefresh.visibility = View.GONE
+                        binding.itemsLoadingErrorUi.visibility = View.VISIBLE
+                    }
+                })
+                .addTo(disposables)
+
+        RxView.clicks(binding.itemsLoadingErrorTryAgainButton)
+                .subscribe { _ -> viewModel.refreshCommand.accept(true) }
+                .addTo(disposables)
     }
 
 

@@ -164,6 +164,7 @@ dependencies {
     implementation libraries.rx.relay
     implementation libraries.rx.recyclerviewv7
     implementation libraries.rx.supportv4
+    implementation libraries.rx.kotlin
     //implementation libraries.rx.lint
 
     implementation libraries.support.appCompat

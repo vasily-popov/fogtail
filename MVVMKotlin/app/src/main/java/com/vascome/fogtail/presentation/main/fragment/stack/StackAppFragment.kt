@@ -21,6 +21,7 @@ import javax.inject.Inject
 
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import io.reactivex.rxkotlin.addTo
 
 /**
  * Created by vasilypopov on 12/6/17
@@ -64,30 +65,30 @@ class StackAppFragment : BaseFragment(), CollectionAreaItemListener {
     }
 
     private fun subscribeEvents() {
-        disposables.add(
-                viewModel.showProgress()
-                        .observeOn(scheduler.UI())
-                        .subscribe { value -> binding.itemsLoadingUi.visibility = if (value) VISIBLE else GONE }
-        )
 
-        disposables.add(
-                viewModel.items()
-                        .observeOn(scheduler.UI())
-                        .subscribe({ recAreaItems ->
+        viewModel.inProgress
+                .observeOn(scheduler.UI())
+                .subscribe { value -> binding.itemsLoadingUi.visibility = if (value) VISIBLE else GONE }
+                .addTo(disposables)
 
-                            if (recAreaItems.isNotEmpty()) {
-                                binding.itemsLoadingErrorUi.visibility = View.GONE
-                                binding.swipeStack.visibility = View.VISIBLE
-                                swipeStackAdapter.setData(recAreaItems)
-                            } else {
-                                binding.swipeStack.visibility = View.GONE
-                                binding.itemsLoadingErrorUi.visibility = View.VISIBLE
-                            }
-                        }))
+        viewModel.items
+                .observeOn(scheduler.UI())
+                .subscribe({ recAreaItems ->
 
-        disposables.add(
-                RxView.clicks(binding.itemsLoadingErrorTryAgainButton)
-                        .subscribe { _ -> viewModel.refreshCommand.accept(true) })
+                    if (recAreaItems.isNotEmpty()) {
+                        binding.itemsLoadingErrorUi.visibility = View.GONE
+                        binding.swipeStack.visibility = View.VISIBLE
+                        swipeStackAdapter.setData(recAreaItems)
+                    } else {
+                        binding.swipeStack.visibility = View.GONE
+                        binding.itemsLoadingErrorUi.visibility = View.VISIBLE
+                    }
+                })
+                .addTo(disposables)
+
+        RxView.clicks(binding.itemsLoadingErrorTryAgainButton)
+                .subscribe { _ -> viewModel.refreshCommand.accept(true) }
+                .addTo(disposables)
     }
 
     private fun initRecyclerView() {

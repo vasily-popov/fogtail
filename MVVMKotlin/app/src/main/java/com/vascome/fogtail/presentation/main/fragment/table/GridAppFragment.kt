@@ -71,7 +71,7 @@ class GridAppFragment : BaseFragment(), CollectionAreaItemListener {
     @SuppressLint("RxSubscribeOnError")
     private fun subscribeEvents() {
         disposables.add(
-                viewModel.showProgress()
+                viewModel.inProgress
                         .observeOn(scheduler.UI())
                         .subscribe(RxSwipeRefreshLayout.refreshing(binding.recyclerViewSwipeRefresh)))
         disposables.add(
@@ -80,7 +80,7 @@ class GridAppFragment : BaseFragment(), CollectionAreaItemListener {
                         .subscribe { value -> viewModel.refreshCommand.accept(value) })
 
         disposables.add(
-                viewModel.items()
+                viewModel.items
                         .observeOn(scheduler.UI())
                         .subscribe({ recAreaItems ->
                             if (recAreaItems.isNotEmpty()) {

@@ -16,6 +16,7 @@ import javax.inject.Inject
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
 
 /**
@@ -30,7 +31,7 @@ class CollectionViewModel
             private val scheduler: ExecutionScheduler,
             private val router: CollectionRouter) {
 
-    private val disposables: CompositeDisposable = CompositeDisposable()
+    private val composite: CompositeDisposable = CompositeDisposable()
 
 
     /**
@@ -52,21 +53,17 @@ class CollectionViewModel
     /**
      * Emits the received items.
      */
-    fun items(): Observable<List<RecAreaItem>> {
-        return refreshSubject.hide()
-    }
+    val items: Observable<List<RecAreaItem>> = refreshSubject.hide()
 
     /**
      * Emits a value if the progress should be shown or hidden.
      */
-    fun showProgress(): Observable<Boolean> {
-        return loadingSubject.hide()
-    }
+    val inProgress: Observable<Boolean> = loadingSubject.hide()
 
 
     init {
         // Bind refresh
-        disposables.add(refreshCommand
+        refreshCommand
                 /* Discard the old signal if a new one comes in within 500 ms. */
                 .debounce(100, TimeUnit.MILLISECONDS, scheduler.IO())
                 .doOnNext { _ -> loadingSubject.accept(true) }
@@ -80,19 +77,16 @@ class CollectionViewModel
                 .doOnEach { _ -> loadingSubject.accept(false) }
                 .subscribeOn(scheduler.IO())
                 .subscribe({ refreshSubject.onNext(it) })
-        )
+                .addTo(composite)
 
-        disposables.add(
-                openDetailCommand.toFlowable(BackpressureStrategy.LATEST)
-                        .observeOn(scheduler.UI())
-                        .subscribeOn(scheduler.UI())
-                        .subscribe({ router.openDetailForItem(it) })
-        )
+        openDetailCommand.toFlowable(BackpressureStrategy.LATEST)
+                .observeOn(scheduler.UI())
+                .subscribeOn(scheduler.UI())
+                .subscribe({ router.openDetailForItem(it) })
+                .addTo(composite)
     }
 
     fun destroy() {
-        if (!disposables.isDisposed) {
-            disposables.dispose()
-        }
+        composite.clear()
     }
 }
