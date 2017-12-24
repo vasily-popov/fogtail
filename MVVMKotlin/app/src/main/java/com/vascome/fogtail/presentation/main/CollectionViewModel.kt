@@ -2,19 +2,18 @@ package com.vascome.fogtail.presentation.main
 
 import android.annotation.SuppressLint
 
-import com.jakewharton.rxrelay2.BehaviorRelay
 import com.jakewharton.rxrelay2.PublishRelay
 import com.vascome.fogtail.data.gateway.ItemsDataSource
 import com.vascome.fogtail.data.thread.ExecutionScheduler
 import com.vascome.fogtail.presentation.main.dto.RecAreaItem
 
-import java.util.ArrayList
 import java.util.concurrent.TimeUnit
 
 import javax.inject.Inject
 
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
@@ -48,7 +47,7 @@ class CollectionViewModel
     // Members
 
     private val refreshSubject = BehaviorSubject.create<List<RecAreaItem>>()
-    private val loadingSubject = BehaviorRelay.createDefault(false)
+    private val progress = PublishRelay.create<Boolean>()
 
     /**
      * Emits the received items.
@@ -58,23 +57,26 @@ class CollectionViewModel
     /**
      * Emits a value if the progress should be shown or hidden.
      */
-    val inProgress: Observable<Boolean> = loadingSubject.hide()
+    val inProgress: Observable<Boolean> = progress.hide()
 
 
     init {
+
+        val submit = ObservableTransformer<Boolean, List<RecAreaItem>> { trigger ->
+            trigger.debounce(100, TimeUnit.MILLISECONDS, scheduler.IO())
+                    .flatMap { _ -> source.items
+                            .onErrorResumeNext(Observable.just(emptyList()))
+                            .onExceptionResumeNext(Observable.just(emptyList()))
+                    }
+        }
+
         // Bind refresh
         refreshCommand
-                /* Discard the old signal if a new one comes in within 500 ms. */
-                .debounce(100, TimeUnit.MILLISECONDS, scheduler.IO())
-                .doOnNext { _ -> loadingSubject.accept(true) }
-                /* Start the refreshing */
-                .switchMap { _ ->
-                    source.items
-                            .onErrorResumeNext(Observable.just(ArrayList()))
-                            .onExceptionResumeNext(Observable.just(ArrayList()))
-                }
-                //.startWith(loadingSubject.hide())
-                .doOnEach { _ -> loadingSubject.accept(false) }
+                .doOnNext { progress.accept(true) }
+                .observeOn(scheduler.IO()) //https://github.com/JakeWharton/RxBinding/issues/368
+                .compose(submit)
+                .observeOn(scheduler.UI())
+                .doOnNext { progress.accept(false) }
                 .subscribeOn(scheduler.IO())
                 .subscribe({ refreshSubject.onNext(it) })
                 .addTo(composite)

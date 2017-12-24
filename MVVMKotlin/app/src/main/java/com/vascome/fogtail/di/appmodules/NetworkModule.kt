@@ -40,7 +40,7 @@ class NetworkModule {
             okHttpBuilder.addNetworkInterceptor(networkInterceptor)
         }
 
-        val cacheDir = File(app.getCacheDir(), "http")
+        val cacheDir = File(app.cacheDir, "http")
         val cache = Cache(cacheDir, DISK_CACHE_SIZE)
 
         okHttpBuilder.cache(cache)
