@@ -103,6 +103,10 @@ android {
         enabled = true
     }
 
+    androidExtensions {
+        experimental = true
+    }
+
     packagingOptions {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
@@ -143,19 +147,12 @@ dependencies {
     implementation libraries.okhttp.core
 
     implementation libraries.retrofit.core
-    implementation libraries.retrofit.gson
+    implementation libraries.retrofit.moshi
     implementation libraries.retrofit.rx
-    implementation libraries.gson
+    implementation libraries.moshi.core
+    //implementation libraries.moshi.kotlin
 
     implementation libraries.timber
-
-    kapt libraries.autoValue.core
-    kapt libraries.autoValue.gson
-    kapt libraries.autoValue.parsel
-
-    // Make AutoValue annotation visible to the compiler.
-    compileOnly libraries.autoValue.coreAnnotations
-    compileOnly libraries.autoValue.gsonAnnotations
 
     implementation libraries.rx.core
     implementation libraries.rx.android

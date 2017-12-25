@@ -54,9 +54,9 @@ internal class GalleryAreaAdapter(private val layoutInflater: LayoutInflater,
         private val shortDescriptionTextView: TextView = itemView.findViewById(R.id.list_item_description)
 
         fun bind(item: RecAreaItem) {
-            imageLoader.downloadInto(item.imageUrl()!!, imageView)
-            titleTextView.text = item.name()
-            shortDescriptionTextView.text = item.shortDescription()
+            imageLoader.downloadInto(item.imageUrl!!, imageView)
+            titleTextView.text = item.name
+            shortDescriptionTextView.text = item.shortDescription
         }
 
     }

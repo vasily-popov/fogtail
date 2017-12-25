@@ -45,8 +45,8 @@ class RecAreaItemDetailActivity : BaseActivity(), View.OnTouchListener {
         val fragment = supportFragmentManager
                 .findFragmentById(R.id.map) as? SupportMapFragment
         fragment?.getMapAsync { map ->
-            if (item.latitude() != null && item.longitude() != null) {
-                val latLng = LatLng(item.latitude()!!, item.longitude()!!)
+            if (item.latitude != null && item.longitude != null) {
+                val latLng = LatLng(item.latitude!!, item.longitude!!)
                 map.addMarker(MarkerOptions()
                         .position(latLng)
                         .draggable(false))

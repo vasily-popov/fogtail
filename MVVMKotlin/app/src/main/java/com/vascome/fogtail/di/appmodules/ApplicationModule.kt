@@ -3,13 +3,10 @@ package com.vascome.fogtail.di.appmodules
 import android.app.Application
 import android.content.Context
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.TypeAdapterFactory
 import com.jakewharton.picasso.OkHttp3Downloader
+import com.squareup.moshi.Moshi
 import com.squareup.picasso.Picasso
 import com.vascome.fogtail.data.network.AppImageLoader
-import com.vascome.fogtail.data.network.EntityTypeAdapterFactory
 import com.vascome.fogtail.data.network.PicassoImageLoader
 
 import javax.inject.Singleton
@@ -25,18 +22,19 @@ import timber.log.Timber
  */
 @Module
 class ApplicationModule {
+    /*
     @Provides
     @Singleton
-    fun provideTypeAdapterFactory():TypeAdapterFactory {
-        return EntityTypeAdapterFactory.create()
+    fun provideTypeAdapterFactory(): JsonAdapter.Factory {
+        return KotlinJsonAdapterFactory()
     }
-
+*/
     @Provides
     @Singleton
-    fun provideGson(typeAdapterFactory:TypeAdapterFactory):Gson {
-        return GsonBuilder()
-                .registerTypeAdapterFactory(typeAdapterFactory)
-                .create()
+    fun provideMoshi():Moshi {
+        return Moshi.Builder()
+                //.add(typeAdapterFactory)
+                .build()
     }
 
     @Provides
@@ -57,6 +55,6 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideContext(application:Application):Context {
-        return application.getApplicationContext()
+        return application.applicationContext
     }
 }

@@ -31,17 +31,17 @@ class DetailViewModel
         val itemObservable = setItemCommand.share()
 
         disposables.add(
-                itemObservable.map({ it.shortDescription() })
+                itemObservable.map({ it.shortDescription })
                         .subscribe({ descriptionSubject.onNext(it) })
         )
 
         disposables.add(
-                itemObservable.map({ it.name() })
+                itemObservable.map({ it.name })
                         .subscribe({ nameSubject.onNext(it) })
         )
 
         disposables.add(
-                itemObservable.map({ it.imageUrl() })
+                itemObservable.map({ it.imageUrl })
                         .subscribe({ it?.let { it1 -> imageSubject.onNext(it1) } })
         )
 

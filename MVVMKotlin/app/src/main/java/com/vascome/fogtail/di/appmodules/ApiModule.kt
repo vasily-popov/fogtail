@@ -1,6 +1,6 @@
 package com.vascome.fogtail.di.appmodules
 
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import com.vascome.fogtail.BuildConfig
 import com.vascome.fogtail.data.api.ApiConfiguration
 import com.vascome.fogtail.data.api.FogtailRestApi
@@ -12,7 +12,7 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 /**
  * Created by vasilypopov on 11/22/17
@@ -25,12 +25,12 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideRestApi(okHttpClient:OkHttpClient,
-                       gson:Gson,
+                       moshi:Moshi,
                        config:ApiConfiguration):FogtailRestApi {
         return Retrofit.Builder()
                 .baseUrl(config.baseApiUrl)
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .validateEagerly(BuildConfig.DEBUG)  // Fail early: check Retrofit configuration at creation time in Debug build.
                 .build()

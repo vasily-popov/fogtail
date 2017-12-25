@@ -62,18 +62,18 @@ class SwipeStackAdapter(private val layoutInflater: LayoutInflater,
 
     private fun setupData(viewHolder: ViewHolder, item: RecAreaItem) {
 
-        viewHolder.titleTextView.text = item.name()
-        viewHolder.shortDescriptionTextView.text = item.shortDescription()
+        viewHolder.titleTextView.text = item.name
+        viewHolder.shortDescriptionTextView.text = item.shortDescription
 
-        item.imageUrl()?.run {
-            imageLoader.downloadInto(item.imageUrl()!!, viewHolder.imageView)
+        item.imageUrl?.run {
+            imageLoader.downloadInto(item.imageUrl, viewHolder.imageView)
         }
     }
 
     private inner class ViewHolder(convertView: View) {
-        var imageView: ImageView = convertView.findViewById<ImageView>(R.id.list_item_image_view) as ImageView
-        var titleTextView: TextView = convertView.findViewById<TextView>(R.id.list_item_title) as TextView
-        var shortDescriptionTextView: TextView = convertView.findViewById<TextView>(R.id.list_item_description) as TextView
+        var imageView: ImageView = convertView.findViewById(R.id.list_item_image_view) as ImageView
+        var titleTextView: TextView = convertView.findViewById(R.id.list_item_title) as TextView
+        var shortDescriptionTextView: TextView = convertView.findViewById(R.id.list_item_description) as TextView
 
     }
 }

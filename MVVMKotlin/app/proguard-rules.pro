@@ -28,3 +28,14 @@
 -keep public class com.google.android.gms.* { public *; }
 -dontwarn com.google.android.gms.**
 -dontwarn com.google.errorprone.annotations.*
+
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-keepclasseswithmembers class * {
+    @com.squareup.moshi.* <methods>;
+}
+-keep @com.squareup.moshi.JsonQualifier interface *
+
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}

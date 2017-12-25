@@ -23,16 +23,13 @@ ext.versions = [
         googleServices               :'3.1.1',
 
         dagger                       : '2.13',
-        gson                         : '2.8.2',
+        moshi                        : '1.5.0',
         picasso                      : '2.5.2',
         picassoOkHttpDownloader      : '1.1.0',
 
         okHttp                       : '3.9.1',
         retrofit                     : '2.3.0',
 
-        autoValue                    : '1.5.2',
-        autoValueAnnotation          : '1.5',
-        autoValueGson                : '0.7.0',
         supportLibs                  : '26.0.2',
 
         timber                       : '4.6.0',
@@ -90,7 +87,7 @@ ext.libraries = [
 
         retrofit: [
                 core    : "com.squareup.retrofit2:retrofit:$versions.retrofit",
-                gson    : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+                moshi   : "com.squareup.retrofit2:converter-moshi:$versions.retrofit",
                 rx      : "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit",
         ],
 
@@ -108,14 +105,11 @@ ext.libraries = [
                 lint                : "nl.littlerobots.rxlint:rxlint:$versions.rxLint",
         ],
 
-        gson                    : "com.google.code.gson:gson:$versions.gson",
-        autoValue : [
-                core            : "com.google.auto.value:auto-value:$versions.autoValue",
-                coreAnnotations : "com.jakewharton.auto.value:auto-value-annotations:$versions.autoValueAnnotation",
-                gson            : "com.ryanharter.auto.value:auto-value-gson:$versions.autoValueGson",
-                parsel          : "com.ryanharter.auto.value:auto-value-parcel:0.2.5",
-                gsonAnnotations : "com.ryanharter.auto.value:auto-value-gson-annotations:$versions.autoValueGson",
+        moshi : [
+               core : "com.squareup.moshi:moshi:$versions.moshi",
+               //kotlin : "com.squareup.moshi:moshi-kotlin:$versions.moshi",
         ],
+
         support: [
                 annotations: "com.android.support:support-annotations:$versions.supportLibs",
                 appCompat: "com.android.support:appcompat-v7:$versions.supportLibs",
