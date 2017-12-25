@@ -1,11 +1,9 @@
 package com.vascome.fogtail.presentation.base.fragments
 
 import com.vascome.fogtail.utils.LeakCanaryProxy
-
-import javax.inject.Inject
-
 import dagger.android.support.DaggerFragment
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
 
 /**

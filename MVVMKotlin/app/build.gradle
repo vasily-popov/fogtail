@@ -202,7 +202,6 @@ dependencies {
     debugImplementation libraries.leakCanary.real
     debugImplementation libraries.tinyDancer
     debugImplementation libraries.lynx
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'

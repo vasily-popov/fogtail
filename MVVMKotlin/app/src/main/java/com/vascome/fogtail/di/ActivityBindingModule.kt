@@ -16,10 +16,10 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class ActivityBindingModule {
     @ActivityScope
-    @ContributesAndroidInjector(modules = arrayOf(MainActivityModule::class))
+    @ContributesAndroidInjector(modules = [(MainActivityModule::class)])
     internal abstract fun mainActivity(): MainActivity
 
     @ActivityScope
-    @ContributesAndroidInjector(modules = arrayOf(DetailActivityModule::class))
+    @ContributesAndroidInjector(modules = [(DetailActivityModule::class)])
     internal abstract fun recAreaItemDetailActivity(): RecAreaItemDetailActivity
 }

@@ -4,7 +4,6 @@ import com.android.build.gradle.internal.tasks.AndroidTestTask
 apply from: 'dependencies.gradle'
 
 buildscript {
-    ext.kotlin_version = '1.2.10'
 
     // Gradle will not find vars defined in an external file when referring to them
     // in the build script block, unless you link it from the buildscript block, too.
@@ -44,7 +43,6 @@ buildscript {
 
         //Kotlin
         classpath gradlePlugins.kotlin
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 

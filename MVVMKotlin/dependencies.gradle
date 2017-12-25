@@ -32,7 +32,7 @@ ext.versions = [
 
         autoValue                    : '1.5.2',
         autoValueAnnotation          : '1.5',
-        autoValueGson                : '0.6.0',
+        autoValueGson                : '0.7.0',
         supportLibs                  : '26.0.2',
 
         timber                       : '4.6.0',

@@ -2,12 +2,10 @@ package com.vascome.fogtail.presentation.detail
 
 import com.jakewharton.rxrelay2.PublishRelay
 import com.vascome.fogtail.presentation.main.dto.RecAreaItem
-
-import javax.inject.Inject
-
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
+import javax.inject.Inject
 
 /**
  * Created by vasilypopov on 12/12/17

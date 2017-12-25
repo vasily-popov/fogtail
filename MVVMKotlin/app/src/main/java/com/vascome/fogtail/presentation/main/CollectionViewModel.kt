@@ -1,16 +1,10 @@
 package com.vascome.fogtail.presentation.main
 
 import android.annotation.SuppressLint
-
 import com.jakewharton.rxrelay2.PublishRelay
 import com.vascome.fogtail.data.gateway.ItemsDataSource
 import com.vascome.fogtail.data.thread.ExecutionScheduler
 import com.vascome.fogtail.presentation.main.dto.RecAreaItem
-
-import java.util.concurrent.TimeUnit
-
-import javax.inject.Inject
-
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
@@ -18,6 +12,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 /**
  * Created by vasilypopov on 12/6/17

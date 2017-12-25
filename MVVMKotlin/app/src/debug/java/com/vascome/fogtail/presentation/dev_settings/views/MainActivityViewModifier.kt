@@ -19,7 +19,7 @@ class MainActivityViewModifier : ViewModifier {
 
     override fun <T : View> modify(view: T): T {
         // Basically, what we do here is adding a Developer Setting Fragment to a DrawerLayout!
-        val drawerLayout = view.findViewById<DrawerLayout>(R.id.main_drawer_layout)
+        val drawerLayout = view.findViewById<DrawerLayout>(R.id.mainDrawerLayout)
 
         val layoutParams = DrawerLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         layoutParams.gravity = Gravity.END

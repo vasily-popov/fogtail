@@ -1,7 +1,6 @@
 package com.vascome.fogtail.presentation.detail
 
 import android.annotation.SuppressLint
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -12,9 +11,9 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.vascome.fogtail.R
-import com.vascome.fogtail.databinding.ActivityDetailBinding
 import com.vascome.fogtail.presentation.base.activity.BaseActivity
 import com.vascome.fogtail.presentation.main.dto.RecAreaItem
+import kotlinx.android.synthetic.main.activity_detail.*
 
 import javax.inject.Inject
 
@@ -25,8 +24,6 @@ import javax.inject.Inject
 
 class RecAreaItemDetailActivity : BaseActivity(), View.OnTouchListener {
 
-
-    private lateinit var binding: ActivityDetailBinding
     private lateinit var item: RecAreaItem
 
     @Inject
@@ -41,10 +38,9 @@ class RecAreaItemDetailActivity : BaseActivity(), View.OnTouchListener {
             item = extra.getParcelable("item")
         }
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
-        setContentView(binding.root)
+        setContentView(layoutInflater.inflate(R.layout.activity_detail, null))
 
-        binding.transparentImage.setOnTouchListener(this)
+        transparentImage.setOnTouchListener(this)
 
         val fragment = supportFragmentManager
                 .findFragmentById(R.id.map) as? SupportMapFragment
@@ -76,11 +72,11 @@ class RecAreaItemDetailActivity : BaseActivity(), View.OnTouchListener {
     override fun onTouch(view: View, event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
-                binding.scrollView.requestDisallowInterceptTouchEvent(true)
+                scrollView.requestDisallowInterceptTouchEvent(true)
                 return false
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                binding.scrollView.requestDisallowInterceptTouchEvent(false)
+                scrollView.requestDisallowInterceptTouchEvent(false)
                 return true
             }
         }

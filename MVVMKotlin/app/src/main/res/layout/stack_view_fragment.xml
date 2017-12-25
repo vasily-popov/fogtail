@@ -1,48 +1,46 @@
-<layout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/items_loading_ui"
+    <ProgressBar
+        android:id="@+id/itemsLoadingUi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/itemsLoadingErrorUi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+            android:text="@string/items_loading_error_text" />
 
-        <LinearLayout
-            android:id="@+id/items_loading_error_ui"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
+        <Button
+            android:id="@+id/itemsLoadingErrorTryAgainButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/common_try_again_button" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/items_loading_error_text" />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/items_loading_error_try_again_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/common_try_again_button" />
-
-        </LinearLayout>
-
-        <com.daprlabs.aaron.swipedeck.SwipeDeck
-            android:id="@+id/swipeStack"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="50dp"
-            app:max_visible="4"
-            app:card_spacing="15dp"
-            app:swipe_enabled="true"/>
+    <com.daprlabs.aaron.swipedeck.SwipeDeck
+        android:id="@+id/swipeStack"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="50dp"
+        app:max_visible="4"
+        app:card_spacing="15dp"
+        app:swipe_enabled="true"/>
 
 
-    </FrameLayout>
-</layout>
+</FrameLayout>
