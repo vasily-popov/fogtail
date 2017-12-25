@@ -69,7 +69,7 @@ class GalleryAppFragment : BaseFragment(), CollectionAreaItemListener {
     }
 
     private fun subscribeEvents() {
-
+/*
         viewModel.inProgress
                 .observeOn(scheduler.UI())
                 .subscribe(RxSwipeRefreshLayout.refreshing(binding.recyclerViewSwipeRefresh))
@@ -97,6 +97,7 @@ class GalleryAppFragment : BaseFragment(), CollectionAreaItemListener {
         RxView.clicks(binding.itemsLoadingErrorTryAgainButton)
                 .subscribe { _ -> viewModel.refreshCommand.accept(true) }
                 .addTo(disposables)
+                */
     }
 
 

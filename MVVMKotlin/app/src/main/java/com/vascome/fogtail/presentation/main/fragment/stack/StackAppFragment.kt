@@ -65,7 +65,7 @@ class StackAppFragment : BaseFragment(), CollectionAreaItemListener {
     }
 
     private fun subscribeEvents() {
-
+/*
         viewModel.inProgress
                 .observeOn(scheduler.UI())
                 .subscribe { value -> binding.itemsLoadingUi.visibility = if (value) VISIBLE else GONE }
@@ -89,6 +89,7 @@ class StackAppFragment : BaseFragment(), CollectionAreaItemListener {
         RxView.clicks(binding.itemsLoadingErrorTryAgainButton)
                 .subscribe { _ -> viewModel.refreshCommand.accept(true) }
                 .addTo(disposables)
+                */
     }
 
     private fun initRecyclerView() {

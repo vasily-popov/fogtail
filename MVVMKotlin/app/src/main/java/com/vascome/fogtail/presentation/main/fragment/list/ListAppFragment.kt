@@ -19,6 +19,7 @@ import com.vascome.fogtail.presentation.main.dto.RecAreaItem
 import com.vascome.fogtail.presentation.main.fragment.list.adapter.ListAreaAdapter
 import com.vascome.fogtail.presentation.main.fragment.list.adapter.VerticalSpaceItemDecoration
 import com.vascome.fogtail.presentation.main.utils.CollectionAreaItemListener
+import io.reactivex.functions.Consumer
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.recycler_refreshable_view_fragment.*
 
@@ -67,34 +68,40 @@ class ListAppFragment : BaseFragment(), CollectionAreaItemListener {
 
     @SuppressLint("RxSubscribeOnError")
     private fun subscribeEvents() {
-        viewModel.inProgress
-                .observeOn(scheduler.UI())
-                .subscribe(RxSwipeRefreshLayout.refreshing(recyclerView_swipe_refresh))
-                .addTo(disposables)
 
         RxSwipeRefreshLayout.refreshes(recyclerView_swipe_refresh)
                 .map { _ -> true }
-                .subscribe { value -> viewModel.refreshCommand.accept(value) }
+                .subscribe {
+                     value ->
+                        viewModel.refreshCommand.accept(value)
+                }
                 .addTo(disposables)
 
         viewModel.items
                 .observeOn(scheduler.UI())
-                .subscribe({ recAreaItems ->
-                    if (recAreaItems.isNotEmpty()) {
-                        items_loading_error_ui.visibility = View.GONE
-                        recyclerView_swipe_refresh.visibility = View.VISIBLE
-                        listAreaAdapter.setData(recAreaItems)
-                    } else {
-                        recyclerView_swipe_refresh.visibility = View.GONE
-                        items_loading_error_ui.visibility = View.VISIBLE
+                .subscribe({ model ->
+                    recyclerView_swipe_refresh.post { recyclerView_swipe_refresh.isRefreshing = model.inProgress  }
+                    if(!model.inProgress) {
+                        if (model.success) {
+                            items_loading_error_ui.visibility = View.GONE
+                            recyclerView_swipe_refresh.visibility = View.VISIBLE
+                            listAreaAdapter.setData(model.items)
+                        } else {
+                            recyclerView_swipe_refresh.visibility = View.GONE
+                            items_loading_error_ui.visibility = View.VISIBLE
+                            listAreaAdapter.setData(emptyList())
+                        }
                     }
                 })
                 .addTo(disposables)
-        items_loading_error_try_again_button.clicks()
+
+        items_loading_error_try_again_button
+                .clicks()
                 .subscribe {
-                    items_loading_error_ui.visibility = View.GONE
-                    recyclerView_swipe_refresh.visibility = View.VISIBLE
-                    viewModel.refreshCommand.accept(true)   }
+                        items_loading_error_ui.visibility = View.GONE
+                        recyclerView_swipe_refresh.visibility = View.VISIBLE
+                        viewModel.refreshCommand.accept(true)
+                }
                 .addTo(disposables)
     }
 

@@ -15,8 +15,9 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableObserver
 import io.reactivex.rxkotlin.addTo
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 
 /**
  * Created by vasilypopov on 12/6/17
@@ -32,7 +33,6 @@ class CollectionViewModel
 
     private val composite: CompositeDisposable = CompositeDisposable()
 
-
     /**
      * Send item to this command to trigger refresh
      */
@@ -46,40 +46,48 @@ class CollectionViewModel
 
     // Members
 
-    private val refreshSubject = BehaviorSubject.create<List<RecAreaItem>>()
-    private val progress = PublishRelay.create<Boolean>()
+    private val itemSubject = PublishSubject.create<CollectionStateModel>()
 
     /**
      * Emits the received items.
      */
-    val items: Observable<List<RecAreaItem>> = refreshSubject.hide()
-
-    /**
-     * Emits a value if the progress should be shown or hidden.
-     */
-    val inProgress: Observable<Boolean> = progress.hide()
+    val items: Observable<CollectionStateModel> = itemSubject.hide()
 
 
     init {
-
-        val submit = ObservableTransformer<Boolean, List<RecAreaItem>> { trigger ->
-            trigger.debounce(100, TimeUnit.MILLISECONDS, scheduler.IO())
-                    .flatMap { _ -> source.items
-                            .onErrorResumeNext(Observable.just(emptyList()))
-                            .onExceptionResumeNext(Observable.just(emptyList()))
-                    }
-        }
+        val submit = ObservableTransformer<Boolean, CollectionStateModel> { trigger ->
+                    trigger.flatMap { source.items.toObservable()
+                                .delay(1000, TimeUnit.MILLISECONDS, scheduler.IO())
+                                .map { items ->  CollectionStateModel.success(items)}
+                                .onErrorReturn { t ->  CollectionStateModel.failure(t.message) }
+                                .delay(1000, TimeUnit.MILLISECONDS, scheduler.IO())
+                                .startWith(CollectionStateModel.inProgress())
+                            }
+                        }
 
         // Bind refresh
         refreshCommand
-                .doOnNext { progress.accept(true) }
                 .observeOn(scheduler.IO()) //https://github.com/JakeWharton/RxBinding/issues/368
                 .compose(submit)
-                .observeOn(scheduler.UI())
-                .doOnNext { progress.accept(false) }
                 .subscribeOn(scheduler.IO())
-                .subscribe({ refreshSubject.onNext(it) })
-                .addTo(composite)
+                //.subscribe(refreshSubject::onNext)
+                //.addTo(composite)
+
+                .subscribeWith(object : DisposableObserver<CollectionStateModel>() {
+                    override fun onError(e: Throwable) {
+                        throw IllegalStateException(
+                                "ViewState observable must not reach error state - onError()", e)
+                    }
+
+                    override fun onComplete() {
+                        throw IllegalStateException(
+                                "ViewState observable must not reach error state - onError()")
+                    }
+
+                    override fun onNext(t: CollectionStateModel) {
+                        itemSubject.onNext(t)
+                    }
+                }).addTo(composite)
 
         openDetailCommand.toFlowable(BackpressureStrategy.LATEST)
                 .observeOn(scheduler.UI())

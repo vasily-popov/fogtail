@@ -70,6 +70,7 @@ class GridAppFragment : BaseFragment(), CollectionAreaItemListener {
 
     @SuppressLint("RxSubscribeOnError")
     private fun subscribeEvents() {
+        /*
         disposables.add(
                 viewModel.inProgress
                         .observeOn(scheduler.UI())
@@ -96,6 +97,7 @@ class GridAppFragment : BaseFragment(), CollectionAreaItemListener {
         disposables.add(
                 RxView.clicks(binding.itemsLoadingErrorTryAgainButton)
                         .subscribe { _ -> viewModel.refreshCommand.accept(true) })
+                        */
     }
 
     override fun onDestroyView() {

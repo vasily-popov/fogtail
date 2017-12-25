@@ -43,7 +43,7 @@ class NetworkModule {
         val cacheDir = File(app.cacheDir, "http")
         val cache = Cache(cacheDir, DISK_CACHE_SIZE)
 
-        okHttpBuilder.cache(cache)
+        //okHttpBuilder.cache(cache)
         return okHttpBuilder.build()
     }
 

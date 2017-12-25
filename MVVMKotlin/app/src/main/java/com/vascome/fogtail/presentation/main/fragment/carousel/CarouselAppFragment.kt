@@ -72,6 +72,7 @@ class CarouselAppFragment : BaseFragment(), CollectionAreaItemListener {
 
     @SuppressLint("RxSubscribeOnError")
     private fun subscribeEvents() {
+        /*
         viewModel.inProgress
                 .observeOn(scheduler.UI())
                 .subscribe(RxSwipeRefreshLayout.refreshing(binding.recyclerViewSwipeRefresh))
@@ -99,6 +100,7 @@ class CarouselAppFragment : BaseFragment(), CollectionAreaItemListener {
         RxView.clicks(binding.itemsLoadingErrorTryAgainButton)
                 .subscribe { _ -> viewModel.refreshCommand.accept(true) }
                 .addTo(disposables)
+                */
     }
 
     private fun initRecyclerView() {

@@ -5,7 +5,7 @@ import com.vascome.fogtail.presentation.main.dto.RecAreaItem
 
 import javax.inject.Inject
 
-import io.reactivex.Observable
+import io.reactivex.Single
 
 /**
  * Created by vasilypopov on 12/12/17
@@ -16,7 +16,7 @@ class RecAreaGateway
 @Inject constructor(private val restApi: FogtailRestApi) : ItemsDataSource {
 
 
-    override val items: Observable<List<RecAreaItem>>
+    override val items: Single<List<RecAreaItem>>
         get() = restApi.items()
 
 }

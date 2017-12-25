@@ -2,7 +2,7 @@ package com.vascome.fogtail.data.gateway
 
 import com.vascome.fogtail.presentation.main.dto.RecAreaItem
 
-import io.reactivex.Observable
+import io.reactivex.Single
 
 
 /**
@@ -12,5 +12,5 @@ import io.reactivex.Observable
 
 interface ItemsDataSource {
 
-    val items: Observable<List<RecAreaItem>>
+    val items: Single<List<RecAreaItem>>
 }
