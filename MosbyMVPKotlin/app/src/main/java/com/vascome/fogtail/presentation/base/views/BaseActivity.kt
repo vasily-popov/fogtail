@@ -1,19 +1,26 @@
 package com.vascome.fogtail.presentation.base.views
 
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.ViewGroup
 
 import com.vascome.fogtail.R
-
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import javax.inject.Inject
 
 /**
  * Created by vasilypopov on 11/22/17
  * Copyright (c) 2017 fogtail. All rights reserved.
  */
 
-abstract class BaseActivity : DaggerAppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
+
+    @Inject lateinit var androidInjector: DispatchingAndroidInjector<Fragment>
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = androidInjector
 
     private var toolbar: Toolbar? = null
 

@@ -101,7 +101,7 @@ ext.libraries = [
                 android     : "io.reactivex.rxjava2:rxandroid:2.0.1",
                 //preferences': 'com.f2prateek.rx.preferences:rx-preferences:1.0.2',
                 //'rxbinding': compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0',
-                //lint    :   "nl.littlerobots.rxlint:rxlint:$versions.rxLint",
+                lint    :   "nl.littlerobots.rxlint:rxlint:$versions.rxLint",
         ],
 
         gson                    : "com.google.code.gson:gson:$versions.gson",

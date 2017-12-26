@@ -1,10 +1,9 @@
 package com.vascome.fogtail.presentation.base.fragments
-
+import android.support.v4.app.Fragment
+import com.vascome.fogtail.di.Injectable
 import com.vascome.fogtail.utils.LeakCanaryProxy
 
 import javax.inject.Inject
-
-import dagger.android.support.DaggerFragment
 
 
 /**
@@ -12,7 +11,7 @@ import dagger.android.support.DaggerFragment
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-abstract class BaseFragment : DaggerFragment() {
+abstract class BaseFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var leakCanaryProxy: LeakCanaryProxy

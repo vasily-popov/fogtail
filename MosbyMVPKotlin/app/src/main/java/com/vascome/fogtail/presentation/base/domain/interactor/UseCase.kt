@@ -40,9 +40,7 @@ abstract class UseCase<T, in Params>(private val threadExecutor: ThreadExecutor,
      * Dispose from current [CompositeDisposable].
      */
     fun dispose() {
-        if (!disposables.isDisposed) {
-            disposables.dispose()
-        }
+        disposables.clear()
     }
 
     /**
