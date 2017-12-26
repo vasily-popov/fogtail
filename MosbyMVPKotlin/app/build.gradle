@@ -1,0 +1,201 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'hu.supercluster.paperwork'
+apply from: '../code_quality_tools/jacoco.gradle'
+apply from: '../code_quality_tools/quality.gradle'
+apply plugin: 'com.github.ben-manes.versions'
+
+paperwork {
+    set = [
+            gitSha   : gitSha(),
+            buildDate: buildTime("dd-MM-yyyy HH:00:00 z", "UTC"),
+    ]
+}
+
+android {
+    // Declared in dependencies.gradle in the root of the project.
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
+    defaultConfig {
+        applicationId "com.vascome.fogtail"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.code
+        versionName versions.name
+
+        testInstrumentationRunner "com.vascome.fogtail.functional_tests.FogtailFunctionalTestRunner"
+        // Make generated apks contain version name and code.
+        archivesBaseName = "app-${versions.name}-${versions.code}"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    signingConfigs {
+        fogtail {
+            storeFile rootProject.file('keystore/keystore.jks')
+            storePassword 'keystore'
+            keyAlias 'fogtail'
+            keyPassword 'keystore'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.fogtail
+
+            // Enables code coverage with Jacoco only for instrumentation tests.
+            // Coverage for JVM tests done by code_quality_tools/jacoco.gradle.
+            //testCoverageEnabled true //bug in android studio variable are not visibles
+            testCoverageEnabled false
+        }
+
+        release {
+            signingConfig signingConfigs.fogtail
+            minifyEnabled true
+            proguardFiles file('../proguard').listFiles().toList().toArray()
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // Enables code coverage with Jacoco only for instrumentation tests.
+            // Coverage for JVM tests done by code_quality_tools/jacoco.gradle.
+
+            testCoverageEnabled true
+        }
+    }
+
+    sourceSets {
+        // Unit tests live in src/unitTest.
+        test.java.srcDir 'src/unitTests/java'
+
+        // Integration tests live in src/integrationTest.
+        test.java.srcDir 'src/integrationTests/java'
+
+        // Unit tests for debug build type specific code live in src/debugUnitTest.
+        testDebug.java.srcDir 'src/debugUnitTests/java'
+
+        // Unit tests for release build type specific code live in src/releaseUnitTest.
+        testRelease.java.srcDir 'src/releaseUnitTests/java'
+
+        // Functional tests live in src/functionalTests.
+        androidTest.java.srcDir 'src/functionalTests/java'
+    }
+
+    lintOptions {
+        textReport true
+        textOutput 'stdout'
+        lintConfig rootProject.file('lint.xml')
+        warningsAsErrors true
+        abortOnError true // Fail early.
+
+        disable 'GoogleAppIndexingWarning' // App does not have deep linking.
+        disable 'InvalidPackage' // Okio references java.nio that does not presented in Android SDK.
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
+    testOptions {
+        unitTests {
+            all {
+                // This allows us see tests execution progress in the output on the CI.
+                testLogging {
+                    events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+                    exceptionFormat 'full'
+                }
+            }
+            includeAndroidResources = true
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation libraries.kotlin.core
+    kapt libraries.kotlin.compiler
+
+    implementation libraries.dagger.runtime
+    implementation libraries.dagger.android
+    implementation libraries.dagger.support
+    kapt libraries.dagger.compiler
+    kapt libraries.dagger.processor
+
+    implementation libraries.picasso.core
+    implementation libraries.picasso.downloader
+
+    implementation libraries.okhttp.core
+
+    implementation libraries.retrofit.core
+    implementation libraries.retrofit.gson
+    implementation libraries.retrofit.rx
+    implementation libraries.gson
+
+    implementation libraries.timber
+
+    kapt libraries.autoValue.core
+    kapt libraries.autoValue.gson
+    kapt libraries.autoValue.parsel
+
+    // Make AutoValue annotation visible to the compiler.
+    compileOnly libraries.autoValue.coreAnnotations
+    compileOnly libraries.autoValue.gsonAnnotations
+
+    implementation libraries.rx.core
+    implementation libraries.rx.android
+
+    implementation libraries.support.appCompat
+    implementation libraries.support.recyclerView
+    implementation libraries.support.v4
+    implementation libraries.support.design
+    implementation libraries.support.cardView
+    implementation libraries.firebaseCore
+    implementation libraries.googlePlayMaps
+    //implementation 'com.flurry.android:analytics:8.1.0'
+
+
+    implementation libraries.cardStackView
+
+    //test
+    testImplementation libraries.junit
+    testImplementation libraries.robolectric
+    testImplementation libraries.assertJ
+    testImplementation libraries.mockitoCore
+    testImplementation libraries.okhttp.mock
+    kaptTest libraries.dagger.compiler
+
+    androidTestImplementation libraries.testRunners.runner
+    androidTestImplementation libraries.testRunners.rules
+    androidTestImplementation libraries.espresso.core
+    androidTestImplementation libraries.okhttp.mock
+    kaptAndroidTest libraries.dagger.compiler
+    //androidTestImplementation(libraries.espresso.contrib
+
+    // Developer tools (Developer Settings)
+    debugImplementation libraries.okhttp.logger
+    debugImplementation libraries.paperwork
+    debugImplementation libraries.stetho.core
+    debugImplementation libraries.stetho.okhttp
+    debugImplementation libraries.leakCanary.real
+    debugImplementation libraries.tinyDancer
+    debugImplementation libraries.lynx
+}
+
+apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}
+
