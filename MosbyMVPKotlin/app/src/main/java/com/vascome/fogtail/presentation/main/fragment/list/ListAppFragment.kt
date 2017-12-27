@@ -13,6 +13,7 @@ import com.vascome.fogtail.data.network.AppImageLoader
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
 import com.vascome.fogtail.presentation.main.CollectionContract
 import com.vascome.fogtail.presentation.main.CollectionPresenter
+import com.vascome.fogtail.presentation.main.CollectionViewState
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
 import com.vascome.fogtail.presentation.main.fragment.list.adapter.ListAreaAdapter
 import com.vascome.fogtail.presentation.main.fragment.list.adapter.VerticalSpaceItemDecoration
@@ -28,10 +29,9 @@ import javax.inject.Inject
  */
 
 class ListAppFragment :
-        BaseFragment<CollectionContract.View, CollectionContract.Presenter>(),
+        BaseFragment<CollectionContract.View, CollectionContract.Presenter, CollectionViewState>(),
         CollectionContract.View,
         CollectionAreaItemListener {
-
     @Inject
     lateinit var collectionPresenter: CollectionPresenter
 
@@ -42,8 +42,9 @@ class ListAppFragment :
         ListAreaAdapter(activity.layoutInflater, imageLoader, this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun createViewState() = CollectionViewState()
+
+    override fun onNewViewStateInstance() {
     }
 
     override fun createPresenter(): CollectionContract.Presenter = collectionPresenter
@@ -56,25 +57,27 @@ class ListAppFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.reloadItems()
+        if(savedInstanceState == null) {
+            presenter.reloadItems()
+        }
     }
 
     override fun setLoadingIndicator(active: Boolean) {
+        if(active) {
+            viewState.setShowLoading()
+        }
         recyclerView_swipe_refresh.post { recyclerView_swipe_refresh.isRefreshing = active  }
     }
 
     override fun showItems(items: List<RecAreaItem>) {
+        viewState.setData(items)
         items_loading_error_ui.visibility = GONE
         recyclerView_swipe_refresh.visibility = VISIBLE
         listAreaAdapter.setData(items)
     }
 
     override fun showError() {
-
+        viewState.setError()
         recyclerView_swipe_refresh.visibility = GONE
         items_loading_error_ui.visibility = VISIBLE
     }
@@ -86,11 +89,12 @@ class ListAppFragment :
         recyclerView.layoutManager = llm
         recyclerView.adapter = listAreaAdapter
         recyclerView_swipe_refresh.setOnRefreshListener { presenter.reloadItems() }
-    }
-
-    override fun onDestroyView() {
-        presenter.dispose()
-        super.onDestroyView()
+        items_loading_error_try_again_button.setOnClickListener {
+            items_loading_error_ui.visibility = GONE
+            recyclerView_swipe_refresh.visibility = VISIBLE
+            listAreaAdapter.setData(emptyList())
+            presenter.reloadItems()
+        }
     }
 
     override fun onItemClick(clickedItem: RecAreaItem) {

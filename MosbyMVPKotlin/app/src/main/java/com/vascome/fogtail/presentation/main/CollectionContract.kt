@@ -22,7 +22,6 @@ interface CollectionContract {
 
     interface Presenter: MvpPresenter<View> {
 
-        fun dispose()
         fun reloadItems()
         fun openItemDetail(item: RecAreaItem)
     }

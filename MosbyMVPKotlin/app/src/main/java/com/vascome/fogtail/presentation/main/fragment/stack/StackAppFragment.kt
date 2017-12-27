@@ -18,6 +18,7 @@ import javax.inject.Inject
 
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import com.vascome.fogtail.presentation.main.CollectionViewState
 import kotlinx.android.synthetic.main.stack_view_fragment.*
 
 @Suppress("MemberVisibilityCanPrivate")
@@ -27,7 +28,7 @@ import kotlinx.android.synthetic.main.stack_view_fragment.*
  */
 
 class StackAppFragment :
-        BaseFragment<CollectionContract.View, CollectionContract.Presenter>(),
+        BaseFragment<CollectionContract.View, CollectionContract.Presenter, CollectionViewState>(),
         CollectionContract.View,
         CollectionAreaItemListener {
 
@@ -41,14 +42,12 @@ class StackAppFragment :
         SwipeStackAdapter(activity.layoutInflater, imageLoader, this)
     }
 
+    override fun onNewViewStateInstance() {
+    }
+
+    override fun createViewState() = CollectionViewState()
 
     override fun createPresenter(): CollectionContract.Presenter = collectionPresenter
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.stack_view_fragment, container, false)
@@ -58,19 +57,21 @@ class StackAppFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.reloadItems()
+        if(savedInstanceState == null) {
+            presenter.reloadItems()
+        }
     }
 
     override fun setLoadingIndicator(active: Boolean) {
 
+        if(active) {
+            viewState.setShowLoading()
+        }
         items_loading_ui.visibility = if (active) VISIBLE else GONE
     }
 
     override fun showItems(items: List<RecAreaItem>) {
+        viewState.setData(items)
         items_loading_error_ui.visibility = GONE
         swipeStack.visibility = VISIBLE
         swipeStackAdapter.setData(items)
@@ -78,17 +79,14 @@ class StackAppFragment :
 
     override fun showError() {
 
+        viewState.setError()
         items_loading_error_ui.visibility = VISIBLE
         swipeStack.visibility = GONE
     }
 
     private fun initRecyclerView() {
         swipeStack.setAdapter(swipeStackAdapter)
-    }
-
-    override fun onDestroyView() {
-        presenter.dispose()
-        super.onDestroyView()
+        items_loading_error_try_again_button.setOnClickListener{ presenter.reloadItems() }
     }
 
     override fun onItemClick(clickedItem: RecAreaItem) {

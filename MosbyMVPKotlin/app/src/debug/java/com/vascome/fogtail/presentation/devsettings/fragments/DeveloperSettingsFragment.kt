@@ -16,6 +16,7 @@ import com.vascome.fogtail.databinding.FragmentDeveloperSettingsBinding
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
 import com.vascome.fogtail.presentation.devsettings.adapters.DeveloperSettingsSpinnerAdapter
 import com.vascome.fogtail.presentation.devsettings.presenters.DeveloperSettingsPresenter
+import com.vascome.fogtail.presentation.devsettings.views.DevViewState
 import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsContract
 
 import java.util.ArrayList
@@ -31,8 +32,13 @@ import okhttp3.logging.HttpLoggingInterceptor
  */
 
 class DeveloperSettingsFragment :
-        BaseFragment<DeveloperSettingsContract.View, DeveloperSettingsContract.Presenter>(),
+        BaseFragment<DeveloperSettingsContract.View, DeveloperSettingsContract.Presenter, DevViewState>(),
         DeveloperSettingsContract.View {
+    override fun createViewState()= DevViewState()
+
+    override fun onNewViewStateInstance() {
+    }
+
     override fun createPresenter(): DeveloperSettingsContract.Presenter = devPresenter
 
     @Inject

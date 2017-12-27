@@ -29,8 +29,6 @@ android {
         testInstrumentationRunner "com.vascome.fogtail.functional_tests.FogtailFunctionalTestRunner"
         // Make generated apks contain version name and code.
         archivesBaseName = "app-${versions.name}-${versions.code}"
-
-        multiDexEnabled true
     }
 
     compileOptions {
@@ -50,6 +48,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.fogtail
+            multiDexEnabled true
 
             // Enables code coverage with Jacoco only for instrumentation tests.
             // Coverage for JVM tests done by code_quality_tools/jacoco.gradle.

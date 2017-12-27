@@ -54,6 +54,7 @@ class CollectionPresenter
             override fun onComplete() {
                 hideViewLoading()
             }
+
         }, null)
     }
 
@@ -61,7 +62,8 @@ class CollectionPresenter
         activityRouter.openDetailForItem(item)
     }
 
-    override fun dispose() {
+    override fun destroy() {
         usecase.dispose()
+        super.destroy()
     }
 }
