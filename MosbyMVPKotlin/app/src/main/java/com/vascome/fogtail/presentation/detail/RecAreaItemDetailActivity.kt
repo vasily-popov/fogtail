@@ -15,6 +15,7 @@ import com.vascome.fogtail.R
 import com.vascome.fogtail.databinding.ActivityDetailBinding
 import com.vascome.fogtail.presentation.base.router.BaseRouter
 import com.vascome.fogtail.presentation.base.views.BaseActivity
+import com.vascome.fogtail.presentation.base.views.RightSlidingActivity
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
 
 import javax.inject.Inject
@@ -24,13 +25,15 @@ import javax.inject.Inject
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-class RecAreaItemDetailActivity : BaseActivity(), View.OnTouchListener {
+class RecAreaItemDetailActivity : RightSlidingActivity(), View.OnTouchListener {
 
     private lateinit var binding: ActivityDetailBinding
     private var item: RecAreaItem? = null
 
     @Inject
     lateinit var router: DetailRouter
+
+    override fun getRootView(): View = binding.root
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {

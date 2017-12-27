@@ -109,6 +109,7 @@ ext.libraries = [
         mosby: [
                 mvp         : "com.hannesdorfmann.mosby3:mvp:$versions.mosby",
                 viewstate   : "com.hannesdorfmann.mosby3:viewstate:$versions.mosby",
+                lce         : "com.hannesdorfmann.mosby3:mvp-lce:$versions.mosby",
         ],
 
         gson                    : "com.google.code.gson:gson:$versions.gson",
