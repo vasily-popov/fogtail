@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 
 import com.vascome.fogtail.R
 import com.vascome.fogtail.data.network.AppImageLoader
@@ -45,6 +46,7 @@ class ListAppFragment :
     override fun createViewState() = CollectionViewState()
 
     override fun onNewViewStateInstance() {
+        presenter.reloadItems()
     }
 
     override fun createPresenter(): CollectionContract.Presenter = collectionPresenter
@@ -57,9 +59,6 @@ class ListAppFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        if(savedInstanceState == null) {
-            presenter.reloadItems()
-        }
     }
 
     override fun setLoadingIndicator(active: Boolean) {
@@ -74,6 +73,9 @@ class ListAppFragment :
         items_loading_error_ui.visibility = GONE
         recyclerView_swipe_refresh.visibility = VISIBLE
         listAreaAdapter.setData(items)
+        if(!isRestoringViewState) {
+            runLayoutAnimation()
+        }
     }
 
     override fun showError() {
@@ -99,5 +101,12 @@ class ListAppFragment :
 
     override fun onItemClick(clickedItem: RecAreaItem) {
         presenter.openItemDetail(clickedItem)
+    }
+
+    private fun runLayoutAnimation() {
+        AnimationUtils.loadLayoutAnimation(recyclerView.context, R.anim.layout_animation_fall_down).apply {
+            recyclerView.layoutAnimation = this
+        }
+        recyclerView.scheduleLayoutAnimation()
     }
 }
