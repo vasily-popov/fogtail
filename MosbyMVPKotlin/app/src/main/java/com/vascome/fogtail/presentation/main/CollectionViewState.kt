@@ -55,4 +55,8 @@ class CollectionViewState : RestorableViewState<CollectionContract.View> {
             STATE_SHOW_ERROR ->  view.showError()
         }
     }
+
+    fun isInProgress(): Boolean {
+        return state == STATE_SHOW_LOADING
+    }
 }

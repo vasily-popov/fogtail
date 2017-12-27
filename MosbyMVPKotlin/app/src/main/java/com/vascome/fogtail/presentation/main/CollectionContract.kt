@@ -22,6 +22,7 @@ interface CollectionContract {
 
     interface Presenter: MvpPresenter<View> {
 
+        val isInProgress: Boolean
         fun reloadItems()
         fun openItemDetail(item: RecAreaItem)
     }

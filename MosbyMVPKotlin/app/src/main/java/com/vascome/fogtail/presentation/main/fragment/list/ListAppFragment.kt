@@ -61,6 +61,13 @@ class ListAppFragment :
         initRecyclerView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(!presenter.isInProgress && viewState.isInProgress()) {
+            presenter.reloadItems()
+        }
+    }
+
     override fun setLoadingIndicator(active: Boolean) {
         if(active) {
             viewState.setShowLoading()

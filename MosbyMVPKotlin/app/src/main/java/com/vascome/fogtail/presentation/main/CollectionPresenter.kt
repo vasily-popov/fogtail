@@ -20,12 +20,15 @@ class CollectionPresenter
             private val activityRouter: CollectionRouter)
     : MvpBasePresenter<CollectionContract.View>(), CollectionContract.Presenter {
 
+    override var isInProgress: Boolean = false
+
     private fun showViewLoading() {
         ifViewAttached{view->view.setLoadingIndicator(true)}
     }
 
     private fun hideViewLoading() {
         ifViewAttached{view->view.setLoadingIndicator(false)}
+        isInProgress = false
     }
 
     private fun showErrorMessage() {
@@ -38,8 +41,9 @@ class CollectionPresenter
 
 
     override fun reloadItems() {
-
         showViewLoading()
+        isInProgress = true
+
         usecase.execute(object : DisposableObserver<List<RecAreaItem>>() {
             override fun onNext(items: List<RecAreaItem>) {
                 showItems(items)
@@ -55,7 +59,7 @@ class CollectionPresenter
                 hideViewLoading()
             }
 
-        }, null)
+        } , null)
     }
 
     override fun openItemDetail(item: RecAreaItem) {
