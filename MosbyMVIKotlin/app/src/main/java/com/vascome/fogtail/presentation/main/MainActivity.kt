@@ -17,6 +17,7 @@ import com.vascome.fogtail.presentation.main.fragment.gallery.GalleryAppFragment
 import com.vascome.fogtail.presentation.main.fragment.list.ListAppFragment
 import com.vascome.fogtail.presentation.main.fragment.stack.StackAppFragment
 import com.vascome.fogtail.presentation.main.fragment.table.GridAppFragment
+import com.vascome.fogtail.utils.replaceFragment
 
 import javax.inject.Inject
 import javax.inject.Named
@@ -26,9 +27,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     @Inject
     @field:Named(MAIN_ACTIVITY_VIEW_MODIFIER)
     lateinit var viewModifier: ViewModifier
-
-    @Inject
-    lateinit var router: CollectionRouter
 
     private lateinit var binding: ActivityMainBinding
 
@@ -48,7 +46,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val fragment = supportFragmentManager.findFragmentById(R.id.main_frame_layout)
 
         if (fragment == null) {
-            router.replaceFragment(R.id.main_frame_layout, ListAppFragment())
+            replaceFragment(this,R.id.main_frame_layout, ListAppFragment())
         }
     }
 
@@ -60,27 +58,27 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         when (id) {
             R.id.nav_list -> {
                 if (fragment !is ListAppFragment) {
-                    router.replaceFragment(R.id.main_frame_layout, ListAppFragment())
+                    replaceFragment(this, R.id.main_frame_layout, ListAppFragment())
                 }
             }
             R.id.nav_grid -> {
                 if (fragment !is GridAppFragment) {
-                    router.replaceFragment(R.id.main_frame_layout, GridAppFragment())
+                    replaceFragment(this, R.id.main_frame_layout, GridAppFragment())
                 }
             }
             R.id.nav_gallery -> {
                 if (fragment !is GalleryAppFragment) {
-                    router.replaceFragment(R.id.main_frame_layout, GalleryAppFragment())
+                    replaceFragment(this, R.id.main_frame_layout, GalleryAppFragment())
                 }
             }
             R.id.nav_stack -> {
                 if (fragment !is StackAppFragment) {
-                    router.replaceFragment(R.id.main_frame_layout, StackAppFragment())
+                    replaceFragment(this, R.id.main_frame_layout, StackAppFragment())
                 }
             }
             R.id.nav_carousel -> {
                 if (fragment !is CarouselAppFragment) {
-                    router.replaceFragment(R.id.main_frame_layout, CarouselAppFragment())
+                    replaceFragment(this, R.id.main_frame_layout, CarouselAppFragment())
                 }
             }
             else -> {

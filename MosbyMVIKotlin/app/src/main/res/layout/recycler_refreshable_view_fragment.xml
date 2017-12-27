@@ -12,7 +12,7 @@
             android:visibility="gone" />
 
         <LinearLayout
-            android:id="@+id/items_loading_error_ui"
+            android:id="@+id/errorContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -25,7 +25,7 @@
                 android:text="@string/items_loading_error_text" />
 
             <Button
-                android:id="@+id/items_loading_error_try_again_button"
+                android:id="@+id/tryAgainButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -34,7 +34,7 @@
         </LinearLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/recyclerView_swipe_refresh"
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >

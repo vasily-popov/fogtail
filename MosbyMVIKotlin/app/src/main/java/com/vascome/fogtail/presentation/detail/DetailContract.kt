@@ -1,6 +1,5 @@
 package com.vascome.fogtail.presentation.detail
 
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
 
 /**
@@ -11,6 +10,4 @@ import com.hannesdorfmann.mosby3.mvp.MvpView
 interface DetailContract {
 
     interface View: MvpView
-
-    interface Presenter: MvpPresenter<View>
 }

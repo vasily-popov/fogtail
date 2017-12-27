@@ -2,10 +2,8 @@ package com.vascome.fogtail.data.gateway
 
 import com.vascome.fogtail.data.api.FogtailRestApi
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
-
+import io.reactivex.Single
 import javax.inject.Inject
-
-import io.reactivex.Observable
 
 /**
  * Created by vasilypopov on 12/12/17
@@ -14,6 +12,6 @@ import io.reactivex.Observable
 
 class RecAreaGateway
 @Inject constructor(private val restApi: FogtailRestApi) : ItemsDataSource {
-    override val items: Observable<List<RecAreaItem>>
+    override val items: Single<List<RecAreaItem>>
         get() = restApi.items()
 }

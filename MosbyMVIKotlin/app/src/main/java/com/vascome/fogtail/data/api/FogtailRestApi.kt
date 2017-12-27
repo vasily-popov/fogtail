@@ -2,7 +2,7 @@ package com.vascome.fogtail.data.api
 
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
 
-import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.GET
 
 /**
@@ -13,5 +13,5 @@ import retrofit2.http.GET
 interface FogtailRestApi {
 
     @GET("RecArea.json")
-    fun items(): Observable<List<RecAreaItem>>
+    fun items(): Single<List<RecAreaItem>>
 }

@@ -157,6 +157,10 @@ dependencies {
 
     implementation libraries.rx.core
     implementation libraries.rx.android
+    implementation libraries.rx.kotlin
+    implementation libraries.rx.binding
+    implementation libraries.rx.v4
+    implementation libraries.rx.v7
 
     implementation libraries.support.appCompat
     implementation libraries.support.recyclerView

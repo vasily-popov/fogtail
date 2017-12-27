@@ -1,8 +1,7 @@
 package com.vascome.fogtail.presentation.main
 
-import android.os.Bundle
-import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
+import java.util.*
 
 /**
  * Created by vasilypopov on 12/27/17
@@ -10,49 +9,45 @@ import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
  *
  *
  */
-class CollectionViewState : RestorableViewState<CollectionContract.View> {
-    companion object {
-        private val KEY_DATA = "com.vascome.fogtail.CollectionViewState_data"
-        private val STATE_DO_NOTHING = 0
-        private val STATE_SHOW_DATA = 1
-        private val STATE_SHOW_ERROR = 2
-        private val STATE_SHOW_LOADING = 3
+class CollectionViewState private constructor(val loading:Boolean, val error:Throwable?, val data: List<RecAreaItem>?) {
+
+
+    fun builder(): Builder {
+        return Builder(this)
     }
 
-    private var state = STATE_DO_NOTHING
-    private var data: ArrayList<RecAreaItem>? = null
+    class Builder {
+        private var loading: Boolean = false
+        private var error: Throwable? = null
+        private var data: List<RecAreaItem>? = null
 
-    override fun saveInstanceState(out: Bundle) {
-        out.putParcelableArrayList(KEY_DATA, data)
-    }
+        constructor()
 
-    override fun restoreInstanceState(bundle: Bundle?): RestorableViewState<CollectionContract.View>? {
-        if (bundle == null) {
-            return null
+        constructor(from: CollectionViewState) {
+            if(from.data != null) {
+                this.data = ArrayList(from.data)
+            }
+            this.error = from.error
+            this.loading = from.loading
         }
 
-        data = bundle.getParcelableArrayList(KEY_DATA)
-        return this
-    }
+        fun loading(loading: Boolean): Builder {
+            this.loading = loading
+            return this
+        }
 
-    fun setData(data: List<RecAreaItem>) {
-        state = STATE_SHOW_DATA
-        this.data = ArrayList(data)
-    }
+        fun error(error: Throwable): Builder {
+            this.error = error
+            return this
+        }
 
-    fun setShowLoading() {
-        state = STATE_SHOW_LOADING
-    }
+        fun data(data: List<RecAreaItem>): Builder {
+            this.data = data
+            return this
+        }
 
-    fun setError() {
-        state = STATE_SHOW_ERROR
-    }
-
-    override fun apply(view: CollectionContract.View, retained: Boolean) {
-        when (state) {
-            STATE_SHOW_DATA -> view.showItems(data!!)
-            STATE_SHOW_LOADING -> view.setLoadingIndicator(true)
-            STATE_SHOW_ERROR ->  view.showError()
+        fun build(): CollectionViewState {
+            return CollectionViewState(loading,error,data)
         }
     }
 }

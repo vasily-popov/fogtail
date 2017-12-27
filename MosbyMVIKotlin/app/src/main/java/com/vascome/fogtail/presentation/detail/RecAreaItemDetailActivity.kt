@@ -1,6 +1,8 @@
 package com.vascome.fogtail.presentation.detail
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.MotionEvent
@@ -13,12 +15,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.vascome.fogtail.R
 import com.vascome.fogtail.databinding.ActivityDetailBinding
-import com.vascome.fogtail.presentation.base.router.BaseRouter
-import com.vascome.fogtail.presentation.base.views.BaseActivity
 import com.vascome.fogtail.presentation.base.views.RightSlidingActivity
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
-
-import javax.inject.Inject
+import com.vascome.fogtail.utils.replaceFragment
 
 /**
  * Created by vasilypopov on 12/6/17
@@ -29,9 +28,6 @@ class RecAreaItemDetailActivity : RightSlidingActivity(), View.OnTouchListener {
 
     private lateinit var binding: ActivityDetailBinding
     private var item: RecAreaItem? = null
-
-    @Inject
-    lateinit var router: DetailRouter
 
     override fun getRootView(): View = binding.root
 
@@ -66,7 +62,7 @@ class RecAreaItemDetailActivity : RightSlidingActivity(), View.OnTouchListener {
         val detailFragment = supportFragmentManager
                 .findFragmentById(R.id.card_frame_layout) as? RecAreaDetailFragment
         if (detailFragment == null) {
-            router.replaceFragment(R.id.card_frame_layout, RecAreaDetailFragment.newInstance(item))
+            replaceFragment(this,R.id.card_frame_layout, RecAreaDetailFragment.newInstance(item))
         }
 
     }
@@ -87,5 +83,13 @@ class RecAreaItemDetailActivity : RightSlidingActivity(), View.OnTouchListener {
             }
         }
         return true
+    }
+
+    companion object {
+        fun start(activity: Activity, item: RecAreaItem) {
+            val i = Intent(activity, RecAreaItemDetailActivity::class.java)
+            i.putExtra("item", item)
+            activity.startActivity(i)
+        }
     }
 }

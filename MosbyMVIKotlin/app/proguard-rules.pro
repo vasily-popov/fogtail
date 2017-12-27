@@ -33,3 +33,8 @@
 -keep public class android.support.v7.widget.** { *; }
 -keep public class android.support.v7.internal.widget.** { *; }
 -keep public class android.support.v7.internal.view.menu.** { *; }
+
+-dontwarn javax.annotation.**
+-keepclassmembers class kotlin.Metadata {
+    public <methods>;
+}

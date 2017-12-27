@@ -3,23 +3,25 @@ package com.vascome.fogtail.presentation.main.fragment.stack
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-
+import com.jakewharton.rxbinding2.view.clicks
 import com.vascome.fogtail.R
 import com.vascome.fogtail.data.network.AppImageLoader
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
-import com.vascome.fogtail.presentation.main.CollectionContract
+import com.vascome.fogtail.presentation.detail.RecAreaItemDetailActivity
 import com.vascome.fogtail.presentation.main.CollectionPresenter
+import com.vascome.fogtail.presentation.main.CollectionView
+import com.vascome.fogtail.presentation.main.CollectionViewState
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
 import com.vascome.fogtail.presentation.main.fragment.stack.adapter.SwipeStackAdapter
 import com.vascome.fogtail.presentation.main.utils.CollectionAreaItemListener
-
-import javax.inject.Inject
-
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import com.vascome.fogtail.presentation.main.CollectionViewState
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.stack_view_fragment.*
+import timber.log.Timber
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @Suppress("MemberVisibilityCanPrivate")
 /**
@@ -27,9 +29,9 @@ import kotlinx.android.synthetic.main.stack_view_fragment.*
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-class StackAppFragment :
-        BaseFragment<CollectionContract.View, CollectionContract.Presenter, CollectionViewState>(),
-        CollectionContract.View,
+class StackAppFragment
+    : BaseFragment<CollectionView, CollectionPresenter>(),
+        CollectionView,
         CollectionAreaItemListener {
 
     @Inject
@@ -42,12 +44,7 @@ class StackAppFragment :
         SwipeStackAdapter(activity.layoutInflater, imageLoader, this)
     }
 
-    override fun onNewViewStateInstance() {
-    }
-
-    override fun createViewState() = CollectionViewState()
-
-    override fun createPresenter(): CollectionContract.Presenter = collectionPresenter
+    override fun createPresenter(): CollectionPresenter = collectionPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.stack_view_fragment, container, false)
@@ -57,39 +54,56 @@ class StackAppFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        if(savedInstanceState == null) {
-            presenter.reloadItems()
-        }
-    }
-
-    override fun setLoadingIndicator(active: Boolean) {
-
-        if(active) {
-            viewState.setShowLoading()
-        }
-        items_loading_ui.visibility = if (active) VISIBLE else GONE
-    }
-
-    override fun showItems(items: List<RecAreaItem>) {
-        viewState.setData(items)
-        items_loading_error_ui.visibility = GONE
-        swipeStack.visibility = VISIBLE
-        swipeStackAdapter.setData(items)
-    }
-
-    override fun showError() {
-
-        viewState.setError()
-        items_loading_error_ui.visibility = VISIBLE
-        swipeStack.visibility = GONE
     }
 
     private fun initRecyclerView() {
         swipeStack.setAdapter(swipeStackAdapter)
-        items_loading_error_try_again_button.setOnClickListener{ presenter.reloadItems() }
+    }
+
+    override fun loadOnStartIntent(): Observable<Boolean> {
+        return Observable.just(true).doOnComplete { Timber.d("start loading completed") }
+    }
+
+    override fun pullToRefreshIntent(): Observable<Boolean> {
+        return Observable.never()
+    }
+
+    override fun retryButtonClickIntent(): Observable<Boolean> {
+        return tryAgainButton.clicks()
+                .debounce(500, TimeUnit.MICROSECONDS)
+                .map { _ -> true }
+    }
+
+    override fun render(viewState: CollectionViewState) {
+        Timber.d("render %s", viewState)
+
+        when {
+            viewState.loading -> renderLoading()
+            viewState.data != null -> renderData(viewState)
+            viewState.error != null -> renderError()
+        }
+    }
+
+    private fun renderError() {
+        progressView.visibility = GONE
+        swipeStack.visibility = GONE
+        errorContainer.visibility = VISIBLE
+        swipeStackAdapter.setData(emptyList())
+    }
+
+    private fun renderData(viewState: CollectionViewState) {
+        progressView.visibility = GONE
+        errorContainer.visibility = GONE
+        swipeStack.visibility = VISIBLE
+        swipeStackAdapter.setData(viewState.data!!)
+    }
+
+    private fun renderLoading() {
+        progressView.visibility = VISIBLE
+        errorContainer.visibility = GONE
     }
 
     override fun onItemClick(clickedItem: RecAreaItem) {
-        presenter.openItemDetail(clickedItem)
+        RecAreaItemDetailActivity.start(activity, clickedItem)
     }
 }

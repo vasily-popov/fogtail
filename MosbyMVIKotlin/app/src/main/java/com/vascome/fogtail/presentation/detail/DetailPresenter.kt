@@ -1,7 +1,6 @@
 package com.vascome.fogtail.presentation.detail
 
-import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
-import com.vascome.fogtail.presentation.base.presenters.BasePresenter
+import com.hannesdorfmann.mosby3.mvi.MviBasePresenter
 
 import javax.inject.Inject
 
@@ -11,4 +10,8 @@ import javax.inject.Inject
  */
 
 class DetailPresenter
-@Inject constructor() : MvpBasePresenter<DetailContract.View>(), DetailContract.Presenter
+@Inject constructor() : MviBasePresenter<DetailContract.View, DetailViewState>() {
+    override fun bindIntents() {
+        //nothing here
+    }
+}

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.vascome.fogtail.R
 import com.vascome.fogtail.data.network.AppImageLoader
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
-import com.vascome.fogtail.presentation.main.CollectionViewState
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
 import kotlinx.android.synthetic.main.detail_item_fragment.*
 
@@ -22,12 +21,8 @@ import javax.inject.Inject
  */
 
 class RecAreaDetailFragment :
-        BaseFragment<DetailContract.View, DetailContract.Presenter, DetailViewState>(),
+        BaseFragment<DetailContract.View, DetailPresenter>(),
         DetailContract.View {
-    override fun createViewState() = DetailViewState()
-
-    override fun onNewViewStateInstance() {
-    }
 
     private var item: RecAreaItem? = null
 
@@ -37,7 +32,7 @@ class RecAreaDetailFragment :
     @Inject
     lateinit var detailPresenter: DetailPresenter
 
-    override fun createPresenter(): DetailContract.Presenter = detailPresenter
+    override fun createPresenter(): DetailPresenter = detailPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

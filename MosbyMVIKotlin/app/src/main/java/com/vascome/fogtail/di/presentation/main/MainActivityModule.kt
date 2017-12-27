@@ -4,8 +4,6 @@ import com.vascome.fogtail.data.gateway.ItemsDataSource
 import com.vascome.fogtail.data.gateway.RecAreaGateway
 import com.vascome.fogtail.di.ActivityScope
 import com.vascome.fogtail.di.FragmentScope
-import com.vascome.fogtail.presentation.main.CollectionContract
-import com.vascome.fogtail.presentation.main.CollectionRouter
 import com.vascome.fogtail.presentation.main.fragment.carousel.CarouselAppFragment
 import com.vascome.fogtail.presentation.main.fragment.gallery.GalleryAppFragment
 import com.vascome.fogtail.presentation.main.fragment.list.ListAppFragment

@@ -1,22 +1,17 @@
 package com.vascome.fogtail
 
+import android.app.Activity
 import android.app.Application
 import com.vascome.fogtail.di.AppComponent
 import com.vascome.fogtail.di.DaggerAppComponent
+import com.vascome.fogtail.di.applyAutoInjector
 import com.vascome.fogtail.presentation.devsettings.DeveloperSettingsModel
 import com.vascome.fogtail.utils.AnalyticsModel
-
-import javax.inject.Inject
-
 import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import timber.log.Timber
-import android.app.Activity
-import com.vascome.fogtail.di.applyAutoInjector
-import dagger.android.DispatchingAndroidInjector
-
-
-
+import javax.inject.Inject
 
 
 /**

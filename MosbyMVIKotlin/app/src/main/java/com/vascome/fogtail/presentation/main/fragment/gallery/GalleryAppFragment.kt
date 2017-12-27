@@ -6,18 +6,24 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout
+import com.jakewharton.rxbinding2.view.clicks
 
 import com.vascome.fogtail.R
 import com.vascome.fogtail.data.network.AppImageLoader
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
-import com.vascome.fogtail.presentation.main.CollectionContract
+import com.vascome.fogtail.presentation.detail.RecAreaItemDetailActivity
 import com.vascome.fogtail.presentation.main.CollectionPresenter
+import com.vascome.fogtail.presentation.main.CollectionView
 import com.vascome.fogtail.presentation.main.CollectionViewState
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
 import com.vascome.fogtail.presentation.main.fragment.gallery.adapter.GalleryAreaAdapter
 import com.vascome.fogtail.presentation.main.fragment.table.decorator.BoxSpaceItemDecoration
 import com.vascome.fogtail.presentation.main.utils.CollectionAreaItemListener
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.recycler_refreshable_view_fragment.*
+import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 import javax.inject.Inject
 
@@ -27,9 +33,9 @@ import javax.inject.Inject
  */
 
 class GalleryAppFragment
-        : BaseFragment<CollectionContract.View, CollectionContract.Presenter, CollectionViewState>(),
-            CollectionContract.View,
-            CollectionAreaItemListener {
+        : BaseFragment<CollectionView, CollectionPresenter>(),
+        CollectionView,
+        CollectionAreaItemListener {
 
     @Inject
     lateinit var appContext: Context
@@ -44,11 +50,7 @@ class GalleryAppFragment
         GalleryAreaAdapter(activity.layoutInflater, imageLoader, this)
     }
 
-
-    override fun onNewViewStateInstance() {
-    }
-    override fun createViewState()= CollectionViewState()
-    override fun createPresenter(): CollectionContract.Presenter = collectionPresenter
+    override fun createPresenter(): CollectionPresenter = collectionPresenter
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,32 +61,8 @@ class GalleryAppFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        if(savedInstanceState == null) {
-            presenter.reloadItems()
-        }
     }
 
-    override fun setLoadingIndicator(active: Boolean) {
-        if(active) {
-            viewState.setShowLoading()
-        }
-        recyclerView_swipe_refresh.post { recyclerView_swipe_refresh.isRefreshing = active  }
-    }
-
-    override fun showItems(items: List<RecAreaItem>) {
-        viewState.setData(items)
-        items_loading_error_ui.visibility = View.GONE
-        recyclerView_swipe_refresh.visibility = View.VISIBLE
-        galleryAreaAdapter.setData(items)
-    }
-
-    override fun showError() {
-
-        viewState.setError()
-        recyclerView_swipe_refresh.visibility = View.GONE
-        items_loading_error_ui.visibility = View.VISIBLE
-
-    }
 
     private fun initRecyclerView() {
 
@@ -92,12 +70,54 @@ class GalleryAppFragment
         val llm = LinearLayoutManager(appContext, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = llm
         recyclerView.adapter = galleryAreaAdapter
-        recyclerView_swipe_refresh.setOnRefreshListener { presenter.reloadItems() }
-        items_loading_error_try_again_button.setOnClickListener{ presenter.reloadItems() }
+    }
+
+    override fun loadOnStartIntent(): Observable<Boolean> {
+        return Observable.just(true).doOnComplete { Timber.d("start loading completed") }
+    }
+
+    override fun pullToRefreshIntent(): Observable<Boolean> {
+        return RxSwipeRefreshLayout.refreshes(swipeRefreshLayout).map({ _ -> true })
+    }
+
+    override fun retryButtonClickIntent(): Observable<Boolean> {
+        return tryAgainButton.clicks()
+                .debounce(500, TimeUnit.MICROSECONDS)
+                .map { _ -> true }
+    }
+
+    override fun render(viewState: CollectionViewState) {
+        Timber.d("render %s", viewState)
+
+        when {
+            viewState.loading -> renderLoading()
+            viewState.data != null -> renderData(viewState)
+            viewState.error != null -> renderError()
+        }
+    }
+
+    private fun renderError() {
+        swipeRefreshLayout.post { swipeRefreshLayout.isRefreshing = false }
+        swipeRefreshLayout.visibility = View.GONE
+        errorContainer.visibility = View.VISIBLE
+        galleryAreaAdapter.setData(emptyList())
+    }
+
+    private fun renderData(viewState: CollectionViewState) {
+        swipeRefreshLayout.post { swipeRefreshLayout.isRefreshing = false }
+        errorContainer.visibility = View.GONE
+        swipeRefreshLayout.visibility = View.VISIBLE
+        galleryAreaAdapter.setData(viewState.data!!)
+    }
+
+    private fun renderLoading() {
+        errorContainer.visibility = View.GONE
+        swipeRefreshLayout.visibility = View.VISIBLE
+        swipeRefreshLayout.post { swipeRefreshLayout.isRefreshing = true }
     }
 
     override fun onItemClick(clickedItem: RecAreaItem) {
-        presenter.openItemDetail(clickedItem)
+        RecAreaItemDetailActivity.start(activity, clickedItem)
     }
 
 }

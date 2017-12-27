@@ -2,7 +2,6 @@ package com.vascome.fogtail.di.appmodules
 
 import android.app.Application
 import android.content.Context
-
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapterFactory
@@ -11,13 +10,11 @@ import com.squareup.picasso.Picasso
 import com.vascome.fogtail.data.network.AppImageLoader
 import com.vascome.fogtail.data.network.EntityTypeAdapterFactory
 import com.vascome.fogtail.data.network.PicassoImageLoader
-
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import timber.log.Timber
+import javax.inject.Singleton
 
 /**
  * Created by vasilypopov on 11/22/17

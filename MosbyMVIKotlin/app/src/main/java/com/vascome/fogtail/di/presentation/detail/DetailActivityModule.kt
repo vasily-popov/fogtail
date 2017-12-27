@@ -1,12 +1,8 @@
 package com.vascome.fogtail.di.presentation.detail
 
-import com.vascome.fogtail.di.ActivityScope
 import com.vascome.fogtail.di.FragmentScope
-import com.vascome.fogtail.presentation.base.router.BaseRouter
-import com.vascome.fogtail.presentation.detail.DetailRouter
 import com.vascome.fogtail.presentation.detail.RecAreaDetailFragment
 
-import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -2,15 +2,12 @@ package com.vascome.fogtail.di.appmodules
 
 import android.app.Application
 import android.os.Bundle
-
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.vascome.fogtail.utils.AnalyticsModel
-
-import javax.inject.Inject
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Created by vasilypopov on 11/22/17

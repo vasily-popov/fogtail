@@ -1,13 +1,13 @@
 package com.vascome.fogtail.presentation.devsettings.presenters
 
-import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
+import com.hannesdorfmann.mosby3.mvi.MviBasePresenter
 import com.vascome.fogtail.presentation.devsettings.model.DeveloperSettingsModelImpl
-import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsContract
+import com.vascome.fogtail.presentation.devsettings.views.DevViewState
+import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsView
 import com.vascome.fogtail.utils.AnalyticsModel
 
 import javax.inject.Inject
 
-import okhttp3.logging.HttpLoggingInterceptor
 
 /**
  * Created by vasilypopov on 11/23/17
@@ -16,10 +16,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 class DeveloperSettingsPresenter
 @Inject constructor(private val developerSettingsModel: DeveloperSettingsModelImpl,
-            private val analyticsModel: AnalyticsModel)
-        : MvpBasePresenter<DeveloperSettingsContract.View>(),
-            DeveloperSettingsContract.Presenter {
-
+                    private val analyticsModel: AnalyticsModel)
+    : MviBasePresenter<DeveloperSettingsView, DevViewState>(){
+    override fun bindIntents() {
+    }
+/*
     override fun syncDeveloperSettings() {
 
         ifViewAttached{ view->view.changeGitSha(developerSettingsModel.gitSha) }
@@ -97,5 +98,6 @@ class DeveloperSettingsPresenter
     private fun booleanToEnabledDisabled(enabled: Boolean): String {
         return if (enabled) "enabled" else "disabled"
     }
+    */
 }
 

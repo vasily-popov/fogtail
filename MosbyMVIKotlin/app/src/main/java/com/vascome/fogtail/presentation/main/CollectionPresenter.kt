@@ -1,13 +1,15 @@
 package com.vascome.fogtail.presentation.main
 
-import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
-import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
-import com.vascome.fogtail.presentation.main.domain.usecase.LoadItemsUseCase
+import com.hannesdorfmann.mosby3.mvi.MviBasePresenter
+import com.vascome.fogtail.data.gateway.ItemsDataSource
 import com.vascome.fogtail.utils.AnalyticsModel
-
+import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-
-import io.reactivex.observers.DisposableObserver
 
 /**
  * Created by vasilypopov on 12/6/17
@@ -15,55 +17,39 @@ import io.reactivex.observers.DisposableObserver
  */
 
 class CollectionPresenter
-@Inject constructor(private val usecase: LoadItemsUseCase,
-            private val analyticsModel: AnalyticsModel,
-            private val activityRouter: CollectionRouter)
-    : MvpBasePresenter<CollectionContract.View>(), CollectionContract.Presenter {
+@Inject constructor(private val source: ItemsDataSource,
+                    private val analyticsModel: AnalyticsModel)
+    : MviBasePresenter<CollectionView, CollectionViewState>() {
 
-    private fun showViewLoading() {
-        ifViewAttached{view->view.setLoadingIndicator(true)}
-    }
+    override fun bindIntents() {
 
-    private fun hideViewLoading() {
-        ifViewAttached{view->view.setLoadingIndicator(false)}
-    }
-
-    private fun showErrorMessage() {
-        ifViewAttached{view->view.showError()}
-    }
-
-    private fun showItems(items: List<RecAreaItem>) {
-        ifViewAttached{view->view.showItems(items)}
-    }
-
-
-    override fun reloadItems() {
-
-        showViewLoading()
-        usecase.execute(object : DisposableObserver<List<RecAreaItem>>() {
-            override fun onNext(items: List<RecAreaItem>) {
-                showItems(items)
+        val submit = ObservableTransformer<Boolean, CollectionViewState> { trigger ->
+            trigger.flatMap { source.items.toObservable()
+                    .subscribeOn(Schedulers.io())
+                    .delay(2, TimeUnit.SECONDS)
+                    .map { items -> CollectionViewState.Builder().data(items).build() }
+                    .onErrorReturn { error ->  CollectionViewState.Builder().error(error).build() }
+                    .delay(2, TimeUnit.SECONDS)
+                    .startWith(CollectionViewState.Builder().loading(true).build())
             }
+        }
 
-            override fun onError(e: Throwable) {
-                analyticsModel.sendError("error", e)
-                hideViewLoading()
-                showErrorMessage()
-            }
 
-            override fun onComplete() {
-                hideViewLoading()
-            }
+        val initLoad = intent(CollectionView::loadOnStartIntent)
+                .doOnNext({ _ -> Timber.d("intent: initial load") })
+                .compose(submit)
 
-        }, null)
-    }
+        val pullToRefresh = intent(CollectionView::pullToRefreshIntent)
+                .doOnNext({ _ -> Timber.d("intent: pull to refresh") })
+                .compose(submit)
 
-    override fun openItemDetail(item: RecAreaItem) {
-        activityRouter.openDetailForItem(item)
-    }
+        val retryButtonClicked = intent(CollectionView::retryButtonClickIntent)
+                .doOnNext({ _ -> Timber.d("intent: button clicked") })
+                .compose(submit)
 
-    override fun destroy() {
-        usecase.dispose()
-        super.destroy()
+        val mergedObservable = Observable.merge(initLoad, pullToRefresh, retryButtonClicked)
+                .observeOn(AndroidSchedulers.mainThread())
+
+        subscribeViewState(mergedObservable, CollectionView::render)
     }
 }

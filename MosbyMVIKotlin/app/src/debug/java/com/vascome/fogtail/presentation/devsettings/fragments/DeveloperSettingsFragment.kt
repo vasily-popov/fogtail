@@ -6,7 +6,6 @@ import android.support.annotation.AnyThread
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
 
 import com.github.pedrovgs.lynx.LynxActivity
@@ -16,8 +15,7 @@ import com.vascome.fogtail.databinding.FragmentDeveloperSettingsBinding
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
 import com.vascome.fogtail.presentation.devsettings.adapters.DeveloperSettingsSpinnerAdapter
 import com.vascome.fogtail.presentation.devsettings.presenters.DeveloperSettingsPresenter
-import com.vascome.fogtail.presentation.devsettings.views.DevViewState
-import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsContract
+import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsView
 
 import java.util.ArrayList
 
@@ -32,14 +30,10 @@ import okhttp3.logging.HttpLoggingInterceptor
  */
 
 class DeveloperSettingsFragment :
-        BaseFragment<DeveloperSettingsContract.View, DeveloperSettingsContract.Presenter, DevViewState>(),
-        DeveloperSettingsContract.View {
-    override fun createViewState()= DevViewState()
+        BaseFragment<DeveloperSettingsView, DeveloperSettingsPresenter>(),
+        DeveloperSettingsView {
 
-    override fun onNewViewStateInstance() {
-    }
-
-    override fun createPresenter(): DeveloperSettingsContract.Presenter = devPresenter
+    override fun createPresenter(): DeveloperSettingsPresenter = devPresenter
 
     @Inject
     lateinit var devPresenter: DeveloperSettingsPresenter
@@ -68,6 +62,7 @@ class DeveloperSettingsFragment :
         binding.developerSettingsHttpLoggingLevelSpinner.adapter = DeveloperSettingsSpinnerAdapter<DeveloperSettingsSpinnerAdapter.SelectionOption>(activity.layoutInflater)
                 .setSelectionOptions(HttpLoggingLevel.allValues())
 
+        /*
         binding.developerSettingsStethoSwitch
                 .setOnCheckedChangeListener { _, checked -> presenter.changeStethoState(checked) }
 
@@ -86,7 +81,7 @@ class DeveloperSettingsFragment :
         }
         binding.developerSettingsLeakCanarySwitch
                 .setOnCheckedChangeListener { _, checked -> presenter.changeLeakCanaryState(checked) }
-
+*/
 
         binding.bShowLog.setOnClickListener {
             val context = activity
@@ -96,7 +91,7 @@ class DeveloperSettingsFragment :
 
     override fun onResume() {
         super.onResume()
-        presenter.syncDeveloperSettings()
+       // presenter.syncDeveloperSettings()
     }
 
     @AnyThread

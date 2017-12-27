@@ -1,22 +1,13 @@
 package com.vascome.fogtail.di
 
 import android.app.Application
-
 import com.vascome.fogtail.FogtailApplication
-import com.vascome.fogtail.di.appmodules.AnalyticsModule
-import com.vascome.fogtail.di.appmodules.ApiModule
-import com.vascome.fogtail.di.appmodules.ApplicationModule
-import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule
-import com.vascome.fogtail.di.appmodules.NetworkModule
-import com.vascome.fogtail.di.appmodules.OkHttpInterceptorsModule
-import com.vascome.fogtail.di.appmodules.ThreadModule
-
-import javax.inject.Singleton
-
+import com.vascome.fogtail.di.appmodules.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Singleton
 
 /**
  * Created by vasilypopov on 11/22/17
