@@ -10,7 +10,6 @@ import android.view.MenuItem
 import com.vascome.fogtail.R
 import com.vascome.fogtail.databinding.ActivityMainBinding
 import com.vascome.fogtail.di.appmodules.DeveloperSettingsModule.Companion.MAIN_ACTIVITY_VIEW_MODIFIER
-import com.vascome.fogtail.presentation.base.fragments.BaseFragment
 import com.vascome.fogtail.presentation.base.other.ViewModifier
 import com.vascome.fogtail.presentation.base.views.BaseActivity
 import com.vascome.fogtail.presentation.main.fragment.carousel.CarouselAppFragment
@@ -46,7 +45,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         binding.navView.setNavigationItemSelectedListener(this)
 
-        val fragment = supportFragmentManager.findFragmentById(R.id.main_frame_layout) as? BaseFragment
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_frame_layout)
 
         if (fragment == null) {
             router.replaceFragment(R.id.main_frame_layout, ListAppFragment())
@@ -56,35 +55,36 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        val fragment = supportFragmentManager.findFragmentById(R.id.main_frame_layout) as? BaseFragment
-        if (id == R.id.nav_list) {
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_frame_layout)
 
-            if (fragment !is ListAppFragment) {
-                router.replaceFragment(R.id.main_frame_layout, ListAppFragment())
+        when (id) {
+            R.id.nav_list -> {
+                if (fragment !is ListAppFragment) {
+                    router.replaceFragment(R.id.main_frame_layout, ListAppFragment())
+                }
             }
-
-        } else if (id == R.id.nav_grid) {
-
-            if (fragment !is GridAppFragment) {
-                router.replaceFragment(R.id.main_frame_layout, GridAppFragment())
+            R.id.nav_grid -> {
+                if (fragment !is GridAppFragment) {
+                    router.replaceFragment(R.id.main_frame_layout, GridAppFragment())
+                }
             }
-
-        } else if (id == R.id.nav_gallery) {
-
-            if (fragment !is GalleryAppFragment) {
-                router.replaceFragment(R.id.main_frame_layout, GalleryAppFragment())
+            R.id.nav_gallery -> {
+                if (fragment !is GalleryAppFragment) {
+                    router.replaceFragment(R.id.main_frame_layout, GalleryAppFragment())
+                }
             }
-
-        } else if (id == R.id.nav_stack) {
-            if (fragment !is StackAppFragment) {
-                router.replaceFragment(R.id.main_frame_layout, StackAppFragment())
+            R.id.nav_stack -> {
+                if (fragment !is StackAppFragment) {
+                    router.replaceFragment(R.id.main_frame_layout, StackAppFragment())
+                }
             }
-
-        } else if (id == R.id.nav_carousel) {
-            if (fragment !is CarouselAppFragment) {
-                router.replaceFragment(R.id.main_frame_layout, CarouselAppFragment())
+            R.id.nav_carousel -> {
+                if (fragment !is CarouselAppFragment) {
+                    router.replaceFragment(R.id.main_frame_layout, CarouselAppFragment())
+                }
             }
-
+            else -> {
+            }
         }
         binding.mainDrawerLayout.closeDrawer(GravityCompat.START)
         return true

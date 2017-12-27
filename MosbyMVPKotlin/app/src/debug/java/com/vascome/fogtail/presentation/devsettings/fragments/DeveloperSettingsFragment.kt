@@ -16,7 +16,7 @@ import com.vascome.fogtail.databinding.FragmentDeveloperSettingsBinding
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
 import com.vascome.fogtail.presentation.devsettings.adapters.DeveloperSettingsSpinnerAdapter
 import com.vascome.fogtail.presentation.devsettings.presenters.DeveloperSettingsPresenter
-import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsView
+import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsContract
 
 import java.util.ArrayList
 
@@ -24,18 +24,24 @@ import javax.inject.Inject
 
 import okhttp3.logging.HttpLoggingInterceptor
 
+@Suppress("MemberVisibilityCanPrivate")
 /**
  * Created by vasilypopov on 11/23/17
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-class DeveloperSettingsFragment : BaseFragment(), DeveloperSettingsView {
+class DeveloperSettingsFragment :
+        BaseFragment<DeveloperSettingsContract.View, DeveloperSettingsContract.Presenter>(),
+        DeveloperSettingsContract.View {
+    override fun createPresenter(): DeveloperSettingsContract.Presenter = devPresenter
 
     @Inject
-    lateinit var presenter: DeveloperSettingsPresenter
+    lateinit var devPresenter: DeveloperSettingsPresenter
 
     @Inject
     lateinit var lynxConfig: LynxConfig
+
+
 
     private lateinit var binding: FragmentDeveloperSettingsBinding
 
@@ -43,6 +49,7 @@ class DeveloperSettingsFragment : BaseFragment(), DeveloperSettingsView {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
+        super.onCreateView(inflater, container, savedInstanceState)
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_developer_settings, container, false)
         return binding.root
@@ -79,7 +86,6 @@ class DeveloperSettingsFragment : BaseFragment(), DeveloperSettingsView {
             val context = activity
             context.startActivity(LynxActivity.getIntent(context, lynxConfig))
         }
-        presenter.bindView(this)
     }
 
     override fun onResume() {
@@ -87,59 +93,46 @@ class DeveloperSettingsFragment : BaseFragment(), DeveloperSettingsView {
         presenter.syncDeveloperSettings()
     }
 
-
     @AnyThread
     override fun changeGitSha(gitSha: String) {
-        runIfFragmentAlive(Runnable{
-            binding.developerSettingsGitShaTextView.text = gitSha
-        })
+        runOnUI(Runnable{ binding.developerSettingsGitShaTextView.text = gitSha })
     }
 
     @AnyThread
     override fun changeBuildDate(date: String) {
-        runIfFragmentAlive(Runnable {
-            binding.developerSettingsBuildDateTextView.text = date
-        })
+        runOnUI(Runnable{ binding.developerSettingsBuildDateTextView.text = date })
     }
 
     @AnyThread
     override fun changeBuildVersionCode(versionCode: String) {
-        runIfFragmentAlive(Runnable {
-            binding.developerSettingsBuildVersionCodeTextView.text = versionCode
-        })
+        runOnUI(Runnable{ binding.developerSettingsBuildVersionCodeTextView.text = versionCode })
+
     }
 
     @AnyThread
     override fun changeBuildVersionName(versionName: String) {
-        runIfFragmentAlive(Runnable{
-            binding.developerSettingsBuildVersionNameTextView.text = versionName
-        })
+        runOnUI(Runnable{ binding.developerSettingsBuildVersionNameTextView.text = versionName })
     }
 
     @AnyThread
     override fun changeStethoState(enabled: Boolean) {
-        runIfFragmentAlive(Runnable {
-            binding.developerSettingsStethoSwitch.isChecked = enabled
-        })
+        runOnUI(Runnable{ binding.developerSettingsStethoSwitch.isChecked = enabled })
     }
 
     @AnyThread
     override fun changeLeakCanaryState(enabled: Boolean) {
-        runIfFragmentAlive(Runnable {
-            binding.developerSettingsLeakCanarySwitch.isChecked = enabled
-        })
+        runOnUI(Runnable{ binding.developerSettingsLeakCanarySwitch.isChecked = enabled })
     }
 
     @AnyThread
     override fun changeTinyDancerState(enabled: Boolean) {
-        runIfFragmentAlive(Runnable {
-            binding.developerSettingsTinyDancerSwitch.isChecked = enabled
-        })
+        runOnUI(Runnable{ binding.developerSettingsTinyDancerSwitch.isChecked = enabled })
+
     }
 
     @AnyThread
     override fun changeHttpLoggingLevel(loggingLevel: HttpLoggingInterceptor.Level) {
-        runIfFragmentAlive(Runnable {
+        runOnUI(Runnable{
             var position = 0
             val count = binding.developerSettingsHttpLoggingLevelSpinner.count
             while (position < count) {
@@ -156,21 +149,12 @@ class DeveloperSettingsFragment : BaseFragment(), DeveloperSettingsView {
 
     @AnyThread
     override fun showMessage(message: String) {
-        runIfFragmentAlive(Runnable {
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-        })
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     @AnyThread
     override fun showAppNeedsToBeRestarted() {
-        runIfFragmentAlive(Runnable {
-            Toast.makeText(context, "To apply new settings app needs to be restarted", Toast.LENGTH_LONG).show()
-        })
-    }
-
-    override fun onDestroyView() {
-        presenter.unbindView(this)
-        super.onDestroyView()
+        Toast.makeText(context, "To apply new settings app needs to be restarted", Toast.LENGTH_LONG).show()
     }
 
     private class HttpLoggingLevel internal constructor(internal val loggingLevel: HttpLoggingInterceptor.Level) : DeveloperSettingsSpinnerAdapter.SelectionOption {

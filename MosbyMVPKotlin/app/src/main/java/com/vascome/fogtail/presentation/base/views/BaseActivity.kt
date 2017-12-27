@@ -11,6 +11,10 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
+import dagger.android.AndroidInjection
+import android.os.Bundle
+
+
 
 /**
  * Created by vasilypopov on 11/22/17
@@ -23,6 +27,12 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = androidInjector
 
     private var toolbar: Toolbar? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
 
     override fun setContentView(layoutResID: Int) {
         super.setContentView(layoutResID)

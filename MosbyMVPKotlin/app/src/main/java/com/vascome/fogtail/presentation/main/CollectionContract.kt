@@ -1,6 +1,8 @@
 package com.vascome.fogtail.presentation.main
 
 import android.support.v4.app.Fragment
+import com.hannesdorfmann.mosby3.mvp.MvpPresenter
+import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.vascome.fogtail.presentation.base.router.BaseRouter
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
 
@@ -11,19 +13,17 @@ import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
 
 interface CollectionContract {
 
-    interface View {
+    interface View: MvpView {
 
         fun setLoadingIndicator(active: Boolean)
-
         fun showItems(items: List<RecAreaItem>)
-
         fun showError()
     }
 
-    interface Presenter {
+    interface Presenter: MvpPresenter<View> {
 
+        fun dispose()
         fun reloadItems()
-
         fun openItemDetail(item: RecAreaItem)
     }
 

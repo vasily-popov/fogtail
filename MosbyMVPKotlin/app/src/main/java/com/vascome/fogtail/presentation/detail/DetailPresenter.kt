@@ -1,5 +1,6 @@
 package com.vascome.fogtail.presentation.detail
 
+import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import com.vascome.fogtail.presentation.base.presenters.BasePresenter
 
 import javax.inject.Inject
@@ -10,17 +11,4 @@ import javax.inject.Inject
  */
 
 class DetailPresenter
-@Inject constructor() : BasePresenter<DetailView>() {
-
-    override fun resume() {
-
-    }
-
-    override fun pause() {
-
-    }
-
-    override fun destroy() {
-
-    }
-}
+@Inject constructor() : MvpBasePresenter<DetailContract.View>(), DetailContract.Presenter

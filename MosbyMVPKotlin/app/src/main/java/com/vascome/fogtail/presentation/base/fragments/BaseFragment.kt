@@ -1,5 +1,9 @@
 package com.vascome.fogtail.presentation.base.fragments
-import android.support.v4.app.Fragment
+
+import android.os.Bundle
+import com.hannesdorfmann.mosby3.mvp.MvpFragment
+import com.hannesdorfmann.mosby3.mvp.MvpPresenter
+import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.vascome.fogtail.di.Injectable
 import com.vascome.fogtail.utils.LeakCanaryProxy
 
@@ -11,22 +15,22 @@ import javax.inject.Inject
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-abstract class BaseFragment : Fragment(), Injectable {
+abstract class BaseFragment<V : MvpView, P : MvpPresenter<V>> : MvpFragment<V, P>(), Injectable {
 
     @Inject
     lateinit var leakCanaryProxy: LeakCanaryProxy
 
-    private val isFragmentAlive: Boolean
-        get() = activity != null && isAdded && !isDetached && view != null && !isRemoving
-
-    protected fun runIfFragmentAlive(runnable: Runnable) {
-        if (isFragmentAlive) {
-            runnable.run()
-        }
+    protected fun runOnUI(runnable: Runnable) {
+        runnable.run()
     }
-
     override fun onDestroy() {
         leakCanaryProxy.watch(this)
         super.onDestroy()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        //AndroidSupportInjection.inject(this)
+        super.onCreate(savedInstanceState)
+        retainInstance = true
     }
 }

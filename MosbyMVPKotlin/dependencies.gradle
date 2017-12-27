@@ -11,6 +11,8 @@ ext.versions = [
         kotlin_version               : '1.2.10',
         kotlin_binding_compiler      : '3.0.1',
 
+        mosby                        : '3.1.0',
+
         androidGradlePlugin          : '3.0.1',
         paperworkGradlePlugin        : '1.2.7',
         jacocoGradlePlugin           : '0.7.9',
@@ -102,6 +104,11 @@ ext.libraries = [
                 //preferences': 'com.f2prateek.rx.preferences:rx-preferences:1.0.2',
                 //'rxbinding': compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0',
                 lint    :   "nl.littlerobots.rxlint:rxlint:$versions.rxLint",
+        ],
+
+        mosby: [
+                mvp         : "com.hannesdorfmann.mosby3:mvp:$versions.mosby",
+                viewstate   : "com.hannesdorfmann.mosby3:viewstate:$versions.mosby",
         ],
 
         gson                    : "com.google.code.gson:gson:$versions.gson",

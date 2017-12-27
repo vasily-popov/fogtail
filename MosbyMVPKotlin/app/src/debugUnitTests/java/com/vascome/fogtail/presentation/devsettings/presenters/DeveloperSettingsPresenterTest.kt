@@ -1,7 +1,7 @@
 package com.vascome.fogtail.presentation.devsettings.presenters
 
 import com.vascome.fogtail.presentation.devsettings.model.DeveloperSettingsModelImpl
-import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsView
+import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsContract
 import com.vascome.fogtail.utils.AnalyticsModel
 
 import org.junit.Before
@@ -21,13 +21,13 @@ class DeveloperSettingsPresenterTest {
 
     private lateinit var  developerSettingsModel: DeveloperSettingsModelImpl
     private lateinit var developerSettingsPresenter: DeveloperSettingsPresenter
-    private lateinit var developerSettingsView: DeveloperSettingsView
+    private lateinit var developerSettingsView: DeveloperSettingsContract
 
     @Before
     fun beforeEachTest() {
         developerSettingsModel = mock(DeveloperSettingsModelImpl::class.java)
         developerSettingsPresenter = DeveloperSettingsPresenter(developerSettingsModel, mock(AnalyticsModel::class.java))
-        developerSettingsView = mock(DeveloperSettingsView::class.java)
+        developerSettingsView = mock(DeveloperSettingsContract::class.java)
     }
 
     @Test
@@ -35,7 +35,7 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.gitSha).thenReturn("test git sha")
 
         developerSettingsPresenter.bindView(developerSettingsView)
-        verify<DeveloperSettingsView>(developerSettingsView).changeGitSha("test git sha")
+        verify<DeveloperSettingsContract>(developerSettingsView).changeGitSha("test git sha")
     }
 
     @Test
@@ -43,7 +43,7 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.buildDate).thenReturn("test build date")
 
         developerSettingsPresenter.bindView(developerSettingsView)
-        verify<DeveloperSettingsView>(developerSettingsView).changeBuildDate("test build date")
+        verify<DeveloperSettingsContract>(developerSettingsView).changeBuildDate("test build date")
     }
 
     @Test
@@ -51,7 +51,7 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.buildVersionCode).thenReturn("test build version code")
 
         developerSettingsPresenter.bindView(developerSettingsView)
-        verify<DeveloperSettingsView>(developerSettingsView).changeBuildVersionCode("test build version code")
+        verify<DeveloperSettingsContract>(developerSettingsView).changeBuildVersionCode("test build version code")
     }
 
     @Test
@@ -59,7 +59,7 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.buildVersionName).thenReturn("test build version name")
 
         developerSettingsPresenter.bindView(developerSettingsView)
-        verify<DeveloperSettingsView>(developerSettingsView).changeBuildVersionName("test build version name")
+        verify<DeveloperSettingsContract>(developerSettingsView).changeBuildVersionName("test build version name")
     }
 
     @Test
@@ -67,7 +67,7 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.isStethoEnabled).thenReturn(true)
 
         developerSettingsPresenter.bindView(developerSettingsView)
-        verify<DeveloperSettingsView>(developerSettingsView).changeStethoState(true)
+        verify<DeveloperSettingsContract>(developerSettingsView).changeStethoState(true)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).isStethoEnabled
     }
 
@@ -76,7 +76,7 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.isStethoEnabled).thenReturn(false)
 
         developerSettingsPresenter.bindView(developerSettingsView)
-        verify<DeveloperSettingsView>(developerSettingsView).changeStethoState(false)
+        verify<DeveloperSettingsContract>(developerSettingsView).changeStethoState(false)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).isStethoEnabled
     }
 
@@ -85,7 +85,7 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.isLeakCanaryEnabled).thenReturn(true)
 
         developerSettingsPresenter.bindView(developerSettingsView)
-        verify<DeveloperSettingsView>(developerSettingsView).changeLeakCanaryState(true)
+        verify<DeveloperSettingsContract>(developerSettingsView).changeLeakCanaryState(true)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).isLeakCanaryEnabled
     }
 
@@ -94,7 +94,7 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.isLeakCanaryEnabled).thenReturn(false)
 
         developerSettingsPresenter.bindView(developerSettingsView)
-        verify<DeveloperSettingsView>(developerSettingsView).changeLeakCanaryState(false)
+        verify<DeveloperSettingsContract>(developerSettingsView).changeLeakCanaryState(false)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).isLeakCanaryEnabled
     }
 
@@ -103,7 +103,7 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.isTinyDancerEnabled).thenReturn(true)
 
         developerSettingsPresenter.bindView(developerSettingsView)
-        verify<DeveloperSettingsView>(developerSettingsView).changeTinyDancerState(true)
+        verify<DeveloperSettingsContract>(developerSettingsView).changeTinyDancerState(true)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).isTinyDancerEnabled
     }
 
@@ -112,7 +112,7 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.isTinyDancerEnabled).thenReturn(false)
 
         developerSettingsPresenter.bindView(developerSettingsView)
-        verify<DeveloperSettingsView>(developerSettingsView).changeTinyDancerState(false)
+        verify<DeveloperSettingsContract>(developerSettingsView).changeTinyDancerState(false)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).isTinyDancerEnabled
     }
 
@@ -122,11 +122,11 @@ class DeveloperSettingsPresenterTest {
             `when`<HttpLoggingInterceptor.Level>(developerSettingsModel.httpLoggingLevel).thenReturn(loggingLevel)
 
             developerSettingsPresenter.bindView(developerSettingsView)
-            verify<DeveloperSettingsView>(developerSettingsView).changeHttpLoggingLevel(loggingLevel)
+            verify<DeveloperSettingsContract>(developerSettingsView).changeHttpLoggingLevel(loggingLevel)
             verify<DeveloperSettingsModelImpl>(developerSettingsModel).httpLoggingLevel
 
             developerSettingsModel = mock(DeveloperSettingsModelImpl::class.java)
-            developerSettingsView = mock(DeveloperSettingsView::class.java)
+            developerSettingsView = mock(DeveloperSettingsContract::class.java)
             developerSettingsPresenter = DeveloperSettingsPresenter(developerSettingsModel, mock(AnalyticsModel::class.java))
         }
     }
@@ -139,8 +139,8 @@ class DeveloperSettingsPresenterTest {
         developerSettingsPresenter.changeStethoState(true)
 
         verify<DeveloperSettingsModelImpl>(developerSettingsModel, never()).changeStethoState(anyBoolean())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showMessage(anyString())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showMessage(anyString())
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -151,8 +151,8 @@ class DeveloperSettingsPresenterTest {
         developerSettingsPresenter.changeStethoState(false)
 
         verify<DeveloperSettingsModelImpl>(developerSettingsModel, never()).changeStethoState(anyBoolean())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showMessage(anyString())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showMessage(anyString())
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -161,8 +161,8 @@ class DeveloperSettingsPresenterTest {
 
         developerSettingsPresenter.changeStethoState(true)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).changeStethoState(true)
-        verify<DeveloperSettingsView>(developerSettingsView).showMessage("Stetho was enabled")
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView).showMessage("Stetho was enabled")
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -172,8 +172,8 @@ class DeveloperSettingsPresenterTest {
         `when`(developerSettingsModel.isStethoEnabled).thenReturn(true)
         developerSettingsPresenter.changeStethoState(false)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).changeStethoState(false)
-        verify<DeveloperSettingsView>(developerSettingsView).showMessage("Stetho was disabled")
-        verify<DeveloperSettingsView>(developerSettingsView).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView).showMessage("Stetho was disabled")
+        verify<DeveloperSettingsContract>(developerSettingsView).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -184,9 +184,9 @@ class DeveloperSettingsPresenterTest {
 
         developerSettingsPresenter.changeStethoState(false)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).changeStethoState(false)
-        verify<DeveloperSettingsView>(developerSettingsView).showMessage("Stetho was disabled")
+        verify<DeveloperSettingsContract>(developerSettingsView).showMessage("Stetho was disabled")
 
-        verify<DeveloperSettingsView>(developerSettingsView).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -197,8 +197,8 @@ class DeveloperSettingsPresenterTest {
         developerSettingsPresenter.changeLeakCanaryState(true)
 
         verify<DeveloperSettingsModelImpl>(developerSettingsModel, never()).changeLeakCanaryState(anyBoolean())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showMessage(anyString())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showMessage(anyString())
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -209,8 +209,8 @@ class DeveloperSettingsPresenterTest {
         developerSettingsPresenter.changeLeakCanaryState(false)
 
         verify<DeveloperSettingsModelImpl>(developerSettingsModel, never()).changeLeakCanaryState(anyBoolean())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showMessage(anyString())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showMessage(anyString())
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -219,8 +219,8 @@ class DeveloperSettingsPresenterTest {
 
         developerSettingsPresenter.changeLeakCanaryState(true)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).changeLeakCanaryState(true)
-        verify<DeveloperSettingsView>(developerSettingsView).showMessage("LeakCanary was enabled")
-        verify<DeveloperSettingsView>(developerSettingsView).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView).showMessage("LeakCanary was enabled")
+        verify<DeveloperSettingsContract>(developerSettingsView).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -231,8 +231,8 @@ class DeveloperSettingsPresenterTest {
 
         developerSettingsPresenter.changeLeakCanaryState(false)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).changeLeakCanaryState(false)
-        verify<DeveloperSettingsView>(developerSettingsView).showMessage("LeakCanary was disabled")
-        verify<DeveloperSettingsView>(developerSettingsView).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView).showMessage("LeakCanary was disabled")
+        verify<DeveloperSettingsContract>(developerSettingsView).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -243,8 +243,8 @@ class DeveloperSettingsPresenterTest {
         developerSettingsPresenter.changeTinyDancerState(true)
 
         verify<DeveloperSettingsModelImpl>(developerSettingsModel, never()).changeTinyDancerState(anyBoolean())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showMessage(anyString())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showMessage(anyString())
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -255,8 +255,8 @@ class DeveloperSettingsPresenterTest {
         developerSettingsPresenter.changeTinyDancerState(false)
 
         verify<DeveloperSettingsModelImpl>(developerSettingsModel, never()).changeTinyDancerState(anyBoolean())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showMessage(anyString())
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showMessage(anyString())
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -265,8 +265,8 @@ class DeveloperSettingsPresenterTest {
 
         developerSettingsPresenter.changeTinyDancerState(true)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).changeTinyDancerState(true)
-        verify<DeveloperSettingsView>(developerSettingsView).showMessage("TinyDancer was enabled")
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView).showMessage("TinyDancer was enabled")
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -276,8 +276,8 @@ class DeveloperSettingsPresenterTest {
 
         developerSettingsPresenter.changeTinyDancerState(false)
         verify<DeveloperSettingsModelImpl>(developerSettingsModel).changeTinyDancerState(false)
-        verify<DeveloperSettingsView>(developerSettingsView).showMessage("TinyDancer was disabled")
-        verify<DeveloperSettingsView>(developerSettingsView, never()).showAppNeedsToBeRestarted()
+        verify<DeveloperSettingsContract>(developerSettingsView).showMessage("TinyDancer was disabled")
+        verify<DeveloperSettingsContract>(developerSettingsView, never()).showAppNeedsToBeRestarted()
     }
 
     @Test
@@ -287,10 +287,10 @@ class DeveloperSettingsPresenterTest {
 
             developerSettingsPresenter.changeHttpLoggingLevel(loggingLevel)
             verify<DeveloperSettingsModelImpl>(developerSettingsModel).changeHttpLoggingLevel(loggingLevel)
-            verify<DeveloperSettingsView>(developerSettingsView).showMessage("Http logging level was changed to " + loggingLevel.toString())
+            verify<DeveloperSettingsContract>(developerSettingsView).showMessage("Http logging level was changed to " + loggingLevel.toString())
 
             developerSettingsModel = mock(DeveloperSettingsModelImpl::class.java)
-            developerSettingsView = mock(DeveloperSettingsView::class.java)
+            developerSettingsView = mock(DeveloperSettingsContract::class.java)
             developerSettingsPresenter = DeveloperSettingsPresenter(developerSettingsModel, mock(AnalyticsModel::class.java))
         }
     }

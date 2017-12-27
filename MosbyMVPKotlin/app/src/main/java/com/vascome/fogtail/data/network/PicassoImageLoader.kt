@@ -12,7 +12,10 @@ import com.squareup.picasso.Picasso
 class PicassoImageLoader(private val picasso: Picasso) : AppImageLoader {
 
     override fun downloadInto(url: String, imageView: ImageView) {
-        picasso.load(url).fit().centerCrop().into(imageView)
+        picasso.load(url)
+                .fit()
+                .centerCrop()
+                .into(imageView)
     }
 
 }

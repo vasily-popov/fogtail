@@ -29,6 +29,8 @@ android {
         testInstrumentationRunner "com.vascome.fogtail.functional_tests.FogtailFunctionalTestRunner"
         // Make generated apks contain version name and code.
         archivesBaseName = "app-${versions.name}-${versions.code}"
+
+        multiDexEnabled true
     }
 
     compileOptions {
@@ -166,6 +168,8 @@ dependencies {
     implementation libraries.googlePlayMaps
     //implementation 'com.flurry.android:analytics:8.1.0'
 
+    implementation libraries.mosby.mvp
+    implementation libraries.mosby.viewstate
 
     implementation libraries.cardStackView
 

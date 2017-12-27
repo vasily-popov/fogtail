@@ -1,8 +1,8 @@
 package com.vascome.fogtail.presentation.devsettings.presenters
 
-import com.vascome.fogtail.presentation.base.presenters.BasePresenter
+import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import com.vascome.fogtail.presentation.devsettings.model.DeveloperSettingsModelImpl
-import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsView
+import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsContract
 import com.vascome.fogtail.utils.AnalyticsModel
 
 import javax.inject.Inject
@@ -16,25 +16,23 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 class DeveloperSettingsPresenter
 @Inject constructor(private val developerSettingsModel: DeveloperSettingsModelImpl,
-            private val analyticsModel: AnalyticsModel) : BasePresenter<DeveloperSettingsView>() {
+            private val analyticsModel: AnalyticsModel)
+        : MvpBasePresenter<DeveloperSettingsContract.View>(),
+            DeveloperSettingsContract.Presenter {
 
-    override fun bindView(view: DeveloperSettingsView) {
-        super.bindView(view)
-        syncDeveloperSettings()
+    override fun syncDeveloperSettings() {
+
+        ifViewAttached{ view->view.changeGitSha(developerSettingsModel.gitSha) }
+        ifViewAttached{ view->view.changeBuildDate(developerSettingsModel.buildDate) }
+        ifViewAttached{ view->view.changeBuildVersionCode(developerSettingsModel.buildVersionCode) }
+        ifViewAttached{ view->view.changeBuildVersionName(developerSettingsModel.buildVersionName) }
+        ifViewAttached{ view->view.changeStethoState(developerSettingsModel.isStethoEnabled) }
+        ifViewAttached{ view->view.changeLeakCanaryState(developerSettingsModel.isLeakCanaryEnabled) }
+        ifViewAttached{ view->view.changeTinyDancerState(developerSettingsModel.isTinyDancerEnabled) }
+        ifViewAttached{ view->view.changeHttpLoggingLevel(developerSettingsModel.httpLoggingLevel) }
     }
 
-    fun syncDeveloperSettings() {
-        view()?.changeGitSha(developerSettingsModel.gitSha)
-        view()?.changeBuildDate(developerSettingsModel.buildDate)
-        view()?.changeBuildVersionCode(developerSettingsModel.buildVersionCode)
-        view()?.changeBuildVersionName(developerSettingsModel.buildVersionName)
-        view()?.changeStethoState(developerSettingsModel.isStethoEnabled)
-        view()?.changeLeakCanaryState(developerSettingsModel.isLeakCanaryEnabled)
-        view()?.changeTinyDancerState(developerSettingsModel.isTinyDancerEnabled)
-        view()?.changeHttpLoggingLevel(developerSettingsModel.httpLoggingLevel)
-    }
-
-    fun changeStethoState(enabled: Boolean) {
+    override fun changeStethoState(enabled: Boolean) {
         if (developerSettingsModel.isStethoEnabled == enabled) {
             return  // no-op
         }
@@ -44,13 +42,16 @@ class DeveloperSettingsPresenter
         val stethoWasEnabled = developerSettingsModel.isStethoEnabled
 
         developerSettingsModel.changeStethoState(enabled)
-        view()?.showMessage("Stetho was " + booleanToEnabledDisabled(enabled))
-        if (stethoWasEnabled) {
-            view()?.showAppNeedsToBeRestarted()
+
+        ifViewAttached { view->
+            view.showMessage("Stetho was " + booleanToEnabledDisabled(enabled))
+            if (stethoWasEnabled) {
+                view.showAppNeedsToBeRestarted()
+            }
         }
     }
 
-    fun changeLeakCanaryState(enabled: Boolean) {
+    override fun changeLeakCanaryState(enabled: Boolean) {
         if (developerSettingsModel.isLeakCanaryEnabled == enabled) {
             return  // no-op
         }
@@ -59,12 +60,13 @@ class DeveloperSettingsPresenter
 
         developerSettingsModel.changeLeakCanaryState(enabled)
 
-        view()?.showMessage("LeakCanary was " + booleanToEnabledDisabled(enabled))
-        view()?.showAppNeedsToBeRestarted() // LeakCanary can not be enabled on demand (or it's possible?)
-
+        ifViewAttached { view->
+            view.showMessage("LeakCanary was " + booleanToEnabledDisabled(enabled))
+            view.showAppNeedsToBeRestarted()
+        }
     }
 
-    fun changeTinyDancerState(enabled: Boolean) {
+    override fun changeTinyDancerState(enabled: Boolean) {
         if (developerSettingsModel.isTinyDancerEnabled == enabled) {
             return  // no-op
         }
@@ -73,10 +75,12 @@ class DeveloperSettingsPresenter
 
         developerSettingsModel.changeTinyDancerState(enabled)
 
-        view()?.showMessage("TinyDancer was " + booleanToEnabledDisabled(enabled))
+        ifViewAttached { view->
+            view.showMessage("TinyDancer was " + booleanToEnabledDisabled(enabled))
+        }
     }
 
-    fun changeHttpLoggingLevel(loggingLevel: HttpLoggingInterceptor.Level) {
+    override fun changeHttpLoggingLevel(loggingLevel: HttpLoggingInterceptor.Level) {
         if (developerSettingsModel.httpLoggingLevel == loggingLevel) {
             return  // no-op
         }
@@ -85,23 +89,13 @@ class DeveloperSettingsPresenter
 
         developerSettingsModel.changeHttpLoggingLevel(loggingLevel)
 
-        view()?.showMessage("Http logging level was changed to " + loggingLevel.toString())
+        ifViewAttached { view->
+            view.showMessage("Http logging level was changed to " + loggingLevel.toString())
+        }
     }
 
     private fun booleanToEnabledDisabled(enabled: Boolean): String {
         return if (enabled) "enabled" else "disabled"
-    }
-
-    override fun resume() {
-
-    }
-
-    override fun pause() {
-
-    }
-
-    override fun destroy() {
-
     }
 }
 
