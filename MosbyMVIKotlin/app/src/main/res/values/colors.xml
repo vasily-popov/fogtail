@@ -3,6 +3,8 @@
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">#03a9f4</color>
+    <color name="light_grey">#F2F2F2</color>
+    <color name="background">@color/light_grey</color>
 
     <color name="items_list_background">#dddddd</color>
     <color name="list_item_card_background">#eeeeee</color>
