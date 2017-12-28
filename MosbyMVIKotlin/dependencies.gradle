@@ -103,8 +103,9 @@ ext.libraries = [
                 android         : "io.reactivex.rxjava2:rxandroid:2.0.1",
                 kotlin          : "io.reactivex.rxjava2:rxkotlin:2.1.0",
                 binding         : "com.jakewharton.rxbinding2:rxbinding-kotlin:2.0.0",
-                v4              : "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:2.0.0",
-                v7              : "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:2.0.0",
+                supportv4       : "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:2.0.0",
+                recyclerviewv7  : "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:2.0.0",
+                appcompatv7     : "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:2.0.0",
                 lint            : "nl.littlerobots.rxlint:rxlint:$versions.rxLint",
         ],
 

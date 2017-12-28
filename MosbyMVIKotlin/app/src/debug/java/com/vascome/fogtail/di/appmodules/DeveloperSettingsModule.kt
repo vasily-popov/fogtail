@@ -1,7 +1,7 @@
 package com.vascome.fogtail.di.appmodules
 
 import android.app.Application
-
+import android.content.Context.MODE_PRIVATE
 import com.github.pedrovgs.lynx.LynxConfig
 import com.vascome.fogtail.di.presentation.devsettings.DevMenuModule
 import com.vascome.fogtail.presentation.base.other.ViewModifier
@@ -11,15 +11,11 @@ import com.vascome.fogtail.presentation.devsettings.model.DeveloperSettingsModel
 import com.vascome.fogtail.presentation.devsettings.views.MainActivityViewModifier
 import com.vascome.fogtail.utils.LeakCanaryProxy
 import com.vascome.fogtail.utils.LeakCanaryProxyImpl
-
-import javax.inject.Named
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
 import hu.supercluster.paperwork.Paperwork
-
-import android.content.Context.MODE_PRIVATE
+import javax.inject.Named
+import javax.inject.Singleton
 
 /**
  * Created by vasilypopov on 11/23/17

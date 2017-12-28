@@ -2,26 +2,30 @@ package com.vascome.fogtail.presentation.devsettings.fragments
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.annotation.AnyThread
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
 import com.github.pedrovgs.lynx.LynxActivity
 import com.github.pedrovgs.lynx.LynxConfig
+import com.jakewharton.rxbinding2.widget.*
 import com.vascome.fogtail.R
 import com.vascome.fogtail.databinding.FragmentDeveloperSettingsBinding
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
 import com.vascome.fogtail.presentation.devsettings.adapters.DeveloperSettingsSpinnerAdapter
 import com.vascome.fogtail.presentation.devsettings.presenters.DeveloperSettingsPresenter
+import com.vascome.fogtail.presentation.devsettings.views.DevViewState
 import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsView
-
-import java.util.ArrayList
-
-import javax.inject.Inject
-
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.subjects.PublishSubject
 import okhttp3.logging.HttpLoggingInterceptor
+import timber.log.Timber
+import java.util.*
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @Suppress("MemberVisibilityCanPrivate")
 /**
@@ -41,6 +45,9 @@ class DeveloperSettingsFragment :
     @Inject
     lateinit var lynxConfig: LynxConfig
 
+    private var disposables = CompositeDisposable()
+
+    private var viewAttachedFirstTime = true
 
 
     private lateinit var binding: FragmentDeveloperSettingsBinding
@@ -58,30 +65,9 @@ class DeveloperSettingsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.developerSettingsHttpLoggingLevelSpinner.adapter = DeveloperSettingsSpinnerAdapter<DeveloperSettingsSpinnerAdapter.SelectionOption>(activity.layoutInflater)
                 .setSelectionOptions(HttpLoggingLevel.allValues())
-
-        /*
-        binding.developerSettingsStethoSwitch
-                .setOnCheckedChangeListener { _, checked -> presenter.changeStethoState(checked) }
-
-        binding.developerSettingsTinyDancerSwitch
-                .setOnCheckedChangeListener { _, checked -> presenter.changeTinyDancerState(checked) }
-
-        binding.developerSettingsHttpLoggingLevelSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View?, position: Int, l: Long) {
-                presenter.changeHttpLoggingLevel(
-                        (binding.developerSettingsHttpLoggingLevelSpinner.getItemAtPosition(position) as HttpLoggingLevel).loggingLevel)
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>) {
-
-            }
-        }
-        binding.developerSettingsLeakCanarySwitch
-                .setOnCheckedChangeListener { _, checked -> presenter.changeLeakCanaryState(checked) }
-*/
+        changeHttpLoggingLevel(devPresenter.httpLoggingLevel)
 
         binding.bShowLog.setOnClickListener {
             val context = activity
@@ -89,72 +75,127 @@ class DeveloperSettingsFragment :
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-       // presenter.syncDeveloperSettings()
+    override fun onStart() {
+        super.onStart()
+        if(viewAttachedFirstTime) {
+            disposables = CompositeDisposable()
+            subscribeEvents()
+        }
+        viewAttachedFirstTime = false
     }
 
-    @AnyThread
-    override fun changeGitSha(gitSha: String) {
-        runOnUI(Runnable{ binding.developerSettingsGitShaTextView.text = gitSha })
+    override fun onDestroy() {
+        viewAttachedFirstTime = true
+        if (!disposables.isDisposed) {
+            disposables.dispose()
+        }
+        super.onDestroy()
     }
 
-    @AnyThread
-    override fun changeBuildDate(date: String) {
-        runOnUI(Runnable{ binding.developerSettingsBuildDateTextView.text = date })
+    private fun subscribeEvents() {
+
+        devPresenter.tinyDancerObservable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({value ->
+                    showMessage("TinyDancer was " + if (value) "enabled" else "disabled")
+                })
+                .addTo(disposables)
+
+        devPresenter.stethoObservable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    showAppNeedsToBeRestarted()
+                })
+                .addTo(disposables)
+
+        devPresenter.leakCanaryObservable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({value ->
+                    showMessage("LeakCanary was " + if (value) "enabled" else "disabled")
+                    showAppNeedsToBeRestarted()
+                })
+                .addTo(disposables)
+
+        devPresenter.httpLevelObservable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({level ->
+                    showMessage("Http logging level was changed to " + level.toString())
+                })
+                .addTo(disposables)
+
+        startRelay.onNext(true)
     }
 
-    @AnyThread
-    override fun changeBuildVersionCode(versionCode: String) {
-        runOnUI(Runnable{ binding.developerSettingsBuildVersionCodeTextView.text = versionCode })
+    private val startRelay = PublishSubject.create<Boolean>()
 
+    override fun loadOnStartIntent(): Observable<Boolean> {
+        return startRelay.hide().doOnComplete { Timber.d("start loading completed") }
+        //return Observable.just(true).doOnComplete { Timber.d("start loading completed") }
     }
 
-    @AnyThread
-    override fun changeBuildVersionName(versionName: String) {
-        runOnUI(Runnable{ binding.developerSettingsBuildVersionNameTextView.text = versionName })
+    override fun stethoSwitchChecked(): Observable<Boolean> {
+        return binding.developerSettingsStethoSwitch
+                .checkedChanges()
+                .skipInitialValue()
+                .debounce(500, TimeUnit.MICROSECONDS)
     }
 
-    @AnyThread
-    override fun changeStethoState(enabled: Boolean) {
-        runOnUI(Runnable{ binding.developerSettingsStethoSwitch.isChecked = enabled })
+    override fun leakCanarySwitchChecked(): Observable<Boolean> {
+        return binding.developerSettingsLeakCanarySwitch
+                .checkedChanges()
+                .skipInitialValue()
+                .debounce(500, TimeUnit.MICROSECONDS)
     }
 
-    @AnyThread
-    override fun changeLeakCanaryState(enabled: Boolean) {
-        runOnUI(Runnable{ binding.developerSettingsLeakCanarySwitch.isChecked = enabled })
+    override fun tinyDancerSwitchChecked(): Observable<Boolean> {
+        return binding.developerSettingsTinyDancerSwitch
+                .checkedChanges()
+                .skipInitialValue()
+                .debounce(500, TimeUnit.MICROSECONDS)
     }
 
-    @AnyThread
-    override fun changeTinyDancerState(enabled: Boolean) {
-        runOnUI(Runnable{ binding.developerSettingsTinyDancerSwitch.isChecked = enabled })
+    override fun levelChanged(): Observable<HttpLoggingInterceptor.Level> {
 
+        return RxAdapterView
+                .itemSelections(binding.developerSettingsHttpLoggingLevelSpinner)
+                .skipInitialValue()
+                .debounce(500, TimeUnit.MICROSECONDS)
+                .map { it ->
+                    (binding.developerSettingsHttpLoggingLevelSpinner.getItemAtPosition(it) as HttpLoggingLevel).loggingLevel }
     }
 
-    @AnyThread
-    override fun changeHttpLoggingLevel(loggingLevel: HttpLoggingInterceptor.Level) {
-        runOnUI(Runnable{
-            var position = 0
-            val count = binding.developerSettingsHttpLoggingLevelSpinner.count
-            while (position < count) {
-                if (loggingLevel == (binding.developerSettingsHttpLoggingLevelSpinner.getItemAtPosition(position) as? HttpLoggingLevel)?.loggingLevel) {
-                    binding.developerSettingsHttpLoggingLevelSpinner.setSelection(position)
-                    return@Runnable
-                }
-                position++
+
+    override fun render(viewState: DevViewState) {
+        binding.developerSettingsGitShaTextView.text = viewState.gitSha
+        binding.developerSettingsBuildDateTextView.text = viewState.buildDate
+        binding.developerSettingsBuildVersionCodeTextView.text = viewState.buildVersionCode
+        binding.developerSettingsBuildVersionNameTextView.text = viewState.buildVersionName
+        binding.developerSettingsStethoSwitch.isChecked = viewState.isStethoEnabled
+        binding.developerSettingsLeakCanarySwitch.isChecked = viewState.isLeakCanaryEnabled
+        binding.developerSettingsTinyDancerSwitch.isChecked = viewState.isTinyDancerEnabled
+
+        changeHttpLoggingLevel(viewState.httpLoggingLevel)
+    }
+
+    fun changeHttpLoggingLevel(loggingLevel: HttpLoggingInterceptor.Level) {
+        var position = 0
+        val count = binding.developerSettingsHttpLoggingLevelSpinner.count
+        while (position < count) {
+            if (loggingLevel == (binding.developerSettingsHttpLoggingLevelSpinner.getItemAtPosition(position) as? HttpLoggingLevel)?.loggingLevel) {
+                binding.developerSettingsHttpLoggingLevelSpinner.setSelection(position)
+                return
             }
+            position++
+        }
 
-            throw IllegalStateException("Unknown loggingLevel, looks like a serious bug. Passed loggingLevel = " + loggingLevel)
-        })
+        throw IllegalStateException("Unknown loggingLevel, looks like a serious bug. Passed loggingLevel = " + loggingLevel)
     }
 
-    @AnyThread
-    override fun showMessage(message: String) {
+    fun showMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    @AnyThread
-    override fun showAppNeedsToBeRestarted() {
+    fun showAppNeedsToBeRestarted() {
         Toast.makeText(context, "To apply new settings app needs to be restarted", Toast.LENGTH_LONG).show()
     }
 

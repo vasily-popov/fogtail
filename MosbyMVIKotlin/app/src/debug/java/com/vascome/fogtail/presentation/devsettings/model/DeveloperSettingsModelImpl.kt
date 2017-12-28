@@ -1,24 +1,18 @@
 package com.vascome.fogtail.presentation.devsettings.model
 
 import android.app.Application
-import android.util.DisplayMetrics
-
+import android.view.Gravity.START
+import android.view.Gravity.TOP
 import com.codemonkeylabs.fpslibrary.TinyDancer
 import com.facebook.stetho.Stetho
 import com.vascome.fogtail.BuildConfig
 import com.vascome.fogtail.presentation.devsettings.DeveloperSettingsModel
 import com.vascome.fogtail.utils.LeakCanaryProxy
-
-import java.util.concurrent.atomic.AtomicBoolean
-
-import javax.inject.Inject
-
 import hu.supercluster.paperwork.Paperwork
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
-
-import android.view.Gravity.START
-import android.view.Gravity.TOP
+import java.util.concurrent.atomic.AtomicBoolean
+import javax.inject.Inject
 
 /**
  * Created by vasilypopov on 11/23/17

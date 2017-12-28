@@ -1,10 +1,7 @@
 package com.vascome.fogtail.presentation.devsettings.views
 
-import android.support.annotation.AnyThread
-import android.support.annotation.UiThread
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
-
+import io.reactivex.Observable
 import okhttp3.logging.HttpLoggingInterceptor
 
 /**
@@ -14,33 +11,54 @@ import okhttp3.logging.HttpLoggingInterceptor
 
 interface DeveloperSettingsView:MvpView {
 
-    @AnyThread
-    fun changeGitSha(gitSha: String)
 
-    @AnyThread
-    fun changeBuildDate(date: String)
+    /**
+     * The intent to load stuff on start
+     *
+     * @return The emitted item boolean
+     */
+    fun loadOnStartIntent(): Observable<Boolean>
 
-    @AnyThread
-    fun changeBuildVersionCode(versionCode: String)
+    /**
+     * The intent to react on stetho toggle
+     *
+     * @return The emitted item boolean
+     */
+    fun stethoSwitchChecked(): Observable<Boolean>
 
-    @AnyThread
-    fun changeBuildVersionName(versionName: String)
+    /**
+     * The intent to react on leak canary toggle
+     *
+     * @return The emitted item boolean
+     */
+    fun leakCanarySwitchChecked(): Observable<Boolean>
 
-    @AnyThread
-    fun changeStethoState(enabled: Boolean)
+    /**
+     * The intent to react on tiny dancer toggle
+     *
+     * @return The emitted item boolean
+     */
+    fun tinyDancerSwitchChecked(): Observable<Boolean>
 
-    @AnyThread
-    fun changeLeakCanaryState(enabled: Boolean)
+    /**
+     * The intent to react on level change
+     *
+     * @return The emitted item integer
+     */
+    fun levelChanged(): Observable<HttpLoggingInterceptor.Level>
 
-    @AnyThread
-    fun changeTinyDancerState(enabled: Boolean)
 
-    @AnyThread
-    fun changeHttpLoggingLevel(loggingLevel: HttpLoggingInterceptor.Level)
+    /**
+     * Renders the viewState
+     */
+    fun render(viewState: DevViewState)
 
-    @AnyThread
-    fun showMessage(message: String)
+    interface DeveloperSettingsFeedback {
+        val httpLoggingLevel: HttpLoggingInterceptor.Level
 
-    @AnyThread
-    fun showAppNeedsToBeRestarted()
+        val tinyDancerObservable: Observable<Boolean>
+        val stethoObservable: Observable<Boolean>
+        val leakCanaryObservable: Observable<Boolean>
+        val httpLevelObservable: Observable<HttpLoggingInterceptor.Level>
+    }
 }

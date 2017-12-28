@@ -4,11 +4,9 @@ import android.support.v4.widget.DrawerLayout
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.vascome.fogtail.R
 import com.vascome.fogtail.presentation.base.other.ViewModifier
-
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 
 /**
  * Created by vasilypopov on 11/23/17
