@@ -46,6 +46,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         setContentView(viewModifier.modify(binding.root, this))
         //setContentView(binding.root)
+
         val toggle = ActionBarDrawerToggle(
                 this, binding.mainDrawerLayout, toolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         binding.mainDrawerLayout.addDrawerListener(toggle)
@@ -68,10 +69,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_list -> {
-                router.popToRoot()
+                router.replaceTopController(RouterTransaction.with(ListViewController()))
             }
             R.id.nav_grid -> {
-
                 router.replaceTopController(RouterTransaction.with(GridController()))
             }
             R.id.nav_gallery -> {

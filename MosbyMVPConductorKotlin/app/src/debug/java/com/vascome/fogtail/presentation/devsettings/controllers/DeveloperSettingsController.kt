@@ -1,4 +1,4 @@
-package com.vascome.fogtail.presentation.devsettings.fragments
+package com.vascome.fogtail.presentation.devsettings.controllers
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -30,7 +30,7 @@ import okhttp3.logging.HttpLoggingInterceptor
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-class DeveloperSettingsFragment :
+class DeveloperSettingsController :
         BaseViewController<DeveloperSettingsContract.View, DeveloperSettingsContract.Presenter, DevViewState>(),
         DeveloperSettingsContract.View {
 

@@ -1,7 +1,7 @@
 package com.vascome.fogtail.di.presentation.devsettings
 
 import com.vascome.fogtail.di.ControllerScope
-import com.vascome.fogtail.presentation.devsettings.fragments.DeveloperSettingsFragment
+import com.vascome.fogtail.presentation.devsettings.controllers.DeveloperSettingsController
 
 import dagger.Subcomponent
 
@@ -14,5 +14,5 @@ import dagger.Subcomponent
 @ControllerScope
 interface DevSettingsComponent {
 
-    fun inject(devSettings: DeveloperSettingsFragment)
+    fun inject(devSettings: DeveloperSettingsController)
 }

@@ -4,6 +4,7 @@ import com.vascome.fogtail.di.ActivityScope
 import dagger.Subcomponent
 import com.vascome.fogtail.presentation.MainActivity
 import com.vascome.fogtail.di.ControllerScope
+import com.vascome.fogtail.presentation.detail.DetailController
 import com.vascome.fogtail.presentation.main.controllers.carousel.CarouselController
 import com.vascome.fogtail.presentation.main.controllers.gallery.GalleryController
 import com.vascome.fogtail.presentation.main.controllers.list.ListViewController
@@ -26,6 +27,7 @@ interface CollectionComponent {
     fun carouselComponent(): CarouselComponent
     fun galleryComponent(): GalleryComponent
     fun stackComponent(): StackComponent
+    fun detailComponent(): DetailComponent
 
 
 }
@@ -58,4 +60,10 @@ interface GalleryComponent {
 @ControllerScope
 interface StackComponent {
     fun inject(items: StackController)
+}
+
+@Subcomponent
+@ControllerScope
+interface DetailComponent {
+    fun inject(items: DetailController)
 }

@@ -13,7 +13,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
-import com.vascome.fogtail.presentation.devsettings.fragments.DeveloperSettingsFragment
+import com.vascome.fogtail.presentation.devsettings.controllers.DeveloperSettingsController
 
 /**
  * Created by vasilypopov on 11/23/17
@@ -36,7 +36,7 @@ class MainActivityViewModifier : ViewModifier {
 
         router = Conductor.attachRouter(activity, container.findViewById(R.id.developer_settings), null)
         if (!router.hasRootController()) {
-            router.setRoot(RouterTransaction.with(DeveloperSettingsFragment()))
+            router.setRoot(RouterTransaction.with(DeveloperSettingsController()))
         }
 
         return view

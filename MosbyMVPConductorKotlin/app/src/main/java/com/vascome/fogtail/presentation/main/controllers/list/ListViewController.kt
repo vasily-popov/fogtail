@@ -24,6 +24,10 @@ import com.vascome.fogtail.presentation.main.controllers.list.adapter.VerticalSp
 import com.vascome.fogtail.presentation.main.utils.CollectionAreaItemListener
 
 import javax.inject.Inject
+import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.changehandler.HorizontalChangeHandler
+import com.vascome.fogtail.presentation.detail.DetailController
+
 
 @Suppress("MemberVisibilityCanPrivate")
 /**
@@ -111,7 +115,7 @@ class ListViewController :
     }
 
     override fun onItemClick(clickedItem: RecAreaItem) {
-        //presenter.openItemDetail(clickedItem)
+        router.pushController(getRouterTransaction(clickedItem))
     }
 
     private fun runLayoutAnimation() {
@@ -119,5 +123,13 @@ class ListViewController :
             binding.recyclerView.layoutAnimation = this
         }
         binding.recyclerView.scheduleLayoutAnimation()
+    }
+
+    fun getRouterTransaction(item: RecAreaItem): RouterTransaction {
+        val toController = DetailController.newInstance(item)
+
+        return RouterTransaction.with(toController)
+                .pushChangeHandler(HorizontalChangeHandler(true))
+                .popChangeHandler(HorizontalChangeHandler(true))
     }
 }
