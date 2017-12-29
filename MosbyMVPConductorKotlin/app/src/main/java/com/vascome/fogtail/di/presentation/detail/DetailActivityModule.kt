@@ -1,14 +1,9 @@
 package com.vascome.fogtail.di.presentation.detail
 
-import com.vascome.fogtail.di.ActivityScope
-import com.vascome.fogtail.di.FragmentScope
-import com.vascome.fogtail.presentation.base.router.BaseRouter
-import com.vascome.fogtail.presentation.detail.DetailRouter
-import com.vascome.fogtail.presentation.detail.RecAreaDetailFragment
+import com.vascome.fogtail.di.ControllerScope
+import com.vascome.fogtail.presentation.detail.DetailController
 
-import dagger.Binds
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
 
 /**
  * Created by vasilypopov on 12/12/17
@@ -18,9 +13,9 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class DetailActivityModule {
 
-    @FragmentScope
-    @ContributesAndroidInjector
-    internal abstract fun detailFragment(): RecAreaDetailFragment
+    @ControllerScope
+    //@ContributesAndroidInjector
+    internal abstract fun detailFragment(): DetailController
 }
 
 

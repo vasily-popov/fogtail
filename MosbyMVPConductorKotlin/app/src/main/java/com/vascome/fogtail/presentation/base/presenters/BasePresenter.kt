@@ -7,7 +7,7 @@ import android.support.annotation.CallSuper
  *
  * @param <V> view.
 </V> */
-abstract class BasePresenter<V> : PresenterLifeCycle {
+abstract class BasePresenter<V> {
 
     private var view: V? = null
 

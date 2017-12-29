@@ -12,6 +12,7 @@ ext.versions = [
         kotlin_binding_compiler      : '3.0.1',
 
         mosby                        : '3.1.0',
+        conductor                    : '2.1.4',
 
         androidGradlePlugin          : '3.0.1',
         paperworkGradlePlugin        : '1.2.7',
@@ -73,10 +74,7 @@ ext.libraries = [
 
         dagger: [
                 runtime     : "com.google.dagger:dagger:$versions.dagger",
-                android     : "com.google.dagger:dagger-android:$versions.dagger",
-                support     : "com.google.dagger:dagger-android-support:$versions.dagger",
                 compiler    : "com.google.dagger:dagger-compiler:$versions.dagger",
-                processor   : "com.google.dagger:dagger-android-processor:$versions.dagger",
         ],
 
         picasso: [
@@ -106,10 +104,11 @@ ext.libraries = [
                 lint    :   "nl.littlerobots.rxlint:rxlint:$versions.rxLint",
         ],
 
+        conductor: "com.bluelinelabs:conductor:$versions.conductor",
+
         mosby: [
-                mvp         : "com.hannesdorfmann.mosby3:mvp:$versions.mosby",
-                viewstate   : "com.hannesdorfmann.mosby3:viewstate:$versions.mosby",
-                lce         : "com.hannesdorfmann.mosby3:mvp-lce:$versions.mosby",
+                mvp         : "com.hannesdorfmann.mosby3:mvp-conductor:$versions.mosby",
+                viewstate   : "com.hannesdorfmann.mosby3:viewstate-conductor:$versions.mosby",
         ],
 
         gson                    : "com.google.code.gson:gson:$versions.gson",

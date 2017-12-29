@@ -1,25 +1,24 @@
 package com.vascome.fogtail.presentation.devsettings.fragments
 
+import android.content.Context
 import android.databinding.DataBindingUtil
-import android.os.Bundle
 import android.support.annotation.AnyThread
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
-
 import com.github.pedrovgs.lynx.LynxActivity
+
 import com.github.pedrovgs.lynx.LynxConfig
+import com.vascome.fogtail.FogtailApplication
 import com.vascome.fogtail.R
 import com.vascome.fogtail.databinding.FragmentDeveloperSettingsBinding
-import com.vascome.fogtail.presentation.base.fragments.BaseFragment
+import com.vascome.fogtail.presentation.base.controllers.BaseViewController
 import com.vascome.fogtail.presentation.devsettings.adapters.DeveloperSettingsSpinnerAdapter
 import com.vascome.fogtail.presentation.devsettings.presenters.DeveloperSettingsPresenter
 import com.vascome.fogtail.presentation.devsettings.views.DevViewState
 import com.vascome.fogtail.presentation.devsettings.views.DeveloperSettingsContract
-
-import java.util.ArrayList
 
 import javax.inject.Inject
 
@@ -32,8 +31,11 @@ import okhttp3.logging.HttpLoggingInterceptor
  */
 
 class DeveloperSettingsFragment :
-        BaseFragment<DeveloperSettingsContract.View, DeveloperSettingsContract.Presenter, DevViewState>(),
+        BaseViewController<DeveloperSettingsContract.View, DeveloperSettingsContract.Presenter, DevViewState>(),
         DeveloperSettingsContract.View {
+
+    private lateinit var binding: FragmentDeveloperSettingsBinding
+
     override fun createViewState()= DevViewState()
 
     override fun onNewViewStateInstance() {
@@ -48,24 +50,21 @@ class DeveloperSettingsFragment :
     lateinit var lynxConfig: LynxConfig
 
 
-
-    private lateinit var binding: FragmentDeveloperSettingsBinding
-
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-
-        super.onCreateView(inflater, container, savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        if(!isInjected) {
+            FogtailApplication.get(activity!!.applicationContext).appComponent().devSettingsComponent().inject(this)
+            isInjected = true
+        }
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_developer_settings, container, false)
+        initRecyclerView(binding.root.context)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
+    fun initRecyclerView(context: Context) {
 
-        binding.developerSettingsHttpLoggingLevelSpinner.adapter = DeveloperSettingsSpinnerAdapter<DeveloperSettingsSpinnerAdapter.SelectionOption>(activity.layoutInflater)
+        binding.developerSettingsHttpLoggingLevelSpinner.adapter = DeveloperSettingsSpinnerAdapter<DeveloperSettingsSpinnerAdapter.SelectionOption>(activity!!.layoutInflater)
                 .setSelectionOptions(HttpLoggingLevel.allValues())
 
         binding.developerSettingsStethoSwitch
@@ -89,13 +88,12 @@ class DeveloperSettingsFragment :
 
 
         binding.bShowLog.setOnClickListener {
-            val context = activity
-            context.startActivity(LynxActivity.getIntent(context, lynxConfig))
+            activity!!.startActivity(LynxActivity.getIntent(context, lynxConfig))
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onAttach(view: View) {
+        super.onAttach(view)
         presenter.syncDeveloperSettings()
     }
 
@@ -155,12 +153,12 @@ class DeveloperSettingsFragment :
 
     @AnyThread
     override fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 
     @AnyThread
     override fun showAppNeedsToBeRestarted() {
-        Toast.makeText(context, "To apply new settings app needs to be restarted", Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, "To apply new settings app needs to be restarted", Toast.LENGTH_LONG).show()
     }
 
     private class HttpLoggingLevel internal constructor(internal val loggingLevel: HttpLoggingInterceptor.Level) : DeveloperSettingsSpinnerAdapter.SelectionOption {

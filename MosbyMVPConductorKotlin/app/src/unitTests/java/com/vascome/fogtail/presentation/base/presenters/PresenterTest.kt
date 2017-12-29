@@ -14,17 +14,7 @@ class PresenterTest {
     fun beforeEachTest() {
         view = Any()
         presenter = object : BasePresenter<Any>() {
-            override fun resume() {
 
-            }
-
-            override fun pause() {
-
-            }
-
-            override fun destroy() {
-
-            }
         }
     }
 

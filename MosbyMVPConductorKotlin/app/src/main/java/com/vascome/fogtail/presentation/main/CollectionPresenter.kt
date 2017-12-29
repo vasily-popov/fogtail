@@ -16,18 +16,17 @@ import io.reactivex.observers.DisposableObserver
 
 class CollectionPresenter
 @Inject constructor(private val usecase: LoadItemsUseCase,
-            private val analyticsModel: AnalyticsModel,
-            private val activityRouter: CollectionRouter)
+            private val analyticsModel: AnalyticsModel)
     : MvpBasePresenter<CollectionContract.View>(), CollectionContract.Presenter {
 
     override var isInProgress: Boolean = false
 
     private fun showViewLoading() {
-        ifViewAttached{view->view.setLoadingIndicator(true)}
+        ifViewAttached{ view->view.setLoadingIndicator(true) }
     }
 
     private fun hideViewLoading() {
-        ifViewAttached{view->view.setLoadingIndicator(false)}
+        ifViewAttached{ view->view.setLoadingIndicator(false) }
         isInProgress = false
     }
 
@@ -36,7 +35,7 @@ class CollectionPresenter
     }
 
     private fun showItems(items: List<RecAreaItem>) {
-        ifViewAttached{view->view.showItems(items)}
+        ifViewAttached{ view->view.showItems(items) }
     }
 
 
@@ -60,10 +59,6 @@ class CollectionPresenter
             }
 
         } , null)
-    }
-
-    override fun openItemDetail(item: RecAreaItem) {
-        activityRouter.openDetailForItem(item)
     }
 
     override fun destroy() {

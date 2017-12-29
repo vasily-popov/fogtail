@@ -1,6 +1,7 @@
 package com.vascome.fogtail.di
 
 import android.app.Application
+import android.content.Context
 
 import com.vascome.fogtail.FogtailApplication
 import com.vascome.fogtail.di.appmodules.AnalyticsModule
@@ -15,8 +16,13 @@ import javax.inject.Singleton
 
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjector
-import dagger.android.support.AndroidSupportInjectionModule
+import com.vascome.fogtail.data.network.AppImageLoader
+import com.vascome.fogtail.di.presentation.devsettings.DevSettingsComponent
+import com.vascome.fogtail.di.presentation.main.CollectionComponent
+
+
+
+
 
 /**
  * Created by vasilypopov on 11/22/17
@@ -27,16 +33,14 @@ import dagger.android.support.AndroidSupportInjectionModule
 @Singleton
 @Component(modules =
     [(ApplicationModule::class),
-    (ActivityBindingModule::class),
     (NetworkModule::class),
     (OkHttpInterceptorsModule::class),
     (ApiModule::class),
     (ThreadModule::class),
     (AnalyticsModule::class),
-    (DeveloperSettingsModule::class),
-    (AndroidSupportInjectionModule::class)])
+    (DeveloperSettingsModule::class)])
 
-interface AppComponent : AndroidInjector<FogtailApplication> {
+interface AppComponent {
 
     @Component.Builder
     interface Builder {
@@ -46,4 +50,9 @@ interface AppComponent : AndroidInjector<FogtailApplication> {
         fun build(): AppComponent
     }
 
+    fun inject(application: FogtailApplication)
+
+    //submodules
+    fun collectionComponent(): CollectionComponent
+    fun devSettingsComponent(): DevSettingsComponent
 }

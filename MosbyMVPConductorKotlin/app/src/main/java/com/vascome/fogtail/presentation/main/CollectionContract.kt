@@ -1,9 +1,7 @@
 package com.vascome.fogtail.presentation.main
 
-import android.support.v4.app.Fragment
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
-import com.vascome.fogtail.presentation.base.router.BaseRouter
 import com.vascome.fogtail.presentation.main.domain.model.RecAreaItem
 
 /**
@@ -24,10 +22,5 @@ interface CollectionContract {
 
         val isInProgress: Boolean
         fun reloadItems()
-        fun openItemDetail(item: RecAreaItem)
-    }
-
-    interface Router {
-        fun replaceFragment(content: Int, fragment: Fragment)
     }
 }

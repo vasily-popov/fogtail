@@ -1,5 +1,6 @@
 package com.vascome.fogtail.presentation.base.other
 
+import android.app.Activity
 import android.view.View
 
 /**
@@ -7,6 +8,6 @@ import android.view.View
  */
 interface ViewModifier {
 
-    fun <T : View> modify(view: T): T
+    fun <T : View> modify(view: T, activity: Activity): T
 }
 

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 apply plugin: 'hu.supercluster.paperwork'
 apply from: '../code_quality_tools/jacoco.gradle'
 apply from: '../code_quality_tools/quality.gradle'
@@ -130,10 +130,7 @@ dependencies {
     kapt libraries.kotlin.compiler
 
     implementation libraries.dagger.runtime
-    implementation libraries.dagger.android
-    implementation libraries.dagger.support
     kapt libraries.dagger.compiler
-    kapt libraries.dagger.processor
 
     implementation libraries.picasso.core
     implementation libraries.picasso.downloader
@@ -158,6 +155,7 @@ dependencies {
     implementation libraries.rx.core
     implementation libraries.rx.android
 
+
     implementation libraries.support.appCompat
     implementation libraries.support.recyclerView
     implementation libraries.support.v4
@@ -167,7 +165,9 @@ dependencies {
     implementation libraries.googlePlayMaps
     //implementation 'com.flurry.android:analytics:8.1.0'
 
-    implementation libraries.mosby.lce
+    implementation libraries.mosby.mvp
+    implementation libraries.mosby.viewstate
+    implementation libraries.conductor
 
     implementation libraries.cardStackView
 

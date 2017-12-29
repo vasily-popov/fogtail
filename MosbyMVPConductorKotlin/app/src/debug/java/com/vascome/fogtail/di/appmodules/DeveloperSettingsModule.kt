@@ -3,7 +3,6 @@ package com.vascome.fogtail.di.appmodules
 import android.app.Application
 
 import com.github.pedrovgs.lynx.LynxConfig
-import com.vascome.fogtail.di.presentation.devsettings.DevMenuModule
 import com.vascome.fogtail.presentation.base.other.ViewModifier
 import com.vascome.fogtail.presentation.devsettings.DeveloperSettingsModel
 import com.vascome.fogtail.presentation.devsettings.model.DeveloperSettings
@@ -26,7 +25,7 @@ import android.content.Context.MODE_PRIVATE
  * Copyright (c) 2017 MVPJava. All rights reserved.
  */
 
-@Module(includes = [(DevMenuModule::class)])
+@Module
 class DeveloperSettingsModule {
 
     @Provides

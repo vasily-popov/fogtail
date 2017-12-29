@@ -1,19 +1,15 @@
 package com.vascome.fogtail
 
 import android.app.Application
+import android.content.Context
 import com.vascome.fogtail.di.AppComponent
 import com.vascome.fogtail.di.DaggerAppComponent
 import com.vascome.fogtail.presentation.devsettings.DeveloperSettingsModel
 import com.vascome.fogtail.utils.AnalyticsModel
 
 import javax.inject.Inject
-
-import dagger.android.AndroidInjector
-import dagger.android.HasActivityInjector
 import timber.log.Timber
-import android.app.Activity
-import com.vascome.fogtail.di.applyAutoInjector
-import dagger.android.DispatchingAndroidInjector
+
 
 
 
@@ -24,7 +20,7 @@ import dagger.android.DispatchingAndroidInjector
  * Copyright (c) 2017 fogtail. All rights reserved.
  */
 
-open class FogtailApplication : Application(), HasActivityInjector {
+open class FogtailApplication : Application() {
 
     lateinit var appComponent: AppComponent
 
@@ -34,9 +30,6 @@ open class FogtailApplication : Application(), HasActivityInjector {
     @Inject
     lateinit var developerSettingModel: DeveloperSettingsModel
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
-
 
     override fun onCreate() {
         super.onCreate()
@@ -45,9 +38,8 @@ open class FogtailApplication : Application(), HasActivityInjector {
                 .builder()
                 .application(this)
                 .build()
-        appComponent.inject(this)
 
-        applyAutoInjector()
+        appComponent.inject(this)
 
         analyticsModel.init()
 
@@ -57,13 +49,13 @@ open class FogtailApplication : Application(), HasActivityInjector {
         }
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return dispatchingAndroidInjector
-    }
-
-
-    @Suppress("unused")
     fun appComponent(): AppComponent {
         return appComponent
+    }
+
+    companion object {
+        fun get(context: Context): FogtailApplication {
+            return context.applicationContext as FogtailApplication
+        }
     }
 }
