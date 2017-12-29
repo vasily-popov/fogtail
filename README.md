@@ -12,4 +12,7 @@ It's based on some known projects like [qualitymatters](https://github.com/artem
 * `CleanKotlin` - clean architeure demo project based on MVP. with RxJava
 * `MVVMJavaRx` - mvvm demo project which showcases usage of Dagger2, RxJava 2, RxBinding, RxAndroid
 * `MVVMKotlin` - mvvm demo project which showcases usage of Dagger2, RxJava 2, RxBinding, RxAndroid
+* `MosbyMVPKotlin` - mvp demo project based on mosby which showcases usage of Dagger2, RxJava 2, RxBinding, RxAndroid
+* `MosbyMVIKotlin` - mvi (mvp + intent) demo project based on mosby which showcases usage of Dagger2, RxJava 2, RxBinding, RxAndroid
+* `MosbyMVPConductorKotlin` - mvp demo project based on mosby which showcases usage of Dagger2, RxJava 2, Condictor (have issues with fragments like MapFragments, does not have support for appcompat libs)
 
