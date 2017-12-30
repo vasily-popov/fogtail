@@ -1,11 +1,10 @@
 package com.vascome.fogtail.data.thread
 
-import javax.inject.Inject
-import javax.inject.Singleton
-
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * MainThread (UI Thread) implementation based on a [Scheduler]

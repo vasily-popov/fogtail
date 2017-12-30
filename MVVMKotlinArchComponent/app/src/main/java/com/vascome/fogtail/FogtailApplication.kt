@@ -4,12 +4,10 @@ import com.vascome.fogtail.di.AppComponent
 import com.vascome.fogtail.di.DaggerAppComponent
 import com.vascome.fogtail.presentation.dev_settings.DeveloperSettingsModel
 import com.vascome.fogtail.utils.AnalyticsModel
-
-import javax.inject.Inject
-
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Created by vasilypopov on 11/22/17

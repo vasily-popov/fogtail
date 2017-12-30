@@ -30,6 +30,7 @@ class MainActivity : BaseActivity() {
 
     private var disposables: CompositeDisposable? = null
 
+    @SuppressLint("RxSubscribeOnError")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,7 +42,6 @@ class MainActivity : BaseActivity() {
         toggle.syncState()
 
         disposables = CompositeDisposable()
-        @SuppressLint("RxSubscribeOnError")
         val disposable = RxNavigationView
                 .itemSelections(navView)
                 .subscribe({ this.handleMenu(it) })

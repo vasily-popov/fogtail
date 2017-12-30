@@ -4,15 +4,13 @@ import com.squareup.moshi.Moshi
 import com.vascome.fogtail.BuildConfig
 import com.vascome.fogtail.data.api.ApiConfiguration
 import com.vascome.fogtail.data.api.FogtailRestApi
-
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Singleton
 
 /**
  * Created by vasilypopov on 11/22/17

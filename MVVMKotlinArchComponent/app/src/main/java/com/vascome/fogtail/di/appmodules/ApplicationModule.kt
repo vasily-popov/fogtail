@@ -2,19 +2,16 @@ package com.vascome.fogtail.di.appmodules
 
 import android.app.Application
 import android.content.Context
-
 import com.jakewharton.picasso.OkHttp3Downloader
 import com.squareup.moshi.Moshi
 import com.squareup.picasso.Picasso
 import com.vascome.fogtail.data.network.AppImageLoader
 import com.vascome.fogtail.data.network.PicassoImageLoader
-
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import timber.log.Timber
+import javax.inject.Singleton
 
 /**
  * Created by vasilypopov on 11/22/17

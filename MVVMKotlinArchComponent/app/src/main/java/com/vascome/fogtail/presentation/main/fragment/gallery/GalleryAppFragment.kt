@@ -1,6 +1,8 @@
 package com.vascome.fogtail.presentation.main.fragment.gallery
 
-import android.content.Context
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -14,6 +16,7 @@ import com.vascome.fogtail.data.network.AppImageLoader
 import com.vascome.fogtail.data.thread.ExecutionScheduler
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
 import com.vascome.fogtail.presentation.detail.RecAreaItemDetailActivity
+import com.vascome.fogtail.presentation.main.CollectionStateModel
 import com.vascome.fogtail.presentation.main.CollectionViewModel
 import com.vascome.fogtail.presentation.main.dto.RecAreaItem
 import com.vascome.fogtail.presentation.main.fragment.gallery.adapter.GalleryAreaAdapter
@@ -31,19 +34,17 @@ import javax.inject.Inject
 
 class GalleryAppFragment : BaseFragment(), CollectionAreaItemListener {
 
-    lateinit private var galleryAreaAdapter: GalleryAreaAdapter
-
     @Inject
-    lateinit var appContext: Context
-
-    @Inject
-    lateinit var viewModel: CollectionViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     lateinit var imageLoader: AppImageLoader
 
     @Inject
     lateinit var scheduler: ExecutionScheduler
+
+    lateinit private var galleryAreaAdapter: GalleryAreaAdapter
+    lateinit private var viewModel: CollectionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,37 +61,17 @@ class GalleryAppFragment : BaseFragment(), CollectionAreaItemListener {
         initRecyclerView()
     }
 
-    override fun onResume() {
-        super.onResume()
-        subscribeEvents()
-        viewModel.refreshCommand.accept(true)
-    }
+    private fun initRecyclerView() {
 
-    private fun subscribeEvents() {
+        recyclerView.addItemDecoration(BoxSpaceItemDecoration(resources.getDimension(R.dimen.list_item_vertical_space_between_items).toInt()))
+        val llm = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = llm
+        galleryAreaAdapter = GalleryAreaAdapter(activity.layoutInflater, imageLoader, this)
+        recyclerView.adapter = galleryAreaAdapter
+
         RxSwipeRefreshLayout.refreshes(recyclerViewSwipeRefresh)
                 .map { _ -> true }
-                .subscribe {
-                    value ->
-                    viewModel.refreshCommand.accept(value)
-                }
-                .addTo(disposables)
-
-        viewModel.items
-                .observeOn(scheduler.UI())
-                .subscribe({ model ->
-                    recyclerViewSwipeRefresh.post { recyclerViewSwipeRefresh.isRefreshing = model.inProgress  }
-                    if(!model.inProgress) {
-                        if (model.success) {
-                            itemsLoadingErrorUi.visibility = View.GONE
-                            recyclerViewSwipeRefresh.visibility = View.VISIBLE
-                            galleryAreaAdapter.setData(model.items)
-                        } else {
-                            recyclerViewSwipeRefresh.visibility = View.GONE
-                            itemsLoadingErrorUi.visibility = View.VISIBLE
-                            galleryAreaAdapter.setData(emptyList())
-                        }
-                    }
-                })
+                .subscribe { viewModel.loadItems() }
                 .addTo(disposables)
 
         itemsLoadingErrorTryAgainButton
@@ -98,25 +79,33 @@ class GalleryAppFragment : BaseFragment(), CollectionAreaItemListener {
                 .subscribe {
                     itemsLoadingErrorUi.visibility = View.GONE
                     recyclerViewSwipeRefresh.visibility = View.VISIBLE
-                    viewModel.refreshCommand.accept(true)
+                    viewModel.loadItems()
                 }
                 .addTo(disposables)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-    private fun initRecyclerView() {
-
-        recyclerView.addItemDecoration(BoxSpaceItemDecoration(resources.getDimension(R.dimen.list_item_vertical_space_between_items).toInt()))
-        val llm = LinearLayoutManager(appContext, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.layoutManager = llm
-        galleryAreaAdapter = GalleryAreaAdapter(activity.layoutInflater, imageLoader, this)
-        recyclerView.adapter = galleryAreaAdapter
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CollectionViewModel::class.java)
+        viewModel.items.observe(this, Observer<CollectionStateModel> { model ->
+            model?.let {
+                recyclerViewSwipeRefresh.post { recyclerViewSwipeRefresh.isRefreshing = model.inProgress  }
+                if(!model.inProgress) {
+                    if (model.success) {
+                        itemsLoadingErrorUi.visibility = View.GONE
+                        recyclerViewSwipeRefresh.visibility = View.VISIBLE
+                        galleryAreaAdapter.setData(model.items)
+                    } else {
+                        recyclerViewSwipeRefresh.visibility = View.GONE
+                        itemsLoadingErrorUi.visibility = View.VISIBLE
+                        galleryAreaAdapter.setData(emptyList())
+                    }
+                }
+            }
+        })
     }
 
-    override fun onDestroyView() {
-        viewModel.destroy()
-        super.onDestroyView()
-    }
 
     override fun onItemClick(item: RecAreaItem) {
         RecAreaItemDetailActivity.start(activity, item)

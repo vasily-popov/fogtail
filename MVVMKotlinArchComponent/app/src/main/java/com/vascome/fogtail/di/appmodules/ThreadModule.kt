@@ -2,11 +2,9 @@ package com.vascome.fogtail.di.appmodules
 
 import com.vascome.fogtail.data.thread.DataScheduler
 import com.vascome.fogtail.data.thread.ExecutionScheduler
-
-import javax.inject.Singleton
-
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 
 /**

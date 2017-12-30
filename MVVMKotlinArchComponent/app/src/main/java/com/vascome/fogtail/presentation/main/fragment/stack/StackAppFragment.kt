@@ -1,5 +1,8 @@
 package com.vascome.fogtail.presentation.main.fragment.stack
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +15,7 @@ import com.vascome.fogtail.data.network.AppImageLoader
 import com.vascome.fogtail.data.thread.ExecutionScheduler
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
 import com.vascome.fogtail.presentation.detail.RecAreaItemDetailActivity
+import com.vascome.fogtail.presentation.main.CollectionStateModel
 import com.vascome.fogtail.presentation.main.CollectionViewModel
 import com.vascome.fogtail.presentation.main.dto.RecAreaItem
 import com.vascome.fogtail.presentation.main.fragment.stack.adapter.SwipeStackAdapter
@@ -27,18 +31,18 @@ import javax.inject.Inject
 
 class StackAppFragment : BaseFragment(), CollectionAreaItemListener {
 
-    private val swipeStackAdapter by lazy {
-        SwipeStackAdapter(activity.layoutInflater, imageLoader, this)
-    }
-
     @Inject
-    lateinit var viewModel: CollectionViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     lateinit var imageLoader: AppImageLoader
 
     @Inject
     lateinit var scheduler: ExecutionScheduler
+
+
+    lateinit private var swipeStackAdapter: SwipeStackAdapter
+    lateinit private var viewModel: CollectionViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,49 +59,40 @@ class StackAppFragment : BaseFragment(), CollectionAreaItemListener {
         initRecyclerView()
     }
 
-    override fun onResume() {
-        super.onResume()
-        subscribeEvents()
-        viewModel.refreshCommand.accept(true)
-    }
-
-    private fun subscribeEvents() {
-
-        viewModel.items
-                .observeOn(scheduler.UI())
-                .subscribe({ model ->
-                    itemsLoadingUi.visibility = if (model.inProgress) VISIBLE else GONE
-                    if(!model.inProgress) {
-                        if (model.success) {
-                            itemsLoadingErrorUi.visibility = GONE
-                            swipeStack.visibility = VISIBLE
-                            swipeStackAdapter.setData(model.items)
-                        } else {
-                            swipeStack.visibility = GONE
-                            itemsLoadingErrorUi.visibility = VISIBLE
-                            swipeStackAdapter.setData(emptyList())
-                        }
-                    }
-                })
-                .addTo(disposables)
-
+    private fun initRecyclerView() {
+        swipeStackAdapter = SwipeStackAdapter(activity.layoutInflater, imageLoader, this)
+        swipeStack.setAdapter(swipeStackAdapter)
         itemsLoadingErrorTryAgainButton
                 .clicks()
                 .subscribe {
                     itemsLoadingErrorUi.visibility = View.GONE
-                    viewModel.refreshCommand.accept(true)
+                    viewModel.loadItems()
                 }
                 .addTo(disposables)
     }
 
-    private fun initRecyclerView() {
-        swipeStack.setAdapter(swipeStackAdapter)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CollectionViewModel::class.java)
+        viewModel.items.observe(this, Observer<CollectionStateModel> { model ->
+            model?.let {
+                itemsLoadingUi.visibility = if (model.inProgress) VISIBLE else GONE
+                if(!model.inProgress) {
+                    if (model.success) {
+                        itemsLoadingErrorUi.visibility = GONE
+                        swipeStack.visibility = VISIBLE
+                        swipeStackAdapter.setData(model.items)
+                    } else {
+                        swipeStack.visibility = GONE
+                        itemsLoadingErrorUi.visibility = VISIBLE
+                        swipeStackAdapter.setData(emptyList())
+                    }
+                }
+            }
+        })
     }
 
-    override fun onDestroyView() {
-        viewModel.destroy()
-        super.onDestroyView()
-    }
 
     override fun onItemClick(item: RecAreaItem) {
         RecAreaItemDetailActivity.start(activity, item)

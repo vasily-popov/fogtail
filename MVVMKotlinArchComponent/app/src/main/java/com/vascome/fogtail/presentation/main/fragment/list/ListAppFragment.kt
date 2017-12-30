@@ -1,14 +1,14 @@
 package com.vascome.fogtail.presentation.main.fragment.list
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout
 import com.jakewharton.rxbinding2.view.clicks
 import com.vascome.fogtail.R
@@ -16,6 +16,7 @@ import com.vascome.fogtail.data.network.AppImageLoader
 import com.vascome.fogtail.data.thread.ExecutionScheduler
 import com.vascome.fogtail.presentation.base.fragments.BaseFragment
 import com.vascome.fogtail.presentation.detail.RecAreaItemDetailActivity
+import com.vascome.fogtail.presentation.main.CollectionStateModel
 import com.vascome.fogtail.presentation.main.CollectionViewModel
 import com.vascome.fogtail.presentation.main.dto.RecAreaItem
 import com.vascome.fogtail.presentation.main.fragment.list.adapter.ListAreaAdapter
@@ -23,7 +24,6 @@ import com.vascome.fogtail.presentation.main.fragment.list.adapter.VerticalSpace
 import com.vascome.fogtail.presentation.main.utils.CollectionAreaItemListener
 import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.recycler_refreshable_view_fragment.*
-
 import javax.inject.Inject
 
 /**
@@ -33,19 +33,17 @@ import javax.inject.Inject
 
 class ListAppFragment : BaseFragment(), CollectionAreaItemListener {
 
-    private lateinit var listAreaAdapter: ListAreaAdapter
-
     @Inject
-    lateinit var appContext: Context
-
-    @Inject
-    lateinit var viewModel: CollectionViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     lateinit var imageLoader: AppImageLoader
 
     @Inject
     lateinit var scheduler: ExecutionScheduler
+
+    private lateinit var listAreaAdapter: ListAreaAdapter
+    private lateinit var viewModel: CollectionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,44 +54,22 @@ class ListAppFragment : BaseFragment(), CollectionAreaItemListener {
         return inflater.inflate(R.layout.recycler_refreshable_view_fragment, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initView()
     }
 
-    override fun onResume() {
-        super.onResume()
-        subscribeEvents()
-        viewModel.refreshCommand.accept(true)
-    }
-
     @SuppressLint("RxSubscribeOnError")
-    private fun subscribeEvents() {
+    private fun initView() {
+
+        recyclerView.addItemDecoration(VerticalSpaceItemDecoration(resources.getDimension(R.dimen.list_item_vertical_space_between_items).toInt()))
+        val llm = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = llm
+        listAreaAdapter = ListAreaAdapter(activity.layoutInflater, imageLoader, this)
+        recyclerView.adapter = listAreaAdapter
 
         RxSwipeRefreshLayout.refreshes(recyclerViewSwipeRefresh)
                 .map { _ -> true }
-                .subscribe {
-                     value ->
-                        viewModel.refreshCommand.accept(value)
-                }
-                .addTo(disposables)
-
-        viewModel.items
-                .observeOn(scheduler.UI())
-                .subscribe({ model ->
-                    recyclerViewSwipeRefresh.post { recyclerViewSwipeRefresh.isRefreshing = model.inProgress  }
-                    if(!model.inProgress) {
-                        if (model.success) {
-                            itemsLoadingErrorUi.visibility = View.GONE
-                            recyclerViewSwipeRefresh.visibility = View.VISIBLE
-                            listAreaAdapter.setData(model.items)
-                        } else {
-                            recyclerViewSwipeRefresh.visibility = View.GONE
-                            itemsLoadingErrorUi.visibility = View.VISIBLE
-                            listAreaAdapter.setData(emptyList())
-                        }
-                    }
-                })
+                .subscribe { viewModel.loadItems() }
                 .addTo(disposables)
 
         itemsLoadingErrorTryAgainButton
@@ -101,23 +77,31 @@ class ListAppFragment : BaseFragment(), CollectionAreaItemListener {
                 .subscribe {
                     itemsLoadingErrorUi.visibility = View.GONE
                     recyclerViewSwipeRefresh.visibility = View.VISIBLE
-                        viewModel.refreshCommand.accept(true)
+                    viewModel.loadItems()
                 }
                 .addTo(disposables)
     }
 
-    private fun initView() {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-        recyclerView.addItemDecoration(VerticalSpaceItemDecoration(resources.getDimension(R.dimen.list_item_vertical_space_between_items).toInt()))
-        val llm = LinearLayoutManager(appContext, LinearLayoutManager.VERTICAL, false)
-        recyclerView.layoutManager = llm
-        listAreaAdapter = ListAreaAdapter(activity.layoutInflater, imageLoader, this)
-        recyclerView.adapter = listAreaAdapter
-    }
-
-    override fun onDestroyView() {
-        viewModel.destroy()
-        super.onDestroyView()
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CollectionViewModel::class.java)
+        viewModel.items.observe(this, Observer<CollectionStateModel> { model ->
+            model?.let {
+                recyclerViewSwipeRefresh.post { recyclerViewSwipeRefresh.isRefreshing = model.inProgress  }
+                if(!model.inProgress) {
+                    if (model.success) {
+                        itemsLoadingErrorUi.visibility = View.GONE
+                        recyclerViewSwipeRefresh.visibility = View.VISIBLE
+                        listAreaAdapter.setData(model.items)
+                    } else {
+                        recyclerViewSwipeRefresh.visibility = View.GONE
+                        itemsLoadingErrorUi.visibility = View.VISIBLE
+                        listAreaAdapter.setData(emptyList())
+                    }
+                }
+            }
+        })
     }
 
     override fun onItemClick(item: RecAreaItem) {
