@@ -1,11 +1,13 @@
 package com.vascome.fogtail.presentation.detail
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.jakewharton.rxbinding2.widget.RxTextView
 import com.vascome.fogtail.R
 import com.vascome.fogtail.data.network.AppImageLoader
 import com.vascome.fogtail.data.thread.ExecutionScheduler
@@ -27,57 +29,44 @@ class RecAreaDetailFragment : BaseFragment() {
     lateinit var imageLoader: AppImageLoader
 
     @Inject
-    lateinit var viewModel: DetailViewModel
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     @Inject
     lateinit var scheduler: ExecutionScheduler
 
+    lateinit var viewModel: DetailViewModel
+    var item: RecAreaItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
+        item = arguments.getParcelable("item")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-        val item = arguments.getParcelable<RecAreaItem>("item")
-        if (item != null) {
-            viewModel.setItemCommand.accept(item)
-        }
         return inflater.inflate(R.layout.detail_item_fragment, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
-        subscribeEvents()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailViewModel::class.java)
+        viewModel.imageUrl.observe(this, Observer<String> { url ->
+            url?.let {
+                imageLoader.downloadInto(url, listItemImageView)
+            }
+        })
+        viewModel.name.observe(this, Observer<String>  { name ->
+            listItemTitle.text = name
+        })
+
+        viewModel.itemDescription.observe(this, Observer<String>  { name ->
+            listItemDescription.text = name
+        })
+
+        viewModel.setItem(item)
     }
 
-    private fun subscribeEvents() {
-
-        disposables.add(
-                viewModel.itemDescription()
-                        .observeOn(scheduler.UI())
-                        .subscribe(RxTextView.text(listItemDescription))
-        )
-
-        disposables.add(
-                viewModel.name()
-                        .observeOn(scheduler.UI())
-                        .subscribe(RxTextView.text(listItemTitle))
-        )
-
-        disposables.add(
-                viewModel.imageUrl()
-                        .observeOn(scheduler.UI())
-                        .subscribe { url ->
-                            url?.let { url1 -> imageLoader.downloadInto(url1, listItemImageView) }
-                        }
-        )
-    }
-
-    override fun onDestroyView() {
-        viewModel.destroy()
-        super.onDestroyView()
-    }
 
     companion object {
 

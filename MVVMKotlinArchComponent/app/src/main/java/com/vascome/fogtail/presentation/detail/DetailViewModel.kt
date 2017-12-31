@@ -1,10 +1,11 @@
 package com.vascome.fogtail.presentation.detail
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
 import com.jakewharton.rxrelay2.PublishRelay
 import com.vascome.fogtail.presentation.main.dto.RecAreaItem
-import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
 /**
@@ -13,18 +14,23 @@ import javax.inject.Inject
  */
 
 class DetailViewModel
-@Inject constructor() {
+@Inject constructor() :ViewModel() {
 
-    private val descriptionSubject = BehaviorSubject.create<String>()
-    private val nameSubject = BehaviorSubject.create<String>()
-    private val imageSubject = BehaviorSubject.create<String?>()
     private val disposables: CompositeDisposable = CompositeDisposable()
 
-    /**
-     * Send an item to this command to update the text etc.
-     */
-    val setItemCommand: PublishRelay<RecAreaItem> = PublishRelay.create<RecAreaItem>()
+    private var descriptionLiveData = MutableLiveData<String>()
+    val itemDescription: LiveData<String> =  descriptionLiveData
 
+    private var nameLiveData = MutableLiveData<String>()
+    val name: LiveData<String>  =  nameLiveData
+
+    private var imageUrlLiveData = MutableLiveData<String>()
+    val imageUrl: LiveData<String>  =  imageUrlLiveData
+
+    private val setItemCommand: PublishRelay<RecAreaItem> = PublishRelay.create<RecAreaItem>()
+    fun setItem(item: RecAreaItem?) {
+        setItemCommand.accept(item)
+    }
 
     init {
 
@@ -32,35 +38,21 @@ class DetailViewModel
 
         disposables.add(
                 itemObservable.map({ it.shortDescription })
-                        .subscribe({ descriptionSubject.onNext(it) })
+                        .subscribe(descriptionLiveData::setValue)
         )
 
         disposables.add(
                 itemObservable.map({ it.name })
-                        .subscribe({ nameSubject.onNext(it) })
+                        .subscribe(nameLiveData::setValue)
         )
 
         disposables.add(
                 itemObservable.map({ it.imageUrl })
-                        .subscribe({ it?.let { it1 -> imageSubject.onNext(it1) } })
+                        .subscribe({ it?.let { it1 -> imageUrlLiveData.value = it1 } })
         )
-
-
     }
 
-    fun itemDescription(): Observable<String> {
-        return descriptionSubject.hide()
-    }
-
-    fun name(): Observable<String> {
-        return nameSubject.hide()
-    }
-
-    fun imageUrl(): Observable<String?> {
-        return imageSubject.hide()
-    }
-
-    fun destroy() {
+    override fun onCleared() {
         if (!disposables.isDisposed) {
             disposables.dispose()
         }
